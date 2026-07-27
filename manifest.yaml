@@ -1,50 +1,17 @@
 name: engineering-os
-version: 2.0.0
-description: A composable engineering judgment operating system for AI agents.
-kernel: kernel/engineering-constitution.md
-default_profile: balanced
+version: 3.0.0
 skills:
-- id: adversarial-code-review
-  path: skills/adversarial-code-review
-- id: architecture-review
-  path: skills/architecture-review
-- id: change-management
-  path: skills/change-management
-- id: engineering-communication
-  path: skills/engineering-communication
-- id: engineering-debugging
-  path: skills/engineering-debugging
-- id: engineering-decision
-  path: skills/engineering-decision
-- id: engineering-economics
-  path: skills/engineering-economics
-- id: engineering-investigation
-  path: skills/engineering-investigation
-- id: engineering-memory
-  path: skills/engineering-memory
-- id: engineering-philosophy
-  path: skills/engineering-philosophy
-- id: engineering-quality
-  path: skills/engineering-quality
-- id: engineering-refactoring
-  path: skills/engineering-refactoring
-- id: engineering-testing
-  path: skills/engineering-testing
-- id: incident-response
-  path: skills/incident-response
-- id: learning-and-knowledge-capture
-  path: skills/learning-and-knowledge-capture
-- id: plan-gate
-  path: skills/plan-gate
-- id: systems-thinking
-  path: skills/systems-thinking
-- id: technical-leadership
-  path: skills/technical-leadership
-lifecycle:
-- investigate
-- decide
-- plan
-- build
-- verify
-- communicate
-- learn
+  - engineering-investigation
+  - engineering-decision
+  - engineering-planning
+  - engineering-quality
+  - engineering-debugging
+  - architecture-reliability
+  - incident-response
+  - engineering-review
+  - engineering-communication
+  - engineering-memory
+profiles:
+  lightweight: 5
+  balanced: 10
+  strict: 10

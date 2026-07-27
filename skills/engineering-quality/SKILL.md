@@ -1,14 +1,10 @@
 ---
 name: engineering-quality
 description: >
-  Apply throughout software engineering work that designs, writes, changes,
-  debugs, refactors, configures, migrates, tests, reviews, or recommends code
-  or systems. Use whenever an engineering decision could affect correctness,
-  security, reliability, maintainability, compatibility, performance, data,
-  operations, or long-term ownership. Prevent first-solution bias, challenge
-  unnecessary complexity, verify version-sensitive practices, require evidence
-  proportional to claims, and attempt to falsify completed work before delivery.
+  Design, implement, simplify, test, and adversarially verify production
+  changes to an appropriate standard.
 ---
+
 
 # Engineering Quality
 
@@ -300,3 +296,73 @@ Load only the references relevant to the task:
 - `references/api-compatibility.md`
 - `references/performance.md`
 - `references/testing.md`
+
+## Integrated discipline: Engineering Testing
+
+Tests exist to provide decision-grade evidence, not coverage theatre.
+
+## Start with the claim
+
+Name the invariant or behavior the test must establish. Test observable outcomes at the lowest level that still exercises the risk.
+
+## Strong tests
+
+- fail for the target defect;
+- survive harmless refactoring;
+- control time, randomness, ordering, and external state;
+- cover rejection and failure paths;
+- make failures diagnostic;
+- avoid mocks that bypass the behavior under test.
+
+## Strategies
+
+Use examples, boundary tests, properties, contracts, integration tests, concurrency tests, failure injection, migration tests, and end-to-end tests according to risk. Do not use every layer by default.
+
+## Gate
+
+Before calling verification sufficient, explain what each important test proves, what it cannot prove, and whether it would catch the claimed regression.
+
+## Integrated discipline: Engineering Refactoring
+
+Refactoring changes structure while preserving behavior and invariants. It is not a hidden feature rewrite.
+
+## Preconditions
+
+Establish current behavior, affected contracts, and sufficient characterization evidence. Separate structural change from behavior change whenever practical.
+
+## Strategy
+
+Prefer small reversible transformations, continuous verification, and deletion of duplication or accidental complexity. Preserve compatibility boundaries until migration is explicit.
+
+## Smells are hypotheses
+
+Duplication, large modules, conditionals, and indirection are not automatic defects. Refactor only when structure causes concrete change cost, defects, opacity, or ownership confusion.
+
+## Gate
+
+The final diff must preserve observable behavior, reduce a named source of entropy, and avoid speculative abstraction.
+
+## Capability handoff
+
+Do not remain in this capability after its responsibility is complete. Use the
+smallest next capability whose activation conditions are satisfied. Preserve the
+evidence, assumptions, risks, and unresolved uncertainty produced here.
+
+### Usually entered from
+
+- Engineering Planning
+- Engineering Decision for straightforward implementation
+- Engineering Debugging after root cause is established
+- Engineering Review when corrections are requested
+
+### Usually hands off to
+
+- **Engineering Review** when the change is ready for independent challenge.
+- **Engineering Communication** when the result needs explanation or documentation.
+- **Engineering Memory** when a reusable lesson emerged.
+- **Engineering Investigation** when implementation contradicts the current model.
+
+At every handoff, identify the next capability, the artifact or evidence being
+passed, the unresolved question or required outcome, and any stop condition that
+must remain visible. Return to an earlier capability whenever new evidence
+invalidates the current path.

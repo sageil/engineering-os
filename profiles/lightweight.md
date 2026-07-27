@@ -1,3 +1,3 @@
-# Lightweight
+# Lightweight profile
 
-Installs investigation, decision, quality, communication, and adversarial review.
+Installs the smallest practical core: investigation, implementation quality, debugging, review, and communication.

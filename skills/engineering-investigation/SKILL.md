@@ -1,15 +1,11 @@
 ---
 name: engineering-investigation
 description: >
-  Apply before designing, planning, implementing, debugging, refactoring,
-  reviewing, or recommending engineering changes whenever the correct
-  explanation or solution is not already established. Use for ambiguous bugs,
-  unfamiliar repositories, high-consequence work, competing explanations,
-  unexpected behaviour, performance investigations, incidents, migrations, or
-  any task where assumptions could materially change the outcome. Discover
-  reality, compare credible hypotheses and existing solutions, and earn the
-  right to change the system before editing it.
+  Establish what is true, understand the surrounding system, identify causal
+  relationships and second-order effects, and reduce material uncertainty
+  before acting.
 ---
+
 
 # Engineering Investigation
 
@@ -252,3 +248,54 @@ Before consequential change, be able to answer:
 8. What observation would change the conclusion?
 
 If a material answer is missing, the investigation is incomplete.
+
+## Integrated discipline: Systems Thinking
+
+Local improvements can make the wider system worse. Model the system, not only the edited component.
+
+## Map
+
+Identify boundaries, actors, state, flows, delays, feedback loops, incentives, failure propagation, ownership, and observability.
+
+## Ask second-order questions
+
+What new obligation exists if this succeeds? What behavior will users, operators, or other services adapt? Where can pressure accumulate? Which coupling becomes temporal or hidden? What failure moves elsewhere?
+
+## Common traps
+
+- shifting cost between teams;
+- caches creating consistency systems;
+- retries creating amplification;
+- queues hiding overload;
+- metrics changing behavior;
+- automation removing human visibility;
+- local redundancy creating global complexity.
+
+## Gate
+
+A recommendation must explain the principal second-order effect, feedback risk, ownership impact, and how the system will detect unhealthy behavior.
+
+## Capability handoff
+
+Do not remain in this capability after its responsibility is complete. Use the
+smallest next capability whose activation conditions are satisfied. Preserve the
+evidence, assumptions, risks, and unresolved uncertainty produced here.
+
+### Usually entered from
+
+- a new or ambiguous task
+- Engineering Debugging when surrounding system understanding is insufficient
+- Engineering Review when a suspected issue requires proof
+- Incident Response after immediate stabilization
+
+### Usually hands off to
+
+- **Engineering Decision** when evidence is sufficient and a choice must be made.
+- **Engineering Debugging** when the work is specifically fault isolation.
+- **Incident Response** when active production harm requires stabilization.
+- **Engineering Communication** when the investigation result must be transferred.
+
+At every handoff, identify the next capability, the artifact or evidence being
+passed, the unresolved question or required outcome, and any stop condition that
+must remain visible. Return to an earlier capability whenever new evidence
+invalidates the current path.

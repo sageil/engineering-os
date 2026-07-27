@@ -1,8 +1,9 @@
 # Changelog
 
-## 2.0.0 — 2026-07-27
+## 3.0.0
 
-- Introduced the Engineering Judgment Kernel and lifecycle.
-- Added engineering philosophy, decision, economics, systems thinking, debugging, testing, refactoring, architecture review, incident response, change management, technical leadership, and learning skills.
-- Added benchmark scaffolding, orchestration documentation, and expanded cross-skill evaluations.
-- Retained and integrated the original six world-class skills.
+- Consolidated overlapping capabilities from eighteen skills into ten focused skills.
+- Added explicit capability routing and handoff guidance to `AGENTS.md` and every skill.
+- Preserved the existing README visual identity and installation experience.
+- Kept optional `AGENTS.md` replacement, timestamped backups, checksum protection, and safe uninstall restoration.
+- Updated lightweight, balanced, and strict installation profiles.

@@ -1,14 +1,10 @@
 ---
 name: engineering-communication
 description: >
-  Apply whenever drafting, rewriting, reviewing, or editing documentation,
-  READMEs, architecture documents, ADRs, RFCs, design proposals, migration
-  guides, PR descriptions, technical reports, user documentation, developer
-  guides, tutorials, operational runbooks, troubleshooting guides, release
-  notes, or any substantial written communication. Optimize for accurate mental
-  models, low cognitive load, human-sounding language, and actionable
-  communication rather than polished prose.
+  Transfer an accurate mental model to the intended audience with minimal
+  ambiguity, cognitive load, and unsupported confidence.
 ---
+
 
 # Engineering Communication
 
@@ -462,3 +458,25 @@ The reader should finish thinking:
 They should never finish thinking:
 
 > This sounds well written, but I am still not sure what I need to do.
+
+## Capability handoff
+
+Do not remain in this capability after its responsibility is complete. Use the
+smallest next capability whose activation conditions are satisfied. Preserve the
+evidence, assumptions, risks, and unresolved uncertainty produced here.
+
+### Usually entered from
+
+- documentation, proposals, ADRs, PR descriptions, reports, runbooks, or technical explanations
+
+### Usually hands off to
+
+- **Engineering Investigation** when claims lack sufficient grounding.
+- **Engineering Decision** when writing exposes an unresolved choice.
+- **Engineering Review** when accuracy or approval risk is material.
+- **Engineering Memory** when durable institutional knowledge should be preserved.
+
+At every handoff, identify the next capability, the artifact or evidence being
+passed, the unresolved question or required outcome, and any stop condition that
+must remain visible. Return to an earlier capability whenever new evidence
+invalidates the current path.

@@ -1,30 +1,5 @@
 # Engineering Communication
 
-A model-agnostic Agent Skill for writing and editing technical documentation in clear, human language.
+Transfer an accurate mental model to the intended audience with minimal ambiguity, cognitive load, and unsupported confidence.
 
-It applies to READMEs, PR descriptions, ADRs, RFCs, migration guides, runbooks, API documentation, release notes, reports, and other substantial prose.
-
-## Install for Codex
-
-```bash
-./scripts/install-codex.sh
-```
-
-This installs the skill to:
-
-```text
-~/.agents/skills/engineering-communication
-```
-
-## Package contents
-
-- `SKILL.md` — governing communication standard
-- `references/` — document-specific guidance
-- `evals/` — trigger and behavior fixtures
-- `scripts/` — installation and package validation
-
-## Validate
-
-```bash
-./scripts/validate-package.sh
-```
+See [`SKILL.md`](SKILL.md) for the complete methodology, activation rules, decision gates, and capability handoffs.

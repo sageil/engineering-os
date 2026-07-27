@@ -1,3 +1,3 @@
-# Strict
+# Strict profile
 
-Installs all skills and requires evidence, planning, economic justification, adversarial verification, and explicit uncertainty for significant work.
+Installs all ten capabilities. Use the optional global `AGENTS.md` to make routing and stronger gates always active.

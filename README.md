@@ -65,32 +65,28 @@ Every capability inherits the same Engineering Judgment Kernel:
 - Humans over optimization.
 - Learning over remembering.
 
-The kernel keeps the capabilities consistent even when different models or harnesses perform the work.
+The shared philosophy keeps the capabilities consistent, while explicit handoffs guide agents to the next responsible capability.
 
 ---
 
 ## Capabilities
 
-Engineering OS is made of independent, composable capabilities.
+Engineering OS is made of ten independent, composable capabilities with explicit handoffs between them.
 
 | Capability | Governing question |
 |---|---|
-| Engineering Investigation | What is actually true? |
-| Engineering Decision | What is the strongest practical choice? |
-| Engineering Economics | Is the change worth its lifetime cost? |
-| Plan Gate | What is the safest execution strategy? |
-| Engineering Quality | What should be built, and how well? |
-| Debugging | Where exactly is the defect? |
-| Testing | What evidence proves the behaviour? |
-| Refactoring | How can the system improve without changing behaviour? |
-| Architecture Review | Will this remain a healthy system? |
-| Systems Thinking | What second-order effects follow? |
-| Incident Response | What is the safest next action under pressure? |
-| Change Management | How does this reach production safely? |
+| Engineering Investigation | What is actually true, and what system effects matter? |
+| Engineering Decision | What is the strongest practical choice over its lifetime? |
+| Engineering Planning | What is the safest executable path from here to there? |
+| Engineering Quality | How should the change be built, simplified, tested, and verified? |
+| Engineering Debugging | What causal explanation fits every observation? |
+| Architecture and Reliability | Will this remain healthy, operable, resilient, and economical? |
+| Incident Response | What is the safest next action while users or systems are at risk? |
+| Engineering Review | Can the proposed or completed change be shown to be unsafe? |
 | Engineering Communication | How do we transfer the correct mental model? |
-| Adversarial Code Review | Can the change be shown to be unsafe? |
-| Engineering Memory | What knowledge should survive? |
-| Learning & Knowledge Capture | What should permanently improve after this work? |
+| Engineering Memory | What knowledge should survive, and where should it live? |
+
+Each capability declares where it is usually entered from and which capability normally takes responsibility next. Agents use only the smallest route required by the task and return to an earlier capability when new evidence invalidates the current path.
 
 ---
 
@@ -166,11 +162,161 @@ cd engineering-os
 ./scripts/install.sh --profile balanced
 ```
 
-Profiles let teams choose how strongly Engineering OS shapes agent behaviour:
+The installer is interactive and guides you through the setup.
 
-- **Lightweight** — essential investigation, quality, and review.
-- **Balanced** — the complete recommended methodology.
-- **Strict** — stronger gates for consequential engineering work.
+Engineering OS installs its capabilities into the standard agent skills directory:
+
+```text
+~/.agents/
+├── AGENTS.md                    # optional global policy and routing
+├── .engineering-os/
+│   ├── install-state.env        # ownership and restoration metadata
+│   └── backups/                 # pre-installation files and skills
+└── skills/
+    ├── engineering-investigation/
+    ├── engineering-decision/
+    ├── engineering-planning/
+    ├── engineering-quality/
+    ├── engineering-debugging/
+    ├── architecture-reliability/
+    ├── incident-response/
+    ├── engineering-review/
+    ├── engineering-communication/
+    └── engineering-memory/
+```
+
+The Engineering OS global policy, `~/.agents/AGENTS.md`, is optional. The installer asks whether you want to keep your existing file or replace it with the Engineering OS policy.
+
+```text
+Engineering OS detected an existing AGENTS.md.
+
+Choose an option:
+
+1. Keep my existing AGENTS.md
+2. Replace it with Engineering OS
+3. Preview the Engineering OS version
+4. Cancel
+
+Default: Keep existing
+```
+
+The default is always to preserve the existing file.
+
+When you explicitly choose replacement, the installer:
+
+- creates a timestamped backup before writing
+- records installation state and checksums
+- writes the new file atomically
+- preserves the original backup across upgrades
+- enables safe restoration during uninstall
+
+Your original `AGENTS.md` is never silently discarded.
+
+### Installation profiles
+
+Profiles control how strongly Engineering OS shapes agent behaviour.
+
+| Profile | Description |
+|---|---|
+| Lightweight | Essential investigation, quality, and review. |
+| Balanced | The complete recommended methodology for most engineering work. |
+| Strict | All capabilities plus the global routing policy for stronger always-on gates. |
+
+### Installation layout
+
+Engineering OS keeps its installation simple and visible.
+
+```text
+~/.agents/
+├── AGENTS.md                    # optional global policy
+├── .engineering-os/
+│   ├── install-state.json       # ownership and restoration metadata
+│   └── backups/                 # pre-installation AGENTS.md backups
+└── skills/
+    ├── engineering-investigation/
+    ├── engineering-decision/
+    ├── engineering-economics/
+    ├── plan-gate/
+    ├── engineering-quality/
+    ├── debugging/
+    ├── testing/
+    ├── refactoring/
+    ├── architecture-review/
+    ├── systems-thinking/
+    ├── incident-response/
+    ├── change-management/
+    ├── engineering-communication/
+    ├── adversarial-code-review/
+    ├── engineering-memory/
+    └── learning-and-knowledge-capture/
+```
+
+The skills directory is installed by default. Replacing the global policy always requires explicit consent.
+
+### Common installation commands
+
+```bash
+# Interactive installation
+./scripts/install.sh --profile balanced
+
+# Install skills without changing AGENTS.md
+./scripts/install.sh --profile balanced --agents keep
+
+# Explicitly replace AGENTS.md after backing it up
+./scripts/install.sh --profile balanced --agents replace
+
+# Preview all planned changes
+./scripts/install.sh --profile balanced --agents replace --dry-run
+```
+
+### Updating
+
+Running the installer again upgrades Engineering OS in place.
+
+Existing skills are updated safely. If Engineering OS manages your global `AGENTS.md`, the installer preserves the original pre-installation backup across upgrades.
+
+When the current file still matches the version installed by Engineering OS, it can be updated normally. When it has been edited since installation, the installer stops and asks what to do instead of overwriting those changes.
+
+### Uninstalling
+
+Engineering OS can be removed cleanly at any time.
+
+```bash
+./scripts/uninstall.sh
+```
+
+The uninstaller removes only files recorded as belonging to Engineering OS.
+
+If Engineering OS replaced your global `AGENTS.md` and the installed file has not changed, the original file is restored automatically.
+
+If the file has been edited since installation, the uninstaller asks whether to keep it, or preserve the edited version as another backup before restoring the pre-installation state. You can also cancel the uninstall.
+
+The default is to keep the current file. Engineering OS never silently destroys post-installation edits.
+
+```bash
+# Non-interactive uninstall while preserving the current AGENTS.md
+./scripts/uninstall.sh --agents keep
+
+# Explicitly restore the pre-installation AGENTS.md
+./scripts/uninstall.sh --agents restore
+```
+
+When `--agents restore` is used against a modified file, the current version is backed up before restoration.
+
+### Safe by design
+
+The installation lifecycle is designed to be predictable and reversible:
+
+- explicit consent for user-owned files
+- safe defaults
+- idempotent installation
+- atomic file replacement
+- timestamped backups
+- checksum verification
+- recorded installation ownership
+- protection for post-installation edits
+- clean uninstall and restoration
+- dry-run support
 
 ---
 
@@ -178,7 +324,7 @@ Profiles let teams choose how strongly Engineering OS shapes agent behaviour:
 
 Engineering OS is designed to work across agents and harnesses that support durable instructions or discoverable skills. The methodology does not depend on one model, framework, language, or repository type.
 
-The capabilities remain independently discoverable, while a small global bootstrap policy ensures the most important behaviours—evidence before edits, alternatives before commitment, and honest verification—are always present.
+Engineering OS installs as independently discoverable capabilities. Optionally, it can also install the Engineering OS global policy, `AGENTS.md`, to activate the Engineering Judgment Kernel across supported agents.
 
 ---
 
@@ -190,6 +336,24 @@ The included visual assets establish a shared language for the lifecycle, capabi
   <img src="assets/brand-system-dark.png" alt="Engineering OS visual identity and design system" width="100%">
 </p>
 
+---
+
+## Roadmap
+
+Engineering OS is evolving toward a complete, model-agnostic engineering operating system for AI agents.
+
+Planned work includes:
+
+- broader agent and harness compatibility
+- stronger behavioural evaluations and benchmarks
+- capability-level conformance tests
+- profile customization
+- richer installation diagnostics
+- reusable repository policies
+- knowledge capture and promotion workflows
+- telemetry that measures engineering quality rather than token output
+
+---
 
 ## Contributing
 

@@ -1,17 +1,11 @@
 ---
 name: engineering-memory
 description: >
-  Apply whenever reading, writing, updating, retrieving, reconciling, promoting,
-  or deleting persistent memory used across sessions, including CLAUDE.md,
-  AGENTS.md, project memory, durable notes, engineering journals, decision logs,
-  repository memory, and institutional knowledge stores. Preserve only knowledge
-  that materially improves future engineering judgment. Treat memory as
-  historical evidence rather than present truth. Prefer code, tests,
-  configuration, documentation, and decision records over duplicate memory.
-  Verify volatile or consequential memories before acting, resolve conflicts
-  immediately, scope every rule correctly, and actively remove knowledge that
-  has become stale, redundant, superseded, or enforceable elsewhere.
+  Preserve decisions, constraints, lessons, and institutional knowledge in the
+  strongest appropriate artifact while preventing stale or unnecessary memory
+  growth.
 ---
+
 
 # Engineering Memory
 
@@ -501,3 +495,45 @@ If any answer is missing for a material entry, do not treat the memory as ready.
 The goal is not a memory store that knows everything.
 
 The goal is a memory store that helps future engineers think better.
+
+## Integrated discipline: Learning And Knowledge Capture
+
+Learning is a change to the system, not a summary of what happened.
+
+## Ask
+
+What surprised us? Which assumption failed? What made detection or recovery slow? What would prevent recurrence or reduce decision cost next time?
+
+## Placement hierarchy
+
+Prefer: invariant in code or schema → test or automation → documentation/runbook → ADR → scoped memory → nothing. Do not create artifacts without future value.
+
+## Distill
+
+Capture the reusable principle, trigger, rationale, and evidence. Avoid timelines unless needed for incident analysis. Assign ownership and removal/revalidation conditions.
+
+## Gate
+
+A learning action must reduce recurrence, detection time, recovery time, uncertainty, or cognitive load. If it changes nothing, it is documentation theatre.
+
+## Capability handoff
+
+Do not remain in this capability after its responsibility is complete. Use the
+smallest next capability whose activation conditions are satisfied. Preserve the
+evidence, assumptions, risks, and unresolved uncertainty produced here.
+
+### Usually entered from
+
+- meaningful engineering work has produced reusable knowledge
+- persistent memory must be read, written, reconciled, promoted, or deleted
+
+### Usually hands off to
+
+- **Engineering Communication** when the knowledge belongs in documentation.
+- **Engineering Quality** when the lesson should become code, tests, or automation.
+- **Engineering Decision** when new evidence contradicts a stored decision.
+
+At every handoff, identify the next capability, the artifact or evidence being
+passed, the unresolved question or required outcome, and any stop condition that
+must remain visible. Return to an earlier capability whenever new evidence
+invalidates the current path.

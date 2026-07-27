@@ -1,7 +1,6 @@
 # Changelog
 
-## 1.0.0 — 2026-07-27
+## 3.0.0
 
-- Initial release.
-- Unified decision quality and adversarial verification lifecycle.
-- Added focused references, installation helper, package validator, and eval fixtures.
+- Consolidated overlapping Engineering OS capabilities into **Engineering Quality**.
+- Added explicit incoming and outgoing capability routing.

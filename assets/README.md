@@ -1,11 +1,39 @@
-# Engineering OS README Assets
+# Engineering OS
 
-- `hero-banner.png` — primary README hero
-- `problem-comparison.png` — traditional AI vs Engineering OS
-- `engineering-lifecycle-and-system.png` — lifecycle, kernel, capabilities, and workflow
-- `architecture-decision-benchmark.png` — architecture, decision engine, and benchmark preview
-- `brand-system-dark.png` — dark visual identity reference
-- `brand-system-light.png` — light visual identity reference
-- `readme-preview.png` — full README product mockup
+![Overview](assets/engineering-os-overview.png)
 
-These are high-resolution raster source assets suitable for GitHub README use. Keep descriptive alt text when embedding them.
+## Engineering skills for AI coding agents
+
+Engineering OS is a curated collection of reusable engineering skills that help AI coding agents investigate systems, make better decisions, plan work, implement changes safely, debug problems, review work, communicate clearly, and capture engineering knowledge.
+
+### Skills
+- Engineering Investigation
+- Engineering Decision
+- Engineering Planning
+- Engineering Quality
+- Engineering Debugging
+- Architecture & Reliability
+- Incident Response
+- Engineering Review
+- Engineering Communication
+- Engineering Memory
+
+### Typical workflow
+Investigate → Decide → Plan → Build → Review → Communicate → Capture Knowledge
+
+### Installation
+```bash
+git clone https://github.com/sageil/engineering-os.git
+cd engineering-os
+./scripts/install.sh
+```
+
+The installer installs the skills into `~/.agents/skills`, optionally installs `AGENTS.md`, backs up existing files, and restores them during uninstall.
+
+### Engineering principles
+- Evidence over assumptions
+- Reality over intuition
+- Simplicity carries the burden of proof
+- Prefer reversible changes
+- Verify before claiming success
+- Capture reusable engineering knowledge
