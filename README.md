@@ -190,8 +190,6 @@ The included visual assets establish a shared language for the lifecycle, capabi
   <img src="assets/brand-system-dark.png" alt="Engineering OS visual identity and design system" width="100%">
 </p>
 
-A light design-system reference is also included at [`assets/brand-system-light.png`](assets/brand-system-light.png).
-
 
 ## Contributing
 
