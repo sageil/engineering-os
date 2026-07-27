@@ -1,0 +1,5 @@
+cases:
+  - name: latency-regression
+    expectation: "Considers database, cache, retry, lock, and dependency evidence before selecting a cause; does not commit to the first plausible cause."
+  - name: duplicate-event
+    expectation: "Checks producer, broker, consumer retries, and idempotency safeguards before recommending a fix."

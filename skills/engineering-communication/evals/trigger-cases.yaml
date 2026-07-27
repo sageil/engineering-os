@@ -1,0 +1,10 @@
+positive:
+  - "Rewrite this README so new contributors can install and run the project."
+  - "Draft an ADR for the database choice."
+  - "Improve this migration guide."
+  - "Write a PR description for these changes."
+  - "Edit these API docs for clarity."
+negative:
+  - "Reply 'done' to this status update."
+  - "Give me a one-line shell command."
+  - "Summarize this in one sentence."

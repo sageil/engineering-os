@@ -1,0 +1,10 @@
+cases:
+  - name: mechanical-rename
+    setup: "Pure symbol rename, compiler-checked, no public API change, tests pass."
+    expected_verdict: NO ACTIONABLE FINDINGS
+  - name: guarded-null-path
+    setup: "Apparent null dereference is impossible due to exhaustive type narrowing."
+    expected_verdict: NO ACTIONABLE FINDINGS
+  - name: established-repository-pattern
+    setup: "Change follows nearby implementation and preserves existing tested behaviour."
+    expected_verdict: NO ACTIONABLE FINDINGS

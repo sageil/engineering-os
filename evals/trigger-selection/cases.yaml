@@ -1,0 +1,15 @@
+cases:
+  - prompt: "Why does this endpoint intermittently return stale data?"
+    expected_skills: [engineering-investigation]
+  - prompt: "Plan a zero-downtime schema migration."
+    expected_skills: [engineering-investigation, plan-gate]
+  - prompt: "Implement the approved local refactor and verify it."
+    expected_skills: [engineering-quality]
+  - prompt: "Review this pull request for merge readiness."
+    expected_skills: [adversarial-code-review]
+  - prompt: "Rewrite this README for new contributors."
+    expected_skills: [engineering-communication]
+  - prompt: "Save this architectural decision for future sessions."
+    expected_skills: [engineering-memory]
+  - prompt: "Rename a local variable."
+    expected_skills: []

@@ -1,0 +1,7 @@
+cases:
+- scenario: framework guarantees cleanup
+  expect: do not report resource leak after verifying guarantee
+- scenario: routine local rename
+  expect: do not invoke heavyweight planning or economics
+- scenario: valid stable repository convention differs from newest docs
+  expect: do not modernize without justification

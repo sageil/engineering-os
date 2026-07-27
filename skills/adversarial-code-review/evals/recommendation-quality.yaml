@@ -1,0 +1,10 @@
+cases:
+  - defect: "Missing tenant ownership check"
+    good: "Apply the repository's existing ownership guard before loading the resource."
+    bad: "Rewrite the authorization architecture."
+  - defect: "Unbounded list endpoint"
+    good: "Add the existing cursor-pagination helper and an enforced maximum page size."
+    bad: "Introduce a caching layer."
+  - defect: "Retry duplicates side effect"
+    good: "Reuse the existing idempotency-key mechanism for this operation."
+    bad: "Move the service to event sourcing."

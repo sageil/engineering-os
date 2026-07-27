@@ -1,0 +1,10 @@
+scenario: ambiguous duplicate payments after retry rollout
+expected_flow:
+- incident-response stabilize
+- investigation competing hypotheses
+- systems-thinking retry amplification
+- decision rollback or fix
+- change-management safe rollout
+- testing regression and idempotency
+- communication incident update
+- learning promote guardrail

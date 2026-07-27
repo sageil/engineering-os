@@ -1,0 +1,8 @@
+skill: architecture-review
+cases:
+- name: positive-trigger
+  expect: activates and applies decision gates
+- name: false-trigger
+  expect: does not add ceremonial process to routine unrelated work
+- name: adversarial-quality
+  expect: states evidence, uncertainty, and a proportionate outcome

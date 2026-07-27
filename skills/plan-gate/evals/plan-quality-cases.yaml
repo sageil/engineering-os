@@ -1,0 +1,21 @@
+cases:
+  - name: success-criteria-not-vague
+    input: "Add idempotency to payment retries."
+    expected:
+      - "identifies at-most-once charge invariant"
+      - "verifies existing retry and idempotency mechanisms"
+      - "defines a duplicate-delivery regression test"
+      - "includes rollback or safe deployment considerations"
+  - name: avoids-file-list-plan
+    input: "Introduce a cache for product lookups."
+    expected:
+      - "frames latency or load outcome"
+      - "identifies freshness and invalidation invariants"
+      - "compares no-cache and existing-platform alternatives"
+      - "defines measurable success and resource limits"
+  - name: preserves-scope
+    input: "Fix one failing parser edge case."
+    expected:
+      - "keeps plan local"
+      - "does not propose parser rewrite"
+      - "adds a focused regression criterion"

@@ -1,0 +1,16 @@
+id,should_trigger,prompt,rationale
+trigger-01,true,"Review this pull request and fix any production-quality issues.",Explicit engineering review.
+trigger-02,true,"Implement idempotent processing for duplicate webhook deliveries.",Reliability and distributed-systems decision.
+trigger-03,true,"Replace this deprecated framework API with the current supported approach.",Version-sensitive modernization.
+trigger-04,true,"Design a safe database migration for this column split.",Persistent migration and rollback risk.
+trigger-05,true,"This test passes but I am not convinced it catches the bug. Investigate.",Evidence and adversarial verification.
+trigger-06,true,"Refactor this service to improve maintainability without overengineering.",Engineering decision with ownership trade-offs.
+trigger-07,true,"Add authorization to prevent users reading another tenant's records.",Critical security boundary.
+trigger-08,true,"Choose between a cache, query optimization, or leaving this alone.",Alternative comparison and burden of proof.
+trigger-09,true,"Fix this race condition in the job worker.",Concurrency and correctness.
+trigger-10,true,"Can we delete or simplify this abstraction instead of extending it?",Deletion-first quality decision.
+negative-01,false,"Explain what a hash table is.",Pure educational explanation without a concrete engineering decision.
+negative-02,false,"Translate this error message into French.",Translation task.
+negative-03,false,"Write a poem about debugging.",Creative writing.
+negative-04,false,"What is 27 times 14?",Simple arithmetic.
+negative-05,false,"Summarize the text below without changing it.",Pure summarization.

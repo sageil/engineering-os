@@ -1,0 +1,5 @@
+scenario: "A migration reveals a non-obvious rolling-deployment constraint."
+expectations:
+  - "Engineering communication writes a human-readable migration guide with action, verification, and rollback."
+  - "Engineering memory evaluates whether the constraint belongs in a deployment guard, runbook, ADR, or memory."
+  - "If persisted, memory includes rationale, scope, trigger, provenance, and revalidation condition."

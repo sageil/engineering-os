@@ -1,0 +1,5 @@
+scenario: "Memory says the service uses framework v3; the repository lockfile shows v5."
+pass:
+  - "Investigation and memory treat the lockfile as current evidence."
+  - "The stale memory is corrected or removed."
+  - "Quality guidance uses v5-compatible official documentation."

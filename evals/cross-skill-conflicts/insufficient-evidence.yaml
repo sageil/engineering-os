@@ -1,0 +1,5 @@
+scenario: "Mixed-version deployment behavior determines migration safety, but deployment configuration is unavailable."
+pass:
+  - "Investigation does not invent the deployment model."
+  - "Plan gate identifies the missing evidence as a stop condition."
+  - "Communication preserves the verification limitation rather than smoothing it away."

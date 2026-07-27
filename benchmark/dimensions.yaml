@@ -1,0 +1,14 @@
+dimensions:
+- truth_discovery
+- assumption_discipline
+- decision_quality
+- economic_judgment
+- planning
+- implementation_quality
+- verification
+- systems_thinking
+- incident_safety
+- communication
+- false_positive_rate
+- learning_transfer
+scoring: 0-4 anchored rubric per dimension; report uncertainty and inter-rater agreement

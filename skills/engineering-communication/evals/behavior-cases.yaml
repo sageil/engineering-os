@@ -1,0 +1,21 @@
+cases:
+  - name: readme_leads_with_action
+    input: "Draft a README for a CLI tool."
+    expect:
+      - "states what the tool does near the top"
+      - "includes a quick start before architecture"
+      - "shows an observable success result"
+      - "avoids generic marketing copy"
+  - name: human_voice
+    input: "Rewrite technical documentation that uses corporate filler and repeated transitions."
+    expect:
+      - "uses direct human language"
+      - "removes empty transitions"
+      - "varies sentence and paragraph rhythm"
+      - "does not announce document structure"
+  - name: uncertainty
+    input: "Document version-sensitive behavior when the exact supported version is unknown."
+    expect:
+      - "does not invent a version"
+      - "states the uncertainty precisely"
+      - "does not overstate confidence"

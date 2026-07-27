@@ -1,0 +1,19 @@
+cases:
+- task: one-line typo
+  skills:
+  - engineering-communication
+  avoid:
+  - plan-gate
+  - architecture-review
+- task: production outage
+  skills:
+  - incident-response
+  - engineering-investigation
+  avoid:
+  - routine refactor first
+- task: schema migration proposal
+  skills:
+  - engineering-decision
+  - architecture-review
+  - change-management
+  - engineering-testing

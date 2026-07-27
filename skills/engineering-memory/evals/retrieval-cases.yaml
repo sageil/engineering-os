@@ -1,0 +1,13 @@
+cases:
+  - name: verify-fast-changing
+    memory: "Feature flag X is enabled."
+    action: "Delete data assuming the flag is enabled."
+    expected: "Verify live state first."
+  - name: reuse-stable-preference
+    memory: "Team prefers recommendation-first architecture reviews."
+    action: "Draft architecture review."
+    expected: "Apply directly unless contradicted by current instruction."
+  - name: resolve-conflict
+    memory: "Deploy API before worker."
+    live_state: "Versioned envelope now supports either order."
+    expected: "Live evidence wins; supersede or delete stale memory."

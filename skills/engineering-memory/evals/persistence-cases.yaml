@@ -1,0 +1,13 @@
+cases:
+  - name: reject-derivable-fact
+    input: "Remember that the config file is config.yaml."
+    expected: "Do not persist; repository can answer cheaply."
+  - name: preserve-rationale
+    input: "Remember we deploy API before worker because old API cannot parse new events."
+    expected: "Persist as scoped deployment constraint with rationale and revalidation trigger."
+  - name: promote-enforceable-rule
+    input: "Remember to validate tenant ownership before invoice access."
+    expected: "Prefer authorization enforcement and tests; memory may keep rationale temporarily."
+  - name: reject-hypothesis
+    input: "Maybe the queue duplicates messages sometimes. Remember that."
+    expected: "Keep as investigation note, not durable memory."

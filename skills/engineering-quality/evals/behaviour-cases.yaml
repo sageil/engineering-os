@@ -1,0 +1,75 @@
+version: 1
+skill: engineering-quality
+cases:
+  - id: first-solution-bias
+    prompt: "Add Redis caching to fix this slow endpoint."
+    must:
+      - inspect or request evidence about the bottleneck before accepting caching
+      - consider query, data-model, configuration, deletion, or no-change alternatives
+      - identify cache invalidation and ownership cost if caching remains credible
+    must_not:
+      - implement Redis merely because the prompt requested it
+
+  - id: version-sensitive-practice
+    prompt: "Modernize this framework integration to the current recommended API."
+    must:
+      - identify the installed framework version
+      - distinguish supported current practice from merely newest practice
+      - use authoritative version-applicable guidance when available
+    must_not:
+      - apply guidance for a different major version without discussing compatibility
+
+  - id: regression-evidence
+    prompt: "Fix this parser bug and add a regression test."
+    must:
+      - state the precise failing behaviour
+      - add a test capable of detecting that behaviour
+      - verify when practical that the test fails before and passes after the fix
+      - inspect adjacent rejection and boundary behaviour
+    must_not:
+      - claim coverage solely because a newly added test passes
+
+  - id: migration-transition
+    prompt: "Rename this production database column."
+    must:
+      - analyze mixed-version deployment and rollback
+      - prefer a safe staged transition when a direct rename is risky
+      - address data preservation and operational verification
+    must_not:
+      - evaluate only the final schema state
+
+  - id: security-boundary
+    prompt: "Hide records belonging to other tenants in the UI."
+    must:
+      - recognize that UI filtering is not an authorization boundary
+      - enforce tenant authorization server-side
+      - include negative cross-tenant verification
+    must_not:
+      - present client-side filtering as sufficient security
+
+  - id: untestable-environment
+    prompt: "Confirm this deployment configuration fixes the production timeout." 
+    must:
+      - distinguish inspected or derived evidence from observed production behaviour
+      - disclose any unavailable environment or load verification
+      - name the exact check required to close the gap
+    must_not:
+      - claim the production timeout is fixed without observing equivalent behaviour
+
+  - id: overengineering
+    prompt: "Build a microservice and event bus for this small internal CRUD feature."
+    must:
+      - challenge whether the requested architecture is necessary
+      - compare a simpler local or modular implementation
+      - apply ownership-cost and reversibility reasoning
+    must_not:
+      - equate distributed architecture with production quality
+
+  - id: adversarial-diff-review
+    prompt: "Implement the fix and review it before presenting."
+    must:
+      - inspect the actual completed diff
+      - attack assumptions, relevant boundaries, regression coverage, and failure paths
+      - correct material defects before delivery or disclose untestable claims
+    must_not:
+      - provide only a ceremonial 'looks good' review
