@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="620" viewBox="0 0 1600 620" role="img" aria-labelledby="title description" font-family="Helvetica">
+  <title id="title">Engineering OS lifecycle</title>
+  <desc id="description">Seven connected stages: Investigate, Decide, Plan, Build, Verify, Communicate, and Capture.</desc>
+  <defs>
+    <radialGradient id="background" cx="50%" cy="43%" r="72%">
+      <stop offset="0" stop-color="#0b1930"/>
+      <stop offset="0.6" stop-color="#071326"/>
+      <stop offset="1" stop-color="#030b17"/>
+    </radialGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M1 1 11 6 1 11Z" fill="#7695ff"/>
+    </marker>
+    <style>
+      .contour { fill: none; stroke: #258fd1; stroke-width: 1.4; opacity: 0.22; }
+      .orbit { fill: #08152a; stroke-width: 2.2; }
+      .halo { fill: none; stroke-width: 1.2; opacity: 0.35; }
+      .icon { fill: none; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+      .label { fill: #f3f7ff; font-size: 23px; font-weight: 600; text-anchor: middle; }
+      .number { fill: #7590b6; font-size: 13px; font-weight: 600; letter-spacing: 0.16em; text-anchor: middle; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="620" rx="28" fill="url(#background)"/>
+
+  <g aria-hidden="true">
+    <path class="contour" d="M0 66C75 20 145 31 225 0"/>
+    <path class="contour" d="M0 96C78 49 152 63 246 5"/>
+    <path class="contour" d="M0 128C94 72 173 91 271 21"/>
+    <path class="contour" d="M0 163C108 99 198 123 300 43"/>
+    <path class="contour" d="M1600 50C1528 17 1458 37 1374 0"/>
+    <path class="contour" d="M1600 80C1517 43 1446 67 1352 11"/>
+    <path class="contour" d="M1600 113C1502 68 1424 99 1326 31"/>
+    <path class="contour" d="M0 561C91 609 168 584 259 620"/>
+    <path class="contour" d="M0 529C102 583 184 549 284 616"/>
+    <path class="contour" d="M1600 552C1516 603 1441 578 1350 620"/>
+    <path class="contour" d="M1600 519C1501 579 1420 548 1321 613"/>
+  </g>
+
+  <g fill="none" stroke-width="3" opacity="0.82" marker-end="url(#arrow)">
+    <path d="M222 266H278" stroke="#38c4ee"/>
+    <path d="M442 266H498" stroke="#5ea3ff"/>
+    <path d="M662 266H718" stroke="#6e8eff"/>
+    <path d="M882 266H938" stroke="#976eff"/>
+    <path d="M1102 266H1158" stroke="#bb5df5"/>
+    <path d="M1322 266H1378" stroke="#e45aa0"/>
+  </g>
+
+  <g transform="translate(140 266)" filter="url(#glow)">
+    <circle class="halo" r="79" stroke="#20e0d0"/>
+    <circle class="orbit" r="68" stroke="#20e0d0"/>
+    <circle class="icon" cx="-9" cy="-8" r="24" stroke="#20e0d0"/>
+    <path class="icon" d="M8 10 31 33" stroke="#20e0d0"/>
+  </g>
+  <text class="number" x="140" y="382">01</text>
+  <text class="label" x="140" y="420">Investigate</text>
+
+  <g transform="translate(360 266)" filter="url(#glow)">
+    <circle class="halo" r="79" stroke="#38c4ee"/>
+    <circle class="orbit" r="68" stroke="#38c4ee"/>
+    <path class="icon" d="M0-34V31M-32-22H32M-24-22-43 18H-5ZM24-22 5 18H43ZM-15 31H15" stroke="#38c4ee"/>
+  </g>
+  <text class="number" x="360" y="382">02</text>
+  <text class="label" x="360" y="420">Decide</text>
+
+  <g transform="translate(580 266)" filter="url(#glow)">
+    <circle class="halo" r="79" stroke="#5ea3ff"/>
+    <circle class="orbit" r="68" stroke="#5ea3ff"/>
+    <rect class="icon" x="-31" y="-36" width="62" height="72" rx="8" stroke="#5ea3ff"/>
+    <path class="icon" d="M-18-17-12-11-2-22M7-17H20M-18 2-12 8-2-3M7 2H20M-18 21-12 27-2 16M7 21H20" stroke="#5ea3ff"/>
+  </g>
+  <text class="number" x="580" y="382">03</text>
+  <text class="label" x="580" y="420">Plan</text>
+
+  <g transform="translate(800 266)" filter="url(#glow)">
+    <circle class="halo" r="79" stroke="#827dff"/>
+    <circle class="orbit" r="68" stroke="#827dff"/>
+    <path class="icon" d="M-13-27-38 0-13 27M13-27 38 0 13 27" stroke="#827dff"/>
+  </g>
+  <text class="number" x="800" y="382">04</text>
+  <text class="label" x="800" y="420">Build</text>
+
+  <g transform="translate(1020 266)" filter="url(#glow)">
+    <circle class="halo" r="79" stroke="#a765ff"/>
+    <circle class="orbit" r="68" stroke="#a765ff"/>
+    <path class="icon" d="M0-37C14-26 27-23 34-22V2C34 24 18 38 0 46-18 38-34 24-34 2V-22C-27-23-14-26 0-37Z" stroke="#a765ff"/>
+    <path class="icon" d="M-16 3-4 15 19-10" stroke="#a765ff"/>
+  </g>
+  <text class="number" x="1020" y="382">05</text>
+  <text class="label" x="1020" y="420">Verify</text>
+
+  <g transform="translate(1240 266)" filter="url(#glow)">
+    <circle class="halo" r="79" stroke="#ce58e8"/>
+    <circle class="orbit" r="68" stroke="#ce58e8"/>
+    <path class="icon" d="M-39-26H39V22H5L-13 38V22H-39Z" stroke="#ce58e8"/>
+    <circle cx="-18" cy="-2" r="4" fill="#ce58e8"/>
+    <circle cx="0" cy="-2" r="4" fill="#ce58e8"/>
+    <circle cx="18" cy="-2" r="4" fill="#ce58e8"/>
+  </g>
+  <text class="number" x="1240" y="382">06</text>
+  <text class="label" x="1240" y="420">Communicate</text>
+
+  <g transform="translate(1460 266)" filter="url(#glow)">
+    <circle class="halo" r="79" stroke="#ff6b4a"/>
+    <circle class="orbit" r="68" stroke="#ff6b4a"/>
+    <path class="icon" d="M0-30C-13-39-27-40-41-34V31C-27 25-13 27 0 37ZM0-30C13-39 27-40 41-34V31C27 25 13 27 0 37Z" stroke="#ff6b4a"/>
+  </g>
+  <text class="number" x="1460" y="382">07</text>
+  <text class="label" x="1460" y="420">Capture</text>
+
+  <text x="800" y="504" fill="#86a0c7" font-size="17" text-anchor="middle">
+    Use only the stages the work actually requires.
+  </text>
+</svg>

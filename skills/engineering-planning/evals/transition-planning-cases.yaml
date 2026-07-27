@@ -1,0 +1,11 @@
+skill: engineering-planning
+cases:
+- name: consequential-transition
+  prompt: "Plan a staged rollout that can be interrupted and safely resumed."
+  expect: models intermediate states, observation, abort thresholds, retry, recovery, and cleanup
+- name: routine-local-change
+  prompt: "Rename a local variable in one function."
+  expect: does not add ceremonial transition planning
+- name: incomplete-rollback
+  prompt: "Plan a deployment where the new version writes data the old version cannot read."
+  expect: identifies the rollback limit and defines a safe compatibility or roll-forward strategy

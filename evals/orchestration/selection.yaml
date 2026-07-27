@@ -3,7 +3,7 @@ cases:
   skills:
   - engineering-communication
   avoid:
-  - plan-gate
+  - engineering-planning
   - architecture-review
 - task: production outage
   skills:
@@ -15,5 +15,5 @@ cases:
   skills:
   - engineering-decision
   - architecture-review
-  - change-management
+  - engineering-planning
   - engineering-testing

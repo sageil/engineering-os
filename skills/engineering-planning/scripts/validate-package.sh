@@ -14,7 +14,7 @@ for file in "${required[@]}"; do
   [[ -f "$file" ]] || { echo "Missing required file: $file" >&2; exit 1; }
 done
 
-grep -q '^name: plan-gate$' "$ROOT/SKILL.md" || {
+grep -q '^name: engineering-planning$' "$ROOT/SKILL.md" || {
   echo "SKILL.md is missing the expected name" >&2
   exit 1
 }
@@ -34,4 +34,4 @@ find "$ROOT/evals" -type f -name '*.yaml' | grep -q . || {
   exit 1
 }
 
-echo "plan-gate package validation passed"
+echo "engineering-planning package validation passed"

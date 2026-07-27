@@ -4,7 +4,7 @@ expected_flow:
 - investigation competing hypotheses
 - systems-thinking retry amplification
 - decision rollback or fix
-- change-management safe rollout
+- engineering-planning safe rollout
 - testing regression and idempotency
 - communication incident update
 - learning promote guardrail

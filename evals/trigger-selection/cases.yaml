@@ -2,7 +2,7 @@ cases:
   - prompt: "Why does this endpoint intermittently return stale data?"
     expected_skills: [engineering-investigation]
   - prompt: "Plan a zero-downtime schema migration."
-    expected_skills: [engineering-investigation, plan-gate]
+    expected_skills: [engineering-investigation, engineering-planning]
   - prompt: "Implement the approved local refactor and verify it."
     expected_skills: [engineering-quality]
   - prompt: "Review this pull request for merge readiness."

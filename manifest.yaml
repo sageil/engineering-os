@@ -11,7 +11,4 @@ skills:
   - engineering-review
   - engineering-communication
   - engineering-memory
-profiles:
-  lightweight: 5
-  balanced: 10
-  strict: 10
+global_policy: global-agents.md
