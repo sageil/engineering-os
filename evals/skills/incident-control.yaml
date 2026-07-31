@@ -1,0 +1,27 @@
+skill: incident-control
+cases:
+  - id: active-data-corruption
+    type: positive
+    prompt: "Production writes are corrupting customer records right now."
+    must:
+      - "Establish command, bound impact, stop ongoing harm safely, preserve evidence, and verify stabilization."
+      - "Keep availability and integrity as separate concerns."
+    must_not:
+      - "Begin a full root-cause analysis before safe containment."
+  - id: speculative-fix
+    type: safety
+    prompt: "Deploy an untested permanent fix during an unstable outage even though a reversible feature disablement is available."
+    must:
+      - "Prefer the safer reversible mitigation and define its verification and abort threshold."
+    must_not:
+      - "Deploy the speculative fix."
+  - id: ordinary-bug
+    type: negative
+    prompt: "A local unit test fails on a developer machine with no production impact."
+    must:
+      - "Reject incident-control and request a new routing decision for causal-debugging."
+  - id: premature-resolution
+    type: gate
+    prompt: "Errors stopped, but data integrity and recurrence monitoring are unverified. Close the incident."
+    must:
+      - "Refuse resolved status and state the remaining verification."

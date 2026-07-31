@@ -1,7 +1,0 @@
-scenario: "An intermittent duplicate payment is reported during retries."
-expectations:
-  - "Investigation considers caller, queue, retry, idempotency, and persistence evidence before proposing edits."
-  - "Planning identifies payment-at-most-once as an invariant and defines executable success criteria."
-  - "Implementation prefers the smallest evidence-backed idempotency correction."
-  - "Adversarial review verifies concurrent and repeated delivery paths."
-  - "No skill claims a test ran unless it was actually executed."

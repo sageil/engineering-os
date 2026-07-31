@@ -1,0 +1,36 @@
+suite: handoff-integrity
+invariants:
+  maximum_active_skills: 1
+  requires_new_routing_decision: true
+cases:
+  - id: research-to-requested-architecture
+    input_verdict: "Research verdict: complete"
+    routing_request: architecture-evolution
+    require_user_intent: structural-option-analysis
+    preserve: [evidence, invariants, scope, unknowns, option-set]
+    reject_if: [material-unverified-scale, missing-current-system-model]
+  - id: debugging-to-options
+    input_verdict: "Debugging verdict: cause-established"
+    routing_request: research-before-solution
+    preserve: [reproduction, causal-chain, rejected-causes, correction-constraints]
+    reject_if: [unexplained-observation]
+  - id: options-to-requested-planning
+    input_verdict: "Research verdict: complete"
+    routing_request: execution-planning
+    require: [explicit-plan-request, selected-option, material-transition-hazard, authority, target-state, invariants]
+    reject_if: [option-not-selected, material-new-assumption]
+  - id: planning-to-ordinary-execution
+    input_verdict: "Planning verdict: executable"
+    routing_result: none
+    preserve: [steps, checkpoints, verification, abort, recovery, cleanup]
+    reject_if: [authority-missing, unsafe-intermediate-state]
+  - id: incident-to-investigation
+    input_verdict: "Incident state: stabilized"
+    routing_request: causal-debugging
+    preserve: [timeline, observations, mitigations, integrity-status, recurrence-signals]
+    reject_if: [active-harm-uncontrolled]
+  - id: invalid-incomplete-handoff
+    input_verdict: "Research verdict: insufficient-evidence"
+    routing_request: execution-planning
+    expected: reject
+    must_not: [invent-option, create-plan, activate-next-skill]

@@ -1,9 +1,0 @@
-cases:
-  - scenario: "Minor missing diagnostic context on a non-critical internal task."
-    expected: Low
-  - scenario: "Keyboard users cannot activate the primary checkout action."
-    expected: High
-  - scenario: "Rare malformed optional field causes a limited request failure with no data loss."
-    expected: Medium
-  - scenario: "Authorization bypass exposes highly sensitive data across tenants."
-    expected: Critical

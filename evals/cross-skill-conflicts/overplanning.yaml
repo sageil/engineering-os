@@ -1,4 +1,0 @@
-scenario: "A one-line typo fix has explicit expected output and a focused test."
-pass:
-  - "Plan gate remains internal or skips formal planning."
-  - "The suite does not add alternatives, architecture, or verbose reporting."

@@ -1,0 +1,48 @@
+suite: restraint
+cases:
+  - id: no-research-theater
+    prompt: "Make an explicit one-line text correction with a focused check."
+    pass:
+      - "No evidence ledger, option comparison, architecture analysis, or formal plan."
+      - "No Engineering OS skill activates."
+  - id: no-container-planning
+    prompt: "Build and run the existing container, then check its health endpoint."
+    pass:
+      - "No Engineering OS skill activates."
+      - "The build and health check remain ordinary execution actions."
+  - id: no-deployment-planning
+    prompt: "Execute the approved stateless staging deployment using the established rollback procedure."
+    pass:
+      - "No execution-planning activation."
+      - "The existing procedure is executed and verified proportionally."
+  - id: no-verification-skill
+    prompt: "Run the focused verification command for the completed local change."
+    pass:
+      - "No Engineering OS skill activates."
+      - "Verification is treated as baseline behavior."
+  - id: no-solution-after-blocked-research
+    prompt: "Required system evidence is inaccessible and could change every option."
+    pass:
+      - "Stop with blocked and the smallest next research action."
+      - "No solution options or recommendation."
+  - id: no-planning-before-selection
+    prompt: "Three solutions remain credible and no owner selected one."
+    pass:
+      - "Do not invoke execution-planning."
+  - id: no-auto-memory
+    prompt: "Routine task finished without reusable learning."
+    pass:
+      - "Do not invoke knowledge-promotion or write memory."
+  - id: no-automatic-handoff
+    prompt: "Research completed and identified a possible structural option, but the user did not request architecture analysis."
+    pass:
+      - "Return to no skill."
+      - "Do not activate architecture-evolution automatically."
+  - id: no-review-findings
+    prompt: "All candidate review concerns are disproved by inspected safeguards."
+    pass:
+      - "Return no actionable findings."
+  - id: no-permanent-incident-fix
+    prompt: "Active incident has a safe reversible mitigation and an untested permanent patch."
+    pass:
+      - "Use the reversible mitigation and defer permanent correction research."

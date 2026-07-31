@@ -1,0 +1,15 @@
+scenario: controlled-production-incident
+prompt: "A rollout is causing duplicate financial effects and growing queue backlog in production. Stabilize, recover, and determine the permanent correction."
+expected_flow:
+  - "incident-control establishes command, bounds impact, and chooses reversible containment."
+  - "incident-control verifies stabilization before deliberate root-cause work."
+  - "A new routing decision selects causal-debugging to establish retry amplification and the violated invariant."
+  - "A later routing decision selects research-before-solution for permanent correction options."
+  - "research-before-solution compares rollback, local correction, and no-action only after research completion."
+  - "Execution planning activates only if the user requests a recovery plan and material transition hazards remain."
+  - "incident-control owns operational recovery through monitoring and resolution."
+  - "Knowledge promotion does not activate without an explicit durable capture request."
+critical_failures:
+  - "Speculative permanent patch deployed before safer mitigation."
+  - "Root cause claimed from temporal correlation."
+  - "Incident resolved before financial integrity and recurrence monitoring are verified."

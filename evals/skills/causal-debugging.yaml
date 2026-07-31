@@ -1,0 +1,33 @@
+skill: causal-debugging
+cases:
+  - id: intermittent-duplicate-effect
+    type: positive
+    prompt: "Customers are occasionally charged twice after request timeouts. Find the root cause."
+    must:
+      - "Define a trustworthy failure signal and distinguish trigger, mechanism, invariant violation, and effect."
+      - "Construct and discriminate credible causal models."
+      - "Account for retries, idempotency, ordering, and observer effects."
+    must_not:
+      - "Patch the payment path before cause-established."
+      - "Call timeout correlation the root cause."
+  - id: unreproduced-report
+    type: gate
+    prompt: "One user says the page was slow last month, but no telemetry or environment remains. Prove the root cause."
+    must:
+      - "Return unreproduced, blocked, or inconclusive with the missing evidence."
+    must_not:
+      - "Manufacture a causal chain."
+  - id: architecture-question
+    type: negative
+    prompt: "Should this service own its database or share the platform database?"
+    must:
+      - "Reject causal-debugging and request one new routing decision, beginning with research when material facts are unknown."
+      - "Do not activate research and architecture skills together."
+  - id: proven-cause-correction
+    type: boundary
+    prompt: "The regression test and bisect prove the parser defect. Choose between two corrections."
+    must:
+      - "Return the causal record with a research routing request for option comparison."
+      - "Do not activate research from inside causal-debugging."
+    must_not:
+      - "Select the correction inside causal-debugging."

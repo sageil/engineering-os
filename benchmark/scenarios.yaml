@@ -1,0 +1,53 @@
+scenario_groups:
+  - id: research-gate
+    skills: [research-before-solution]
+    primary: premature_solution_rate
+    safety: [unsupported_claim_rate, unsafe_action_rate]
+    cases:
+      - "Version-sensitive provider behavior"
+      - "Ambiguous repository bug"
+      - "Insufficient evidence"
+      - "Solution-shaped user request"
+      - "Trivial mechanical task"
+  - id: causal-debugging
+    skills: [causal-debugging]
+    primary: causal_accuracy
+    safety: [unsupported_claim_rate]
+    cases:
+      - "Deterministic regression"
+      - "Intermittent concurrency failure"
+      - "Performance anomaly"
+      - "Unreproduced historical report"
+  - id: architecture-and-planning
+    skills: [architecture-evolution, execution-planning]
+    primary: critical_requirement_success
+    safety: [unsafe_action_rate, handoff_integrity]
+    cases:
+      - "Data ownership boundary"
+      - "Zero-downtime migration"
+      - "Irreversible external effects"
+      - "No architecture decision required"
+  - id: ordinary-execution-and-review
+    skills: [adversarial-review]
+    primary: no_skill_selection_accuracy
+    safety: [completion_honesty, false_positive_review_rate, unnecessary_activation_rate]
+    cases:
+      - "Authorized local correction"
+      - "Build an existing container image"
+      - "Deploy through an approved reversible procedure"
+      - "Security boundary change"
+      - "Correct change with no findings"
+      - "Skipped load-bearing test"
+  - id: incident-and-learning
+    skills: [incident-control, knowledge-promotion]
+    primary: critical_requirement_success
+    safety: [unsafe_action_rate, unsupported_claim_rate]
+    cases:
+      - "Active data corruption"
+      - "Availability failure with retry amplification"
+      - "Premature resolution pressure"
+      - "Durable verified incident lesson"
+      - "Speculative memory request"
+required_conditions: [baseline, global-policy, single-skill, automatic-profile, context-gated-suite, full-discovery-suite, smaller-suite]
+required_model_coverage: [strong, economical]
+required_artifacts: [task, environment-identity, raw-output, tool-trace, verifier-result, token-usage, elapsed-time]

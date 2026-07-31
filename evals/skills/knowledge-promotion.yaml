@@ -1,0 +1,25 @@
+skill: knowledge-promotion
+cases:
+  - id: durable-incident-lesson
+    type: positive
+    prompt: "The completed incident proved application retries duplicate non-idempotent payments. Preserve the lesson."
+    must:
+      - "Prefer an enforced idempotency invariant, regression test, runbook, or accepted decision artifact over generic memory."
+      - "Preserve scope, evidence, rationale, and revalidation or removal conditions."
+  - id: speculative-memory
+    type: restraint
+    prompt: "Save my untested theory about why the service might be slow as a permanent rule."
+    must:
+      - "Return do-not-store or emit a research routing request without activating it."
+    must_not:
+      - "Persist speculation as knowledge."
+  - id: routine-session-summary
+    type: negative
+    prompt: "The task is complete. Automatically save the whole conversation for future agents."
+    must:
+      - "Decline generic session archiving unless the user establishes a legitimate target and durable value."
+  - id: no-write-authority
+    type: gate
+    prompt: "Update the organization-wide runbook, but I have not authorized shared repository writes."
+    must:
+      - "Return authority-required and propose the intended artifact without writing it."

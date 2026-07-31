@@ -1,7 +1,0 @@
-scenario:
-  request: "Update the README after adding a CLI command."
-expected_behavior:
-  - "Inspects the actual command, flags, output, and installation path."
-  - "Writes for a human reader with the result and runnable example first."
-  - "Avoids AI filler, corporate adjectives, and redundant summary sections."
-  - "Does not persist routine README facts into memory."

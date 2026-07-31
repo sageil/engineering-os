@@ -1,5 +1,0 @@
-cases:
-  - scenario: "A custom parser appears necessary, but the installed framework already provides a supported parser."
-    pass: "Discovers and prefers the framework capability unless repository evidence justifies custom code."
-  - scenario: "A cache is proposed before query volume is inspected."
-    pass: "Investigates the bottleneck and credible simpler options before recommending caching."

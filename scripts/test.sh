@@ -1,50 +1,139 @@
 #!/usr/bin/env bash
 set -euo pipefail
-ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
-"$ROOT/scripts/validate.sh"
-TMP=$(mktemp -d)
-trap 'rm -rf "$TMP"' EXIT
 
-# A standard install manages every packaged skill.
-HOME_DIR="$TMP/standard"
-mkdir -p "$HOME_DIR"
-HOME="$HOME_DIR" "$ROOT/scripts/install.sh" --agents keep >/dev/null
-actual=$(find "$HOME_DIR/.agents/skills" -mindepth 1 -maxdepth 1 -type d | wc -l | tr -d ' ')
-[[ "$actual" -eq 10 ]] || { echo "Standard install added $actual skills, expected 10" >&2; exit 1; }
-if grep -q '^PROFILE=' "$HOME_DIR/.agents/.engineering-os/install-state.env"; then
-  echo "Install state retained a profile" >&2
-  exit 1
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+ROOT_DIR=$(cd -- "$SCRIPT_DIR/.." && pwd)
+# shellcheck disable=SC1091
+source "$SCRIPT_DIR/common.sh"
+
+"$ROOT_DIR/scripts/validate.sh"
+
+TMP_ROOT=$(mktemp -d)
+trap 'rm -rf "$TMP_ROOT"' EXIT
+
+installed_count() {
+  local root=$1
+  find "$root/.agents/skills" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | wc -l | tr -d ' '
+}
+
+# Default installation exposes only automatic capabilities.
+TEST_HOME="$TMP_ROOT/automatic"
+mkdir -p "$TEST_HOME"
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --agents keep >/dev/null
+actual=$(installed_count "$TEST_HOME")
+[[ "$actual" -eq 3 ]] || fail "Automatic profile installed $actual skills instead of 3."
+for skill in research-before-solution causal-debugging incident-control; do
+  [[ -f "$TEST_HOME/.agents/skills/$skill/SKILL.md" ]] || fail "Automatic profile omitted: $skill"
+done
+[[ ! -e "$TEST_HOME/.agents/skills/execution-planning" ]] || fail "Automatic profile exposed request-only planning."
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/uninstall.sh" --agents keep >/dev/null
+remaining=$(installed_count "$TEST_HOME")
+[[ "$remaining" -eq 0 ]] || fail "Uninstall left managed skills behind."
+
+# Full installation exposes all packaged capabilities.
+TEST_HOME="$TMP_ROOT/full"
+mkdir -p "$TEST_HOME"
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --profile full --agents keep >/dev/null
+actual=$(installed_count "$TEST_HOME")
+[[ "$actual" -eq 7 ]] || fail "Full profile installed $actual skills instead of 7."
+
+# Update preserves a recorded profile when no new selection is supplied.
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/update.sh" --agents keep >/dev/null
+actual=$(installed_count "$TEST_HOME")
+[[ "$actual" -eq 7 ]] || fail "Update did not preserve the full profile."
+
+# Deliberately shrinking a profile reconciles request-only skills.
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/update.sh" --profile automatic --agents keep >/dev/null
+actual=$(installed_count "$TEST_HOME")
+[[ "$actual" -eq 3 ]] || fail "Profile change did not reconcile the full profile to automatic."
+[[ ! -e "$TEST_HOME/.agents/skills/execution-planning" ]] || fail "Profile change left request-only planning installed."
+
+# Custom installation exposes exactly the requested subset.
+TEST_HOME="$TMP_ROOT/custom"
+mkdir -p "$TEST_HOME"
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --skills research-before-solution,adversarial-review --agents keep >/dev/null
+actual=$(installed_count "$TEST_HOME")
+[[ "$actual" -eq 2 ]] || fail "Custom profile installed $actual skills instead of 2."
+[[ -f "$TEST_HOME/.agents/skills/adversarial-review/SKILL.md" ]] || fail "Custom profile omitted adversarial-review."
+[[ ! -e "$TEST_HOME/.agents/skills/causal-debugging" ]] || fail "Custom profile installed an unrequested skill."
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/update.sh" --agents keep >/dev/null
+actual=$(installed_count "$TEST_HOME")
+[[ "$actual" -eq 2 ]] || fail "Update did not preserve the custom skill selection."
+
+# None profile installs policy state without exposing skills.
+TEST_HOME="$TMP_ROOT/none"
+mkdir -p "$TEST_HOME"
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --profile none --agents replace >/dev/null
+actual=$(installed_count "$TEST_HOME")
+[[ "$actual" -eq 0 ]] || fail "None profile exposed $actual skills."
+[[ -f "$TEST_HOME/.agents/AGENTS.md" ]] || fail "None profile did not install the requested global policy."
+
+# Dry run creates no target state.
+TEST_HOME="$TMP_ROOT/dry-run"
+mkdir -p "$TEST_HOME"
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --profile full --agents replace --dry-run >/dev/null
+[[ ! -e "$TEST_HOME/.agents" ]] || fail "Dry run changed target files."
+
+# A pre-existing skill is restored after uninstall.
+TEST_HOME="$TMP_ROOT/restore-skill"
+mkdir -p "$TEST_HOME/.agents/skills/research-before-solution"
+printf 'original skill\n' > "$TEST_HOME/.agents/skills/research-before-solution/original.txt"
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --agents keep >/dev/null
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/uninstall.sh" --agents keep >/dev/null
+grep -q '^original skill$' "$TEST_HOME/.agents/skills/research-before-solution/original.txt" || fail "Pre-existing skill was not restored."
+
+# An obsolete unchanged managed skill is removed during update.
+TEST_HOME="$TMP_ROOT/obsolete"
+mkdir -p "$TEST_HOME"
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --agents keep >/dev/null
+obsolete="$TEST_HOME/.agents/skills/engineering-investigation"
+mkdir -p "$obsolete"
+printf '%s\n' '---' 'name: engineering-investigation' 'description: legacy' '---' > "$obsolete/SKILL.md"
+printf '%s\n' engineering-investigation >> "$TEST_HOME/.agents/.engineering-os/skills.list"
+printf '%s %s\n' engineering-investigation "$(dir_sha256 "$obsolete")" >> "$TEST_HOME/.agents/.engineering-os/skills.sha256"
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/update.sh" --agents keep >/dev/null
+[[ ! -e "$obsolete" ]] || fail "Update left an obsolete managed skill installed."
+
+# An obsolete managed replacement restores its pre-installation skill.
+TEST_HOME="$TMP_ROOT/obsolete-restore"
+state="$TEST_HOME/.agents/.engineering-os"
+target="$TEST_HOME/.agents/skills/engineering-investigation"
+backup="$state/backups/skills/engineering-investigation.original"
+mkdir -p "$target" "$backup"
+printf 'managed legacy skill\n' > "$target/managed.txt"
+printf 'original legacy skill\n' > "$backup/original.txt"
+printf '%s\n' engineering-investigation > "$state/skills.list"
+printf '%s %s\n' engineering-investigation "$(dir_sha256 "$target")" > "$state/skills.sha256"
+printf 'engineering-investigation=%s\n' "$backup" > "$state/original-skills.env"
+printf '%s\n' 'AGENTS_ACTION=keep' > "$state/install-state.env"
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/update.sh" --agents keep >/dev/null
+grep -q '^original legacy skill$' "$target/original.txt" || fail "Update did not restore the pre-installation obsolete skill."
+[[ ! -e "$target/managed.txt" ]] || fail "Update retained the obsolete managed replacement."
+
+# A modified managed skill blocks update before replacement.
+TEST_HOME="$TMP_ROOT/modified-skill"
+mkdir -p "$TEST_HOME"
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --agents keep >/dev/null
+printf '\nuser modification\n' >> "$TEST_HOME/.agents/skills/research-before-solution/SKILL.md"
+if HOME="$TEST_HOME" "$ROOT_DIR/scripts/update.sh" --agents keep >/dev/null 2>&1; then
+  fail "Update replaced a modified managed skill."
 fi
-HOME="$HOME_DIR" "$ROOT/scripts/uninstall.sh" --agents keep >/dev/null
-remaining=$(find "$HOME_DIR/.agents/skills" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | wc -l | tr -d ' ')
-[[ "$remaining" -eq 0 ]] || { echo "Uninstall left skills behind" >&2; exit 1; }
+grep -q 'user modification' "$TEST_HOME/.agents/skills/research-before-solution/SKILL.md" || fail "Modified skill content was lost."
 
-# Existing AGENTS.md and skill are restored.
-HOME_DIR="$TMP/restore"
-mkdir -p "$HOME_DIR/.agents/skills/engineering-quality"
-printf 'original policy\n' > "$HOME_DIR/.agents/AGENTS.md"
-printf 'original skill\n' > "$HOME_DIR/.agents/skills/engineering-quality/original.txt"
-HOME="$HOME_DIR" "$ROOT/scripts/install.sh" --agents replace >/dev/null
-HOME="$HOME_DIR" "$ROOT/scripts/uninstall.sh" --agents restore >/dev/null
-grep -q '^original policy$' "$HOME_DIR/.agents/AGENTS.md"
-grep -q '^original skill$' "$HOME_DIR/.agents/skills/engineering-quality/original.txt"
+# Original AGENTS.md is restored.
+TEST_HOME="$TMP_ROOT/restore-agents"
+mkdir -p "$TEST_HOME/.agents"
+printf 'original policy\n' > "$TEST_HOME/.agents/AGENTS.md"
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --agents replace >/dev/null
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/uninstall.sh" --agents restore >/dev/null
+grep -q '^original policy$' "$TEST_HOME/.agents/AGENTS.md" || fail "Original AGENTS.md was not restored."
 
-# Modified AGENTS.md is preserved by the safe default.
-HOME_DIR="$TMP/modified"
-mkdir -p "$HOME_DIR/.agents"
-printf 'before\n' > "$HOME_DIR/.agents/AGENTS.md"
-HOME="$HOME_DIR" "$ROOT/scripts/install.sh" --agents replace >/dev/null
-printf '\nuser edit\n' >> "$HOME_DIR/.agents/AGENTS.md"
-HOME="$HOME_DIR" "$ROOT/scripts/uninstall.sh" --agents keep >/dev/null
-grep -q 'user edit' "$HOME_DIR/.agents/AGENTS.md"
+# Modified installed AGENTS.md is preserved by default.
+TEST_HOME="$TMP_ROOT/modified-agents"
+mkdir -p "$TEST_HOME"
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --agents replace >/dev/null
+printf '\nuser policy edit\n' >> "$TEST_HOME/.agents/AGENTS.md"
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/uninstall.sh" --agents keep >/dev/null
+grep -q 'user policy edit' "$TEST_HOME/.agents/AGENTS.md" || fail "Modified AGENTS.md was not preserved."
 
-# Leaving a managed AGENTS.md unchanged during update preserves its ownership state.
-HOME_DIR="$TMP/update"
-mkdir -p "$HOME_DIR"
-HOME="$HOME_DIR" "$ROOT/scripts/install.sh" --agents replace >/dev/null
-HOME="$HOME_DIR" "$ROOT/scripts/update.sh" --agents keep >/dev/null
-grep -q '^AGENTS_ACTION=replace$' "$HOME_DIR/.agents/.engineering-os/install-state.env"
-HOME="$HOME_DIR" "$ROOT/scripts/uninstall.sh" --agents restore >/dev/null
-[[ ! -e "$HOME_DIR/.agents/AGENTS.md" ]] || { echo "Uninstall left a managed AGENTS.md behind" >&2; exit 1; }
-
-echo "Smoke tests passed for full installation, restoration, edit preservation, and update ownership."
+info "Installer profile and lifecycle smoke checks passed."

@@ -1,130 +1,197 @@
 # Engineering OS
 
-![A luminous engineering workflow built around the Engineering OS cube](assets/engineering-os-hero.png)
+![Abstract evidence-gated Engineering OS visual](assets/engineering-os-hero.png)
 
-Engineering OS gives AI coding agents ten reusable skills for investigating systems, making decisions, planning risky work, implementing carefully, reviewing results, communicating clearly, and preserving durable knowledge.
+Engineering OS is a provider-neutral, evidence-gated capability suite for AI engineering agents.
+It makes no skill the default, exposes specialized methods only when their distinctive responsibility is necessary, and requires claims to match available evidence.
 
-It is designed for coding agents that discover `SKILL.md` packages from `~/.agents/skills` and can optionally use a global `AGENTS.md`.
+Version 4.1.0 contains seven specialized skills.
+Routine implementation and proportional verification are baseline agent behavior, not an installable skill.
+The foundational capability remains `research-before-solution`, which blocks solution options until decision-relevant research is complete.
 
-## Quick start
+Engineering OS does not claim world-class status from prose alone.
+Every capability must earn its activation cost through paired behavioral evaluation across models and agent hosts.
 
-You need Git, Bash, and either `sha256sum` or `shasum`.
-
-```bash
-git clone https://github.com/sageil/engineering-os.git
-cd engineering-os
-./scripts/install.sh --agents keep
-```
-
-The command installs all ten skills and leaves your global `AGENTS.md` unchanged.
-
-Successful installation ends with:
+## Context-gated operating model
 
 ```text
-Installed Engineering OS 3.0.0 with 10 skills.
+default: no skill
+
+automatic, maximum one:
+  research-before-solution
+  causal-debugging
+  incident-control
+
+request-only, maximum one:
+  architecture-evolution
+  execution-planning
+  adversarial-review
+  knowledge-promotion
+
+ordinary execution:
+  inspect -> edit -> build -> test -> verify -> package -> run -> deploy
+  no skill activation unless the unresolved responsibility changes
 ```
 
-To install the optional global policy as well, run:
+![Engineering OS context-gated routing from no skill to one specialized capability](assets/engineering-os-routing.svg)
 
-```bash
-./scripts/install.sh --agents replace
-```
-
-The installer backs up an existing policy before replacing it.
-
-## Why Engineering OS
-
-AI agents can generate code quickly.
-Engineering work also requires understanding unfamiliar systems, testing explanations, comparing alternatives, controlling risk, reviewing changes, and retaining what was learned.
-
-Engineering OS turns those responsibilities into focused skills instead of one large prompt.
-Each skill is independently discoverable and is intended to load only when its activation conditions apply.
-
-The shared principles are straightforward:
-
-- Inspect reality before making consequential changes.
-- Treat explanations and solutions as hypotheses until evidence supports them.
-- Prefer the smallest justified solution.
-- Make risky work observable and reversible.
-- Attempt to falsify results before claiming success.
-- Preserve reusable knowledge in the strongest appropriate artifact.
-
-## How the skills work together
-
-![Seven connected stages from investigation through captured knowledge](assets/engineering-os-lifecycle.svg)
-
-`Investigate → Decide → Plan → Build → Verify → Communicate → Capture`
-
-Not every task needs every stage.
-A small local change may need only implementation and review, while an incident or migration may use most of the lifecycle.
-See [orchestration](docs/orchestration.md) for common routes.
+`routing.yaml` is the provider-neutral activation contract.
+It defines no skill as the default, permits only one active responsibility-owning skill, and prohibits automatic handoffs.
 
 ## Included skills
 
-| Skill | Responsibility |
-| --- | --- |
-| [Engineering Investigation](skills/engineering-investigation/SKILL.md) | Establish what is true and reduce material uncertainty before acting. |
-| [Engineering Decision](skills/engineering-decision/SKILL.md) | Compare credible alternatives and choose the strongest practical action. |
-| [Engineering Planning](skills/engineering-planning/SKILL.md) | Establish an evidence-backed plan and define a safe, observable, and reversible execution strategy. |
-| [Engineering Quality](skills/engineering-quality/SKILL.md) | Implement, simplify, test, and adversarially verify production changes. |
-| [Engineering Debugging](skills/engineering-debugging/SKILL.md) | Find the smallest causal explanation consistent with the evidence. |
-| [Architecture and Reliability](skills/architecture-reliability/SKILL.md) | Evaluate boundaries, resilience, operability, security, performance, and long-term cost. |
-| [Incident Response](skills/incident-response/SKILL.md) | Protect users and restore safe service while preserving evidence and control. |
-| [Engineering Review](skills/engineering-review/SKILL.md) | Attempt to disprove correctness, safety, maintainability, and merge readiness. |
-| [Engineering Communication](skills/engineering-communication/SKILL.md) | Transfer an accurate mental model with minimal ambiguity and cognitive load. |
-| [Engineering Memory](skills/engineering-memory/SKILL.md) | Preserve durable decisions and lessons without accumulating stale context. |
+| Skill | Activation | Sole responsibility |
+| --- | --- | --- |
+| [`research-before-solution`](skills/research-before-solution/SKILL.md) | Automatic when material decision uncertainty exists | Establish decision-sufficient truth, then present evidence-grounded options. |
+| [`causal-debugging`](skills/causal-debugging/SKILL.md) | Automatic for an observed failure needing causal isolation | Establish the smallest defensible causal chain. |
+| [`incident-control`](skills/incident-control/SKILL.md) | Automatic during active or escalating production harm | Control harm, preserve evidence, and verify recovery. |
+| [`architecture-evolution`](skills/architecture-evolution/SKILL.md) | Request-only | Evaluate expensive-to-reverse structural options. |
+| [`execution-planning`](skills/execution-planning/SKILL.md) | Request-only | Design a safe transition when material execution hazards remain. |
+| [`adversarial-review`](skills/adversarial-review/SKILL.md) | Request-only | Independently challenge a defined change and report supported findings. |
+| [`knowledge-promotion`](skills/knowledge-promotion/SKILL.md) | Request-only | Promote verified learning into the strongest appropriate durable artifact. |
 
-## Install and manage
+## Evidence before solutions
 
-The default installer is interactive and asks whether to keep or replace the global policy.
-For scripts and CI, choose the behavior explicitly.
+![Research evidence passes through disciplined checkpoints before solution paths emerge](assets/research-before-solution.png)
 
-| Command | Result |
-| --- | --- |
-| `./scripts/install.sh` | Install all skills and choose the global-policy behavior interactively. |
-| `./scripts/install.sh --agents keep` | Install all skills without changing the global policy. |
-| `./scripts/install.sh --agents replace` | Install all skills and safely replace the global policy. |
-| `./scripts/install.sh --agents replace --dry-run` | Preview the complete installation without changing files. |
-| `./scripts/update.sh --agents keep` | Refresh managed skills while leaving the global policy unchanged. |
-| `./scripts/uninstall.sh` | Remove unchanged managed files, restore backups, and preserve user modifications. |
+The research gate treats model memory as a source of hypotheses rather than evidence.
+It requires the owning path, material boundaries, competing explanations, contradictions, and remaining uncertainty to be understood before solution construction begins.
 
-Custom locations are available through `--skills-target` and `--agents-target`.
-See the [installation guide](docs/installation.md) for examples and recovery behavior.
+## Why ordinary work uses no skill
 
-### Safety behavior
+Building, testing, verifying, packaging, running containers, and executing an established deployment procedure are actions inside ordinary execution.
+They are not separate engineering responsibilities and do not justify loading a methodology.
 
-- Pre-existing skills and global policy files are backed up before replacement.
-- Managed skills are checksummed so updates stop instead of overwriting local edits.
-- Post-installation modifications are preserved during uninstall.
-- Installation state and backups live under `~/.agents/.engineering-os` by default.
+Universal behavior remains concise in `global-agents.md`:
+
+- inspect before consequential claims or changes;
+- preserve unrelated work;
+- verify proportionally;
+- never report checks that did not complete successfully;
+- communicate evidence and limitations honestly.
+
+## Quick start
+
+Requirements:
+
+- Bash 3.2 or newer;
+- `sha256sum` or `shasum`;
+- an agent host that discovers `SKILL.md` packages, or an orchestration layer that can inject selected skill content.
+
+Install the default `automatic` profile, which exposes only three narrowly automatic skills:
+
+```bash
+./scripts/install.sh --agents keep
+```
+
+Install all seven skills only when the host performs context gating or users explicitly select capabilities:
+
+```bash
+./scripts/install.sh --profile full --agents keep
+```
+
+Install an exact subset:
+
+```bash
+./scripts/install.sh \
+  --skills research-before-solution,adversarial-review \
+  --agents keep
+```
+
+Install only the optional global policy and no skills:
+
+```bash
+./scripts/install.sh --profile none --agents replace
+```
+
+Preview operations without changing files:
+
+```bash
+./scripts/install.sh --profile automatic --agents replace --dry-run
+```
+
+Skills install to `~/.agents/skills` by default.
+Use `--skills-target` for another host's discovery directory.
+The optional policy installs to `~/.agents/AGENTS.md` only when explicitly selected.
+
+## Provider neutrality
+
+The portable core contains no provider-specific agent metadata.
+Each skill contains only `SKILL.md` and directly related references.
+Host-specific adapters may be developed separately, but they are not required by or embedded in the capability definitions.
+
+When dynamic context gating is unavailable, installer profiles enforce scarcity by limiting which skills are discoverable.
+The `full` profile deliberately trades that protection for availability and should be used only with disciplined routing.
+
+## Update
+
+Refresh an installation while preserving its recorded profile:
+
+```bash
+./scripts/update.sh --agents keep
+```
+
+Pass `--profile` or `--skills` to change the exposed capability set deliberately.
+An installation created before profile state existed migrates to the `automatic` profile unless the update command selects another profile.
+The update path reconciles removed managed skills safely and stops before changes when managed content has been modified.
+
+## Version 4.1 changes
+
+- The default route is now no skill.
+- Only one responsibility-owning skill may be active.
+- Automatic handoffs are prohibited.
+- The default installer exposes only automatic capabilities.
+- `architecture-evolution`, `execution-planning`, `adversarial-review`, and `knowledge-promotion` are request-only.
+- `implement-and-prove` was removed because ordinary implementation and proportional verification are baseline behavior.
+- Provider-specific agent metadata files were removed.
+- Routing evaluations now include container, build, test, deployment, and other no-skill traps.
+
+## Uninstall
+
+```bash
+./scripts/uninstall.sh
+```
+
+The uninstaller removes only unchanged managed skills.
+It preserves modified skills and safely restores pre-existing content from backups.
+
+## Validate the package
+
+Run structural and portability validation:
+
+```bash
+./scripts/validate.sh
+```
+
+Run installer profile and lifecycle smoke checks:
+
+```bash
+./scripts/test.sh
+```
+
+These checks validate package behavior, not model improvement.
+Behavioral quality requires the paired evaluations described in [Evaluation](docs/evaluation.md).
 
 ## Repository map
 
 ```text
-skills/             Installable skill packages and their evaluations
-scripts/            Install, update, uninstall, validation, and smoke checks
-docs/               Installation, orchestration, customization, and evaluation guides
-evals/              Cross-skill and end-to-end behavior scenarios
-benchmark/          Judgment benchmark dimensions and sample scenarios
-global-agents.md    Optional global Engineering OS policy
-manifest.yaml       Package metadata and canonical skill list
+skills/             Seven provider-neutral capability packages
+routing.yaml        Canonical activation and context-gating contract
+scripts/            Profile-aware install, update, uninstall, and validation
+docs/               Architecture, orchestration, installation, and evaluation
+evals/              Trigger, no-skill, handoff, restraint, and end-to-end cases
+benchmark/          Paired benchmark design and release criteria
+global-agents.md    Optional minimal universal policy
+manifest.yaml       Version, capability inventory, and default exposure set
+skills.md           Human-readable capability routing map
+assets/             README graphics
 ```
 
-## Documentation
+## Contributing
 
-- [Installation](docs/installation.md) covers paths, policy choices, backups, and uninstall behavior.
-- [Orchestration](docs/orchestration.md) explains when skills should work together.
-- [Customization](docs/customization.md) explains where project-specific rules belong.
-- [Evaluation](docs/evaluation.md) describes trigger, behavior, and cross-skill evaluation.
-- [Contributing](docs/contributing.md) defines the evidence expected for changes.
-- [Validation](VALIDATION.md) records the package and smoke checks.
-
-## Project checks
-
-```bash
-./scripts/validate.sh
-./scripts/test.sh
-```
+Read [Contributing](docs/contributing.md) before changing a skill.
+Do not add skill prose without a failing behavioral case that demonstrates why the base agent needs it.
+Delete or demote a skill when it duplicates baseline behavior or does not justify its activation cost.
 
 ## License
 

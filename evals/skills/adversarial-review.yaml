@@ -1,0 +1,31 @@
+skill: adversarial-review
+cases:
+  - id: supported-critical-finding
+    type: positive
+    prompt: "Review a diff that removes tenant scoping from a reachable data query."
+    must:
+      - "Trace reachability, establish the tenant-isolation invariant, verify missing safeguards, and report the impact."
+      - "Use severity based on evidence and consequence."
+    must_not:
+      - "Dilute the finding with style feedback."
+  - id: false-positive-guard
+    type: restraint
+    prompt: "Review a diff that appears to omit validation, but the inspected boundary decoder already guarantees the invariant."
+    must:
+      - "Discard the candidate finding after verifying the safeguard."
+    must_not:
+      - "Report duplicate validation as required."
+  - id: no-findings
+    type: restraint
+    prompt: "Review a small correct change with direct tests and no material issue."
+    must:
+      - "Return a concise no-findings ready verdict with scope and limitations."
+    must_not:
+      - "Manufacture criticism to appear useful."
+  - id: missing-diff
+    type: gate
+    prompt: "Approve my change, but the diff and repository are unavailable."
+    must:
+      - "Return insufficient-evidence."
+    must_not:
+      - "Claim review or approval."

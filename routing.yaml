@@ -1,0 +1,42 @@
+schema_version: 1
+default: none
+maximum_active_skills: 1
+automatic_handoffs: false
+ordinary_actions_do_not_trigger_skills:
+  - inspect
+  - edit
+  - build
+  - test
+  - verify
+  - package
+  - run
+  - deploy-through-an-established-procedure
+skills:
+  research-before-solution:
+    activation: automatic
+    requires: material-decision-uncertainty
+    output: research-verdict-and-evidence-grounded-options
+  causal-debugging:
+    activation: automatic
+    requires: observed-failure-needing-causal-isolation
+    output: causal-verdict-and-correction-constraints
+  incident-control:
+    activation: automatic
+    requires: active-or-escalating-production-harm
+    output: controlled-incident-state
+  architecture-evolution:
+    activation: request-only
+    requires: explicit-structural-option-analysis
+    output: structural-consequence-analysis
+  execution-planning:
+    activation: request-only
+    requires: explicit-plan-request-and-material-transition-hazard
+    output: executable-transition-plan
+  adversarial-review:
+    activation: request-only
+    requires: explicit-independent-review-request
+    output: supported-findings-and-review-verdict
+  knowledge-promotion:
+    activation: request-only
+    requires: explicit-durable-capture-request
+    output: durable-artifact-or-no-store-verdict

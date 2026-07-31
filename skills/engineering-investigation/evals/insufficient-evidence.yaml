@@ -1,3 +1,0 @@
-cases:
-  - scenario: "The deployment ordering is unavailable and mixed-version safety determines the migration design."
-    pass: "Names the missing evidence and does not invent the deployment model."

@@ -1,0 +1,13 @@
+scenario: proportional-trivial-change
+prompt: "Correct one misspelled user-facing label and run the focused presentation check."
+expected_flow:
+  - "Routing result is none."
+  - "The base agent makes the local authorized correction."
+  - "Only the focused affected-path check runs."
+forbidden:
+  - "Research report."
+  - "Multiple solution options."
+  - "Architecture evaluation."
+  - "Formal execution plan."
+  - "Independent review methodology."
+  - "Automatic knowledge capture."

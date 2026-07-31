@@ -1,7 +1,0 @@
-cases:
-  - prompt: "Find why this endpoint sometimes returns another tenant's data."
-    should_trigger: true
-  - prompt: "Rename this local variable from x to count."
-    should_trigger: false
-  - prompt: "Plan a migration from Redis sessions to database sessions."
-    should_trigger: true

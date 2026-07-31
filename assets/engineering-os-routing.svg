@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="920" viewBox="0 0 1600 920" role="img" aria-labelledby="title description">
+  <title id="title">Engineering OS context-gated routing map</title>
+  <desc id="description">The routing default is no skill. At most one capability is exposed. Research Before Solution, Causal Debugging, and Incident Control may activate automatically. Architecture Evolution, Execution Planning, Adversarial Review, and Knowledge Promotion require an explicit user request. Ordinary actions never trigger skills.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#070b14"/>
+      <stop offset="0.55" stop-color="#0b1222"/>
+      <stop offset="1" stop-color="#11172b"/>
+    </linearGradient>
+    <linearGradient id="core" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0ea5e9"/>
+      <stop offset="1" stop-color="#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="automatic" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#60a5fa"/>
+    </linearGradient>
+    <linearGradient id="requested" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#8b5cf6"/>
+      <stop offset="1" stop-color="#c084fc"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="12" stdDeviation="18" flood-color="#020617" flood-opacity="0.72"/>
+    </filter>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="9" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M 48 0 L 0 0 0 48" fill="none" stroke="#94a3b8" stroke-opacity="0.05" stroke-width="1"/>
+    </pattern>
+    <style>
+      .eyebrow { fill: #7dd3fc; font: 600 18px Inter, ui-sans-serif, system-ui, sans-serif; letter-spacing: 4px; }
+      .heading { fill: #f8fafc; font: 700 40px Inter, ui-sans-serif, system-ui, sans-serif; }
+      .section { fill: #cbd5e1; font: 650 17px Inter, ui-sans-serif, system-ui, sans-serif; letter-spacing: 2.5px; }
+      .label { fill: #f8fafc; font: 650 21px Inter, ui-sans-serif, system-ui, sans-serif; }
+      .sub { fill: #9eacc2; font: 400 15px Inter, ui-sans-serif, system-ui, sans-serif; }
+      .core-small { fill: #bae6fd; font: 650 16px Inter, ui-sans-serif, system-ui, sans-serif; letter-spacing: 2px; }
+      .core-large { fill: #ffffff; font: 760 37px Inter, ui-sans-serif, system-ui, sans-serif; }
+      .pill { fill: #cbd5e1; font: 500 14px Inter, ui-sans-serif, system-ui, sans-serif; }
+      .connector { fill: none; stroke: #475569; stroke-width: 2; stroke-dasharray: 5 9; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="920" rx="30" fill="url(#background)"/>
+  <rect width="1600" height="920" rx="30" fill="url(#grid)"/>
+  <circle cx="800" cy="460" r="330" fill="#2563eb" opacity="0.035"/>
+  <circle cx="220" cy="760" r="300" fill="#0891b2" opacity="0.055"/>
+  <circle cx="1390" cy="130" r="260" fill="#7c3aed" opacity="0.055"/>
+
+  <text x="72" y="72" class="eyebrow">ENGINEERING OS</text>
+  <text x="72" y="122" class="heading">Context-gated capability routing</text>
+  <text x="72" y="154" class="sub">Start with no skill. Expose one capability only when the unresolved responsibility demands it.</text>
+
+  <text x="72" y="218" class="section">AUTOMATIC, WHEN STRICTLY QUALIFIED</text>
+  <line x1="72" y1="234" x2="1528" y2="234" stroke="url(#automatic)" stroke-opacity="0.5"/>
+
+  <g filter="url(#shadow)">
+    <rect x="72" y="258" width="360" height="130" rx="20" fill="#0f1c2e" stroke="#22d3ee" stroke-opacity="0.72"/>
+    <rect x="72" y="258" width="7" height="130" rx="3" fill="url(#automatic)"/>
+    <circle cx="112" cy="302" r="10" fill="#22d3ee"/>
+    <text x="139" y="309" class="label">Research Before Solution</text>
+    <text x="104" y="344" class="sub">Material uncertainty can change</text>
+    <text x="104" y="366" class="sub">the options or their ranking.</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="620" y="258" width="360" height="130" rx="20" fill="#101a2c" stroke="#60a5fa" stroke-opacity="0.72"/>
+    <rect x="620" y="258" width="7" height="130" rx="3" fill="url(#automatic)"/>
+    <circle cx="660" cy="302" r="10" fill="#60a5fa"/>
+    <text x="687" y="309" class="label">Causal Debugging</text>
+    <text x="652" y="344" class="sub">An observed failure needs controlled</text>
+    <text x="652" y="366" class="sub">reproduction and causal isolation.</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="1168" y="258" width="360" height="130" rx="20" fill="#18182a" stroke="#f59e0b" stroke-opacity="0.72"/>
+    <rect x="1168" y="258" width="7" height="130" rx="3" fill="#f59e0b"/>
+    <circle cx="1208" cy="302" r="10" fill="#fbbf24"/>
+    <text x="1235" y="309" class="label">Incident Control</text>
+    <text x="1200" y="344" class="sub">Production harm is active</text>
+    <text x="1200" y="366" class="sub">or escalating.</text>
+  </g>
+
+  <path d="M 432 323 C 545 323, 565 444, 650 444" class="connector"/>
+  <path d="M 800 388 L 800 420" class="connector"/>
+  <path d="M 1168 323 C 1055 323, 1035 444, 950 444" class="connector"/>
+
+  <g filter="url(#shadow)">
+    <rect x="648" y="420" width="304" height="170" rx="38" fill="#0b1324" stroke="url(#core)" stroke-width="3"/>
+    <rect x="665" y="437" width="270" height="136" rx="28" fill="url(#core)" opacity="0.14"/>
+    <circle cx="800" cy="466" r="9" fill="#38bdf8" filter="url(#glow)"/>
+    <text x="800" y="506" text-anchor="middle" class="core-small">DEFAULT ROUTE</text>
+    <text x="800" y="551" text-anchor="middle" class="core-large">NO SKILL</text>
+  </g>
+
+  <rect x="316" y="451" width="118" height="40" rx="20" fill="#172033" stroke="#334155"/>
+  <text x="375" y="476" text-anchor="middle" class="pill">BUILD</text>
+  <rect x="447" y="451" width="118" height="40" rx="20" fill="#172033" stroke="#334155"/>
+  <text x="506" y="476" text-anchor="middle" class="pill">TEST</text>
+  <rect x="1035" y="451" width="118" height="40" rx="20" fill="#172033" stroke="#334155"/>
+  <text x="1094" y="476" text-anchor="middle" class="pill">VERIFY</text>
+  <rect x="1166" y="451" width="118" height="40" rx="20" fill="#172033" stroke="#334155"/>
+  <text x="1225" y="476" text-anchor="middle" class="pill">DEPLOY</text>
+  <text x="800" y="620" text-anchor="middle" class="sub">Ordinary actions remain inside the current task and never trigger a capability by themselves.</text>
+
+  <text x="72" y="686" class="section">REQUEST-ONLY CAPABILITIES</text>
+  <line x1="72" y1="702" x2="1528" y2="702" stroke="url(#requested)" stroke-opacity="0.5"/>
+
+  <g filter="url(#shadow)">
+    <rect x="72" y="728" width="336" height="118" rx="20" fill="#14172a" stroke="#8b5cf6" stroke-opacity="0.68"/>
+    <circle cx="110" cy="769" r="9" fill="#8b5cf6"/>
+    <text x="136" y="776" class="label">Architecture Evolution</text>
+    <text x="104" y="813" class="sub">Requested structural option analysis</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="444" y="728" width="336" height="118" rx="20" fill="#14172a" stroke="#9f7aea" stroke-opacity="0.68"/>
+    <circle cx="482" cy="769" r="9" fill="#9f7aea"/>
+    <text x="508" y="776" class="label">Execution Planning</text>
+    <text x="476" y="813" class="sub">Requested hazardous transition plan</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="816" y="728" width="336" height="118" rx="20" fill="#14172a" stroke="#a78bfa" stroke-opacity="0.68"/>
+    <circle cx="854" cy="769" r="9" fill="#a78bfa"/>
+    <text x="880" y="776" class="label">Adversarial Review</text>
+    <text x="848" y="813" class="sub">Requested independent challenge</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="1188" y="728" width="340" height="118" rx="20" fill="#14172a" stroke="#c084fc" stroke-opacity="0.68"/>
+    <circle cx="1226" cy="769" r="9" fill="#c084fc"/>
+    <text x="1252" y="776" class="label">Knowledge Promotion</text>
+    <text x="1220" y="813" class="sub">Requested durable knowledge capture</text>
+  </g>
+
+  <text x="800" y="884" text-anchor="middle" class="sub">Maximum one active skill • New routing decision before every handoff • Provider-neutral core</text>
+</svg>

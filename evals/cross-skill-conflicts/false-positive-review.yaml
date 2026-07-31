@@ -1,4 +1,0 @@
-scenario: "A reviewer suspects missing tenant validation, but a verified shared authorization layer enforces it before the changed code."
-pass:
-  - "Adversarial review refutes and omits the finding."
-  - "Engineering quality does not recommend duplicate authorization checks without a concrete need."

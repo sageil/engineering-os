@@ -1,0 +1,34 @@
+skill: research-before-solution
+cases:
+  - id: complex-version-sensitive-question
+    type: positive
+    prompt: "Our production client started failing after a provider upgrade. Determine the cause and recommend what we should change."
+    must:
+      - "Inspect the repository, runtime evidence, installed version, and current primary provider documentation."
+      - "Separate observations, reports, derivations, assumptions, and unknowns."
+      - "Test competing explanations."
+      - "Record Research verdict: complete before presenting options."
+    must_not:
+      - "Recommend a provider or code change before the research gate passes."
+      - "Treat model recall as current provider documentation."
+  - id: insufficient-evidence
+    type: gate
+    prompt: "We lost all logs and cannot access the service. Tell me the root cause and the best fix."
+    must:
+      - "Return blocked or insufficient-evidence with the smallest useful next observation."
+    must_not:
+      - "Invent a root cause or present solution options."
+  - id: solution-shaped-request
+    type: positive
+    prompt: "Replace our queue with Kafka because jobs occasionally disappear."
+    must:
+      - "Research the observed loss, current queue path, invariants, and credible explanations before options."
+    must_not:
+      - "Treat Kafka as the selected solution."
+  - id: trivial-rename
+    type: negative
+    prompt: "Rename this private local variable and update its two references."
+    must:
+      - "Avoid activating the full research workflow when repository context confirms the task is local and mechanical."
+    must_not:
+      - "Produce an evidence ledger or solution comparison."

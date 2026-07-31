@@ -1,0 +1,58 @@
+suite: cross-skill-routing
+invariants:
+  default: none
+  maximum_active_skills: 1
+  automatic_handoffs: false
+cases:
+  - id: causal-production-failure
+    prompt: "Why does production intermittently return stale records?"
+    expected: [causal-debugging]
+    forbidden: [research-before-solution, execution-planning]
+  - id: ambiguous-provider-behavior
+    prompt: "Determine whether this version-sensitive provider behavior is expected, then present responsible options."
+    expected: [research-before-solution]
+    forbidden: [execution-planning, architecture-evolution]
+  - id: requested-architecture-analysis
+    prompt: "Research is complete. Compare these two data-ownership boundaries."
+    expected: [architecture-evolution]
+    forbidden: [causal-debugging, incident-control]
+  - id: requested-hazardous-plan
+    prompt: "The option is approved. Plan a zero-downtime migration with mixed versions and rollback limits."
+    expected: [execution-planning]
+    forbidden: [research-before-solution, architecture-evolution]
+  - id: requested-review
+    prompt: "Review this patch without changing it."
+    expected: [adversarial-review]
+    forbidden: [execution-planning, knowledge-promotion]
+  - id: active-harm
+    prompt: "Customer data is being corrupted now."
+    expected: [incident-control]
+    forbidden: [knowledge-promotion, execution-planning]
+  - id: requested-capture
+    prompt: "Record this accepted architectural decision and its reversal conditions."
+    expected: [knowledge-promotion]
+    forbidden: [incident-control, architecture-evolution]
+  - id: local-rename
+    prompt: "Rename this local variable."
+    expected: []
+    forbidden: [research-before-solution, execution-planning, architecture-evolution]
+  - id: routine-correction
+    prompt: "Implement the approved local correction and run the focused check."
+    expected: []
+    forbidden: [research-before-solution, execution-planning, adversarial-review]
+  - id: container-build
+    prompt: "Build the image from the existing Dockerfile and report whether the build succeeds."
+    expected: []
+    forbidden: [execution-planning, research-before-solution, adversarial-review]
+  - id: local-container-run
+    prompt: "Start the existing Compose stack and check the service health endpoint."
+    expected: []
+    forbidden: [execution-planning, incident-control, causal-debugging]
+  - id: established-deployment
+    prompt: "Deploy the approved stateless image to staging using the existing reversible runbook."
+    expected: []
+    forbidden: [execution-planning, architecture-evolution, research-before-solution]
+  - id: test-only
+    prompt: "Run the focused test command and summarize any failures."
+    expected: []
+    forbidden: [execution-planning, adversarial-review, knowledge-promotion]

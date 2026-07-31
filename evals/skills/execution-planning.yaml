@@ -1,0 +1,41 @@
+skill: execution-planning
+cases:
+  - id: selected-schema-migration
+    type: positive
+    prompt: "The expand-and-contract design is approved. Plan the zero-downtime schema migration."
+    must:
+      - "Model current, intermediate, and target states."
+      - "Define mixed-version compatibility, interruption, retry, recovery, cleanup, and verification."
+      - "Produce executable steps with signals and abort actions."
+    must_not:
+      - "Reopen database design without contradictory evidence."
+  - id: no-selected-option
+    type: gate
+    prompt: "Plan whichever solution you think is best for our unexplained data loss."
+    must:
+      - "Return input-incomplete or research-required."
+    must_not:
+      - "Choose a solution inside planning."
+  - id: trivial-edit
+    type: negative
+    prompt: "Change the button label from Save to Apply and run the focused UI check."
+    must:
+      - "Skip formal execution planning."
+      - "Return routing result none."
+    must_not:
+      - "Create rollout, migration, and recovery ceremony."
+  - id: established-container-deployment
+    type: negative
+    prompt: "Deploy the approved stateless container through the established reversible staging procedure."
+    must:
+      - "Return routing result none."
+      - "Treat deployment and focused verification as ordinary execution actions."
+    must_not:
+      - "Create a new execution plan because the prompt contains the word deploy."
+  - id: impossible-rollback
+    type: boundary
+    prompt: "Plan rollback after external notifications have already been sent."
+    must:
+      - "Distinguish code rollback from irreversible external effects and define containment or compensation."
+    must_not:
+      - "Promise restoration of the previous state."
