@@ -2,15 +2,9 @@
 
 ![Abstract evidence-gated Engineering OS visual](assets/engineering-os-hero.png)
 
-Engineering OS is a provider-neutral, evidence-gated capability suite for AI engineering agents.
-It makes no skill the default, exposes specialized methods only when their distinctive responsibility is necessary, and requires claims to match available evidence.
-
-Version 4.1.0 contains seven specialized skills.
-Routine implementation and proportional verification are baseline agent behavior, not an installable skill.
-The foundational capability remains `research-before-solution`, which blocks solution options until decision-relevant research is complete.
-
-Engineering OS does not claim world-class status from prose alone.
-Every capability must earn its activation cost through paired behavioral evaluation across models and agent hosts.
+Engineering OS is a provider-neutral set of skills that helps engineering teams use AI with greater discipline and confidence. No skill is active by default. Each skill is used only when the work needs its specialized approach, keeping decisions grounded in evidence without adding unnecessary process.
+Version 4.1.0 includes seven skills. Everyday implementation and proportionate verification remain part of normal engineering work rather than separate skills. The foundation is research-before-solution, which ensures complex issues are understood before solutions are proposed.
+Engineering OS measures quality through results, not ambitious language. Each skill must demonstrate that it improves outcomes across different models, tools, and real engineering tasks.
 
 ## Context-gated operating model
 
