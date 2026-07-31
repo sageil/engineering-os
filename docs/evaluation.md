@@ -5,7 +5,7 @@ Engineering OS separates package correctness from behavioral utility.
 ## Package validation
 
 `scripts/validate.sh` checks manifest consistency, portable skill structure, routing invariants, absence of provider-specific metadata, frontmatter names, reference links, unresolved placeholders, file limits, evaluation presence, and shell syntax.
-`scripts/test.sh` exercises automatic, full, custom, and none installation profiles together with update, obsolete-skill reconciliation, backup restoration, modified-file protection, global policy handling, dry run, and uninstall behavior inside temporary directories.
+`scripts/test.sh` exercises automatic, full, custom, and none installation profiles together with obsolete-skill removal, update, backup restoration, modified-file protection, global policy handling, dry run, and uninstall behavior inside temporary directories.
 
 These checks do not establish that a skill improves model behavior.
 
@@ -97,5 +97,5 @@ Treat any unnecessary skill activation in the dedicated no-skill gate as a relea
 
 ## Current status
 
-Version 4.1.0 is a structurally validated provider-neutral, context-gated redesign and behavioral evaluation candidate.
+Version 4.1.1 is a structurally validated provider-neutral, context-gated redesign and behavioral evaluation candidate.
 It must not be described as world-class until paired results satisfy the release gate and remain reproducible.

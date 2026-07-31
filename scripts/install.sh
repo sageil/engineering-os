@@ -123,21 +123,29 @@ AGENTS_BACKUPS="$STATE_DIR/backups/agents"
 
 ALL_SKILLS=$(mktemp)
 AUTOMATIC_SKILLS=$(mktemp)
+OBSOLETE_SKILLS=$(mktemp)
 PACKAGED_SKILLS=$(mktemp)
 OLD_SKILLS=$(mktemp)
-trap 'rm -f "$ALL_SKILLS" "$AUTOMATIC_SKILLS" "$PACKAGED_SKILLS" "$OLD_SKILLS"' EXIT
+trap 'rm -f "$ALL_SKILLS" "$AUTOMATIC_SKILLS" "$OBSOLETE_SKILLS" "$PACKAGED_SKILLS" "$OLD_SKILLS"' EXIT
 manifest_skills "$MANIFEST" > "$ALL_SKILLS"
 manifest_list "$MANIFEST" automatic_skills > "$AUTOMATIC_SKILLS"
+manifest_list "$MANIFEST" obsolete_skills > "$OBSOLETE_SKILLS"
 [[ -s "$ALL_SKILLS" ]] || fail "Manifest contains no skills."
 [[ -s "$AUTOMATIC_SKILLS" ]] || fail "Manifest contains no automatic skills."
+[[ -s "$OBSOLETE_SKILLS" ]] || fail "Manifest contains no obsolete skill inventory."
 
 if [[ -f "$SKILLS_STATE" ]]; then
   cp "$SKILLS_STATE" "$OLD_SKILLS"
 fi
 
+STORED_PROFILE=$(state_get "$STATE_FILE" PROFILE 2>/dev/null || true)
+
 if [[ -z "$PROFILE" ]]; then
-  PROFILE=$(state_get "$STATE_FILE" PROFILE 2>/dev/null || true)
-  [[ -n "$PROFILE" ]] || PROFILE=automatic
+  case "$STORED_PROFILE" in
+    "") PROFILE=automatic ;;
+    automatic|full|none|custom) PROFILE=$STORED_PROFILE ;;
+    *) PROFILE=automatic ;;
+  esac
 fi
 
 case "$PROFILE" in
@@ -162,6 +170,7 @@ case "$PROFILE" in
     fi
     [[ -s "$PACKAGED_SKILLS" ]] || fail "Custom skill selection is empty."
     ;;
+  *) fail "Unsupported profile after migration: $PROFILE" ;;
 esac
 
 if [[ -n "$(LC_ALL=C sort "$ALL_SKILLS" | uniq -d)" ]]; then
@@ -218,13 +227,8 @@ done < "$PACKAGED_SKILLS"
 
 managed_agents_hash=$(state_get "$STATE_FILE" AGENTS_INSTALLED_SHA256 2>/dev/null || true)
 existing_agents_action=$(state_get "$STATE_FILE" AGENTS_ACTION 2>/dev/null || true)
-if [[ "$AGENTS_MODE" == replace ]]; then
-  if [[ -f "$AGENTS_TARGET" && -n "$managed_agents_hash" ]]; then
-    current_agents_hash=$(sha256_file "$AGENTS_TARGET")
-    [[ "$current_agents_hash" == "$managed_agents_hash" ]] || fail "Managed AGENTS.md changed since installation: $AGENTS_TARGET"
-  elif [[ -e "$AGENTS_TARGET" && ! -f "$AGENTS_TARGET" ]]; then
-    fail "AGENTS.md target is not a regular file: $AGENTS_TARGET"
-  fi
+if [[ "$AGENTS_MODE" == replace && -e "$AGENTS_TARGET" && ! -f "$AGENTS_TARGET" ]]; then
+  fail "AGENTS.md target is not a regular file: $AGENTS_TARGET"
 fi
 
 if ((DRY_RUN)); then
@@ -233,6 +237,23 @@ if ((DRY_RUN)); then
 else
   mkdir -p "$SKILLS_TARGET" "$STATE_DIR"
 fi
+
+# Remove obsolete Engineering OS skill names from the discovery directory.
+while IFS= read -r skill || [[ -n "$skill" ]]; do
+  [[ -n "$skill" ]] || continue
+  target_dir="$SKILLS_TARGET/$skill"
+  if [[ -d "$target_dir" ]]; then
+    if ((DRY_RUN)); then
+      info "Would remove obsolete Engineering OS skill: $target_dir"
+    else
+      safe_remove_managed_dir "$target_dir" "$SKILLS_TARGET"
+      state_remove "$ORIGINAL_SKILLS" "$skill"
+      info "Removed obsolete Engineering OS skill: $skill"
+    fi
+  elif [[ -e "$target_dir" ]]; then
+    fail "Obsolete Engineering OS skill target is not a directory: $target_dir"
+  fi
+done < "$OBSOLETE_SKILLS"
 
 # Reconcile managed skills removed from the new manifest.
 while IFS= read -r skill || [[ -n "$skill" ]]; do

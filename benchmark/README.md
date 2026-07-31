@@ -53,4 +53,4 @@ Delete guidance that adds cost without useful behavioral change.
 ## Result status
 
 This repository includes benchmark design and evaluation cases, not completed comparative results.
-Do not describe version 4.1.0 as world-class until those results exist and satisfy the release criteria.
+Do not describe version 4.1.1 as world-class until those results exist and satisfy the release criteria.

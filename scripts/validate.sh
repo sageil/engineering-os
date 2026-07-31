@@ -10,9 +10,10 @@ VERSION=$(cat "$ROOT_DIR/VERSION")
 MANIFEST="$ROOT_DIR/manifest.yaml"
 PACKAGED_SKILLS=$(mktemp)
 AUTOMATIC_SKILLS=$(mktemp)
+OBSOLETE_SKILLS=$(mktemp)
 ROUTING_SKILLS=$(mktemp)
 ROUTING_AUTOMATIC=$(mktemp)
-trap 'rm -f "$PACKAGED_SKILLS" "$AUTOMATIC_SKILLS" "$ROUTING_SKILLS" "$ROUTING_AUTOMATIC"' EXIT
+trap 'rm -f "$PACKAGED_SKILLS" "$AUTOMATIC_SKILLS" "$OBSOLETE_SKILLS" "$ROUTING_SKILLS" "$ROUTING_AUTOMATIC"' EXIT
 
 [[ -n "$VERSION" ]] || fail "VERSION is empty."
 [[ -f "$MANIFEST" ]] || fail "manifest.yaml is missing."
@@ -30,8 +31,10 @@ done
 
 manifest_skills "$MANIFEST" > "$PACKAGED_SKILLS"
 manifest_list "$MANIFEST" automatic_skills > "$AUTOMATIC_SKILLS"
+manifest_list "$MANIFEST" obsolete_skills > "$OBSOLETE_SKILLS"
 [[ -s "$PACKAGED_SKILLS" ]] || fail "Manifest contains no skills."
 [[ -s "$AUTOMATIC_SKILLS" ]] || fail "Manifest contains no automatic skills."
+[[ -s "$OBSOLETE_SKILLS" ]] || fail "Manifest contains no obsolete skill inventory."
 line_in_file research-before-solution "$PACKAGED_SKILLS" || fail "research-before-solution must be installed."
 
 duplicate=$(LC_ALL=C sort "$PACKAGED_SKILLS" | uniq -d)
@@ -39,15 +42,24 @@ duplicate=$(LC_ALL=C sort "$PACKAGED_SKILLS" | uniq -d)
 
 manifest_count=$(wc -l < "$PACKAGED_SKILLS" | tr -d ' ')
 automatic_count=$(wc -l < "$AUTOMATIC_SKILLS" | tr -d ' ')
+obsolete_count=$(wc -l < "$OBSOLETE_SKILLS" | tr -d ' ')
 directory_count=$(find "$ROOT_DIR/skills" -mindepth 1 -maxdepth 1 -type d | wc -l | tr -d ' ')
-[[ "$manifest_count" -eq 7 ]] || fail "Version 4.1.0 must package exactly 7 skills."
-[[ "$automatic_count" -eq 3 ]] || fail "Version 4.1.0 must expose exactly 3 automatic skills."
+[[ "$manifest_count" -eq 7 ]] || fail "Version 4.1.1 must package exactly 7 skills."
+[[ "$automatic_count" -eq 3 ]] || fail "Version 4.1.1 must expose exactly 3 automatic skills."
+[[ "$obsolete_count" -eq 10 ]] || fail "Version 4.1.1 must remove exactly 10 obsolete skill names."
 [[ "$manifest_count" -eq "$directory_count" ]] || fail "Manifest lists $manifest_count skills, but skills/ contains $directory_count directories."
 
 while IFS= read -r skill || [[ -n "$skill" ]]; do
   [[ -n "$skill" ]] || continue
   line_in_file "$skill" "$PACKAGED_SKILLS" || fail "Automatic skill is not packaged: $skill"
 done < "$AUTOMATIC_SKILLS"
+
+duplicate=$(LC_ALL=C sort "$OBSOLETE_SKILLS" | uniq -d)
+[[ -z "$duplicate" ]] || fail "Manifest contains duplicate obsolete skill: $duplicate"
+while IFS= read -r skill || [[ -n "$skill" ]]; do
+  [[ -n "$skill" ]] || continue
+  line_in_file "$skill" "$PACKAGED_SKILLS" && fail "Current and legacy skill inventories overlap: $skill"
+done < "$OBSOLETE_SKILLS"
 
 grep -q '^default: none$' "$ROOT_DIR/routing.yaml" || fail "Routing default must be none."
 grep -q '^maximum_active_skills: 1$' "$ROOT_DIR/routing.yaml" || fail "Routing must allow at most one active skill."

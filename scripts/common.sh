@@ -186,7 +186,7 @@ state_remove() {
   local directory
   local staged
 
-  [[ -f "$file" ]] || return
+  [[ -f "$file" ]] || return 0
   directory=$(dirname "$file")
   staged=$(mktemp "$directory/.state.XXXXXX")
   awk -F= -v key="$key" '$1 != key' "$file" > "$staged"

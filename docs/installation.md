@@ -34,7 +34,7 @@ Install an exact subset:
 `--profile` and `--skills` are mutually exclusive.
 The selected profile is recorded in installation state.
 An update without a new selection preserves the recorded profile.
-An installation created before profile state existed migrates to the `automatic` profile unless the update command selects another profile explicitly.
+Every installation removes the ten obsolete Engineering OS skill directories listed in `manifest.yaml` before installing the selected profile.
 
 ## Global policy
 
@@ -50,6 +50,8 @@ Back up and replace or create the configured `AGENTS.md`:
 ```bash
 ./scripts/install.sh --agents replace
 ```
+
+`--agents replace` always replaces the target file, including when it changed after an earlier installation.
 
 Interactive and non-interactive installation both default to keeping the existing policy.
 
@@ -74,7 +76,7 @@ Use the same `--agents-target` for update and uninstall so the correct state is 
 ./scripts/install.sh --profile full --agents replace --dry-run
 ```
 
-Dry run reports selection, obsolete-skill reconciliation, backups, policy, and state operations without writing target files.
+Dry run reports the selected installation operations without writing target files.
 
 ## Updating
 
@@ -92,7 +94,7 @@ Change the exposed set deliberately:
 
 Before changing managed files, update verifies each installed skill against its recorded hash.
 A modified managed skill stops the update before any managed target changes.
-An unchanged obsolete skill is removed, or its pre-installation backup is restored.
+The ten obsolete Engineering OS skill directories are removed.
 
 ## Backups
 

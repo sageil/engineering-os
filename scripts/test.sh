@@ -37,6 +37,22 @@ HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --profile full --agents keep >/
 actual=$(installed_count "$TEST_HOME")
 [[ "$actual" -eq 7 ]] || fail "Full profile installed $actual skills instead of 7."
 
+# Full installation replaces the obsolete Engineering OS skill set.
+TEST_HOME="$TMP_ROOT/full-with-obsolete-skills"
+mkdir -p "$TEST_HOME/.agents/skills"
+while IFS= read -r skill || [[ -n "$skill" ]]; do
+  [[ -n "$skill" ]] || continue
+  mkdir -p "$TEST_HOME/.agents/skills/$skill"
+  printf 'obsolete skill\n' > "$TEST_HOME/.agents/skills/$skill/SKILL.md"
+done < <(manifest_list "$ROOT_DIR/manifest.yaml" obsolete_skills)
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --profile full --agents keep >/dev/null
+actual=$(installed_count "$TEST_HOME")
+[[ "$actual" -eq 7 ]] || fail "Full profile left an incorrect number of installed skills: $actual."
+while IFS= read -r skill || [[ -n "$skill" ]]; do
+  [[ -n "$skill" ]] || continue
+  [[ ! -e "$TEST_HOME/.agents/skills/$skill" ]] || fail "Full profile left an obsolete skill installed: $skill"
+done < <(manifest_list "$ROOT_DIR/manifest.yaml" obsolete_skills)
+
 # Update preserves a recorded profile when no new selection is supplied.
 HOME="$TEST_HOME" "$ROOT_DIR/scripts/update.sh" --agents keep >/dev/null
 actual=$(installed_count "$TEST_HOME")
@@ -94,22 +110,6 @@ printf '%s %s\n' engineering-investigation "$(dir_sha256 "$obsolete")" >> "$TEST
 HOME="$TEST_HOME" "$ROOT_DIR/scripts/update.sh" --agents keep >/dev/null
 [[ ! -e "$obsolete" ]] || fail "Update left an obsolete managed skill installed."
 
-# An obsolete managed replacement restores its pre-installation skill.
-TEST_HOME="$TMP_ROOT/obsolete-restore"
-state="$TEST_HOME/.agents/.engineering-os"
-target="$TEST_HOME/.agents/skills/engineering-investigation"
-backup="$state/backups/skills/engineering-investigation.original"
-mkdir -p "$target" "$backup"
-printf 'managed legacy skill\n' > "$target/managed.txt"
-printf 'original legacy skill\n' > "$backup/original.txt"
-printf '%s\n' engineering-investigation > "$state/skills.list"
-printf '%s %s\n' engineering-investigation "$(dir_sha256 "$target")" > "$state/skills.sha256"
-printf 'engineering-investigation=%s\n' "$backup" > "$state/original-skills.env"
-printf '%s\n' 'AGENTS_ACTION=keep' > "$state/install-state.env"
-HOME="$TEST_HOME" "$ROOT_DIR/scripts/update.sh" --agents keep >/dev/null
-grep -q '^original legacy skill$' "$target/original.txt" || fail "Update did not restore the pre-installation obsolete skill."
-[[ ! -e "$target/managed.txt" ]] || fail "Update retained the obsolete managed replacement."
-
 # A modified managed skill blocks update before replacement.
 TEST_HOME="$TMP_ROOT/modified-skill"
 mkdir -p "$TEST_HOME"
@@ -135,5 +135,13 @@ HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --agents replace >/dev/null
 printf '\nuser policy edit\n' >> "$TEST_HOME/.agents/AGENTS.md"
 HOME="$TEST_HOME" "$ROOT_DIR/scripts/uninstall.sh" --agents keep >/dev/null
 grep -q 'user policy edit' "$TEST_HOME/.agents/AGENTS.md" || fail "Modified AGENTS.md was not preserved."
+
+# Explicit replacement overwrites a modified managed AGENTS.md.
+TEST_HOME="$TMP_ROOT/replace-modified-agents"
+mkdir -p "$TEST_HOME"
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --agents replace >/dev/null
+printf '\nuser policy edit\n' >> "$TEST_HOME/.agents/AGENTS.md"
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --agents replace >/dev/null
+cmp -s "$ROOT_DIR/global-agents.md" "$TEST_HOME/.agents/AGENTS.md" || fail "Explicit replacement did not overwrite AGENTS.md."
 
 info "Installer profile and lifecycle smoke checks passed."
