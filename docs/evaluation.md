@@ -6,7 +6,7 @@ None of these is a mechanical proxy for whether a skill is world-class.
 ## Package validation
 
 `scripts/validate.sh` checks manifest consistency, portable skill structure, routing invariants, absence of provider-specific metadata, frontmatter names, reference links, unresolved placeholders, file limits, contract-case presence, and shell syntax.
-`scripts/test.sh` exercises automatic, full, custom, and none installation profiles together with exact manifest selection, removed-managed-skill reconciliation, unsupported-state rejection, backup restoration, unrelated-skill preservation, modified-file protection, global policy handling, dry run, and uninstall behavior inside temporary directories.
+`scripts/test.sh` exercises automatic, full, custom, and none installation profiles together with exact manifest selection, removed-managed-skill reconciliation, backup restoration, unrelated-skill preservation, modified-file protection, global policy handling, dry run, and uninstall behavior inside temporary directories.
 
 These checks establish that the package is internally coherent and installable.
 They do not establish model quality or production suitability.

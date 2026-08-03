@@ -127,16 +127,6 @@ printf '%s %s\n' architecture-evolution "$(dir_sha256 "$removed")" >> "$TEST_HOM
 HOME="$TEST_HOME" "$ROOT_DIR/scripts/update.sh" --agents keep >/dev/null
 [[ ! -e "$removed" ]] || fail "Update left a removed managed skill installed."
 
-# State from an unsupported schema is rejected before changes.
-TEST_HOME="$TMP_ROOT/unsupported-state"
-mkdir -p "$TEST_HOME"
-HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --agents keep >/dev/null
-state_remove "$TEST_HOME/.agents/.engineering-os/install-state.env" STATE_SCHEMA
-if HOME="$TEST_HOME" "$ROOT_DIR/scripts/update.sh" --agents keep >/dev/null 2>&1; then
-  fail "Update accepted unsupported installation state."
-fi
-[[ -f "$TEST_HOME/.agents/skills/research-before-solution/SKILL.md" ]] || fail "Rejected state changed installed skills."
-
 # Corrupt uninstall state fails before any managed skill is removed.
 TEST_HOME="$TMP_ROOT/uninstall-preflight"
 mkdir -p "$TEST_HOME"

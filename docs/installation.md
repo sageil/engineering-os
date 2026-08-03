@@ -96,8 +96,7 @@ Change the exposed set deliberately:
 Before changing managed files, update verifies each installed skill against its recorded hash.
 A modified managed skill stops the update before any managed target changes.
 Managed skills no longer selected or present in the current manifest are removed or replaced by their pre-installation backup.
-Only the current installation-state schema is accepted, and incomplete state is rejected before any target changes.
-Installations without the current schema are not migrated; use a new skills target or remove their managed files and state manually.
+Incomplete installation state is rejected before any target changes.
 
 ## Backups
 

@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# shellcheck disable=SC2034
-INSTALL_STATE_SCHEMA=1
-
 fail() {
   printf 'Error: %s\n' "$*" >&2
   exit 1

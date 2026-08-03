@@ -65,7 +65,6 @@ trap 'rm -f "$HASH_SKILLS"' EXIT
   info "No Engineering OS installation state found."
   exit 0
 }
-[[ "$(state_get "$STATE_FILE" STATE_SCHEMA 2>/dev/null || true)" == "$INSTALL_STATE_SCHEMA" ]] || fail "Unsupported installation state. Use a new skills target or remove the unsupported installation manually."
 [[ -f "$SKILLS_STATE" ]] || fail "Installation state is missing skills.list."
 [[ -f "$SKILLS_HASHES" ]] || fail "Installation state is missing skills.sha256."
 

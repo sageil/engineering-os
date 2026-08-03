@@ -137,7 +137,7 @@ Refresh an installation while preserving its recorded profile:
 
 Pass `--profile` or `--skills` to change the exposed capability set deliberately.
 The current manifest is authoritative, and unknown skill names are rejected before target changes.
-The update path reconciles removed managed skills safely, rejects unsupported installation state, and stops before changes when managed content has been modified.
+The update path reconciles removed managed skills safely and stops before changes when managed content has been modified.
 
 ## Version 4.3 changes
 

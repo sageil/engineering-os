@@ -136,7 +136,6 @@ find "$ROOT_DIR/skills" -mindepth 1 -maxdepth 1 -type d -exec basename {} \; > "
 cmp -s <(LC_ALL=C sort "$ALL_SKILLS") <(LC_ALL=C sort "$SOURCE_SKILLS") || fail "Packaged skill directories do not match the manifest."
 
 if [[ -f "$STATE_FILE" ]]; then
-  [[ "$(state_get "$STATE_FILE" STATE_SCHEMA 2>/dev/null || true)" == "$INSTALL_STATE_SCHEMA" ]] || fail "Unsupported installation state. Use a new skills target or remove the unsupported installation manually."
   [[ -f "$SKILLS_STATE" ]] || fail "Installation state is missing skills.list."
   [[ -f "$SKILLS_HASHES" ]] || fail "Installation state is missing skills.sha256."
   cp "$SKILLS_STATE" "$OLD_SKILLS"
@@ -350,7 +349,6 @@ else
     printf '%s %s\n' "$skill" "$(dir_sha256 "$SKILLS_TARGET/$skill")" >> "$SKILLS_HASHES"
   done < "$SKILLS_STATE"
   state_set "$STATE_FILE" VERSION "$(cat "$ROOT_DIR/VERSION")"
-  state_set "$STATE_FILE" STATE_SCHEMA "$INSTALL_STATE_SCHEMA"
   state_set "$STATE_FILE" PROFILE "$PROFILE"
   state_set "$STATE_FILE" SKILLS_TARGET "$SKILLS_TARGET"
   state_set "$STATE_FILE" AGENTS_TARGET "$AGENTS_TARGET"
