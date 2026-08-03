@@ -11,7 +11,7 @@ Install the three narrowly automatic capabilities:
 ./scripts/install.sh --profile automatic --agents keep
 ```
 
-Install all seven capabilities only when an external router gates context or users deliberately request capabilities:
+Install all eight capabilities only when an external router gates context or users deliberately request capabilities:
 
 ```bash
 ./scripts/install.sh --profile full --agents keep
@@ -34,7 +34,8 @@ Install an exact subset:
 `--profile` and `--skills` are mutually exclusive.
 The selected profile is recorded in installation state.
 An update without a new selection preserves the recorded profile.
-Every installation removes the ten obsolete Engineering OS skill directories listed in `manifest.yaml` before installing the selected profile.
+The current `manifest.yaml` inventory is authoritative.
+The installer rejects unknown skill names, validates every packaged skill, and never removes unrelated skill directories.
 
 ## Global policy
 
@@ -94,7 +95,9 @@ Change the exposed set deliberately:
 
 Before changing managed files, update verifies each installed skill against its recorded hash.
 A modified managed skill stops the update before any managed target changes.
-The ten obsolete Engineering OS skill directories are removed.
+Managed skills no longer selected or present in the current manifest are removed or replaced by their pre-installation backup.
+Only the current installation-state schema is accepted, and incomplete state is rejected before any target changes.
+Installations without the current schema are not migrated; use a new skills target or remove their managed files and state manually.
 
 ## Backups
 
@@ -110,6 +113,7 @@ When global policy replacement overwrites an existing file, it stores a permissi
 The uninstaller removes unchanged managed skills and restores pre-installation skill backups.
 It preserves modified skills.
 It keeps a modified global policy by default.
+It validates all skill hashes, backup paths, target types, and global-policy restoration state before removing anything.
 
 ## Recovery
 

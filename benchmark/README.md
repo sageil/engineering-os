@@ -1,56 +1,51 @@
-# Engineering OS Benchmark
+# Engineering OS Observation Kit
 
-The benchmark measures marginal skill utility, not the persuasiveness of skill prose.
+This directory provides dimensions and scenarios for collecting operating evidence.
+It is not a release gate and does not require comparative runs.
 
-## Experimental unit
+## Observation unit
 
-Each task pins:
+For any recorded task, preserve the decision-relevant context:
 
 - repository commit or immutable artifact;
 - requirements and acceptance criteria;
 - environment and dependencies;
 - model and reasoning configuration;
 - agent scaffold and tool permissions;
-- baseline context;
-- candidate skill set;
-- deterministic verifier when possible.
+- available policy and skill context;
+- deterministic verifier when applicable;
+- raw output, tool trace, outcome, cost, and limitations.
 
-Run the same task in baseline and candidate conditions.
-Change only skill availability.
-Repeat nondeterministic conditions and preserve every raw trajectory and output.
+One real trajectory can establish that a particular event occurred.
+It cannot establish general superiority, causation, or model-independent behavior.
 
-## Conditions
+## Optional contexts
 
-- `baseline`: Global product instructions and repository instructions without Engineering OS skills.
-- `global-policy`: Baseline plus `global-agents.md` only.
-- `single-skill`: Global policy plus the one candidate skill.
-- `automatic-profile`: Global policy plus only the manifest automatic skills.
-- `context-gated-suite`: Global policy plus only the skill selected for the current responsibility.
-- `full-discovery-suite`: Global policy plus all manifest skills, included as an overactivation stress condition.
-- `smaller-suite`: Global policy plus the smallest plausible competing skill set.
+Choose only contexts that answer the question being investigated:
 
-The smaller-suite condition tests whether composition earns its additional context and routing complexity.
-The full-discovery condition tests whether exposing every capability causes waste relative to context gating.
+- no Engineering OS context;
+- global policy only;
+- one selected skill;
+- automatic profile;
+- dynamically context-gated suite;
+- full discovery as an overactivation stress condition;
+- an earlier release or alternate routing policy.
 
-## Scoring
+Holding other inputs constant can help isolate a disputed mechanism, but such comparison is optional.
+Do not manufacture repeated trials when repository evidence, a verified field failure, or a direct contract defect already answers the engineering question.
 
-Use deterministic acceptance checks for code and operational tasks.
-Use blinded calibrated reviewers for evidence quality, option usefulness, communication, and other irreducibly judgment-based outcomes.
-Measure safety constraints separately from average quality.
+## Scoring and interpretation
 
-Report each model and scaffold independently.
-Report confidence intervals or run-to-run dispersion.
-Do not hide negative deltas in an aggregate score.
+Prefer deterministic acceptance checks for code and operational tasks.
+Use calibrated human judgment for evidence quality, decision usefulness, communication, and other outcomes that cannot be reduced responsibly.
+Report safety constraints separately from average quality.
 
-## Release decisions
+Report each model, scaffold, environment, and task class explicitly when those differences affect interpretation.
+Do not hide failures inside an aggregate score.
+Do not turn an arbitrary numeric threshold into authority to keep or delete a skill.
 
-Predeclare a primary outcome, safety constraints, and overhead budget for each skill.
-Keep a skill installable only when it provides a reproducible improvement, meaningful efficiency gain, or prevention of a high-consequence baseline failure.
-Demote conditional methods to references when separate activation adds no value.
-Move universal invariants to global policy when retrieval is unreliable.
-Delete guidance that adds cost without useful behavioral change.
+## Design decisions
 
-## Result status
-
-This repository includes benchmark design and evaluation cases, not completed comparative results.
-Do not describe version 4.1.1 as world-class until those results exist and satisfy the release criteria.
+Use observations together with responsibility boundaries, expert-method review, safety analysis, contract fixtures, and context cost.
+Revise a skill when evidence exposes a concrete defect.
+Retain or add a skill when it owns a valuable non-overlapping responsibility and its design and evidence support the claims being made.

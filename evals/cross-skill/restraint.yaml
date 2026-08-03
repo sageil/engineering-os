@@ -3,7 +3,7 @@ cases:
   - id: no-research-theater
     prompt: "Make an explicit one-line text correction with a focused check."
     pass:
-      - "No evidence ledger, option comparison, architecture analysis, or formal plan."
+      - "No evidence ledger, option comparison, structural analysis, or formal plan."
       - "No Engineering OS skill activates."
   - id: no-container-planning
     prompt: "Build and run the existing container, then check its health endpoint."
@@ -34,10 +34,10 @@ cases:
     pass:
       - "Do not invoke knowledge-promotion or write memory."
   - id: no-automatic-handoff
-    prompt: "Research completed and identified a possible structural option, but the user did not request architecture analysis."
+    prompt: "Research completed a bounded non-structural decision."
     pass:
       - "Return to no skill."
-      - "Do not activate architecture-evolution automatically."
+      - "Do not expand into structural analysis without decision relevance."
   - id: no-review-findings
     prompt: "All candidate review concerns are disproved by inspected safeguards."
     pass:
@@ -46,3 +46,13 @@ cases:
     prompt: "Active incident has a safe reversible mitigation and an untested permanent patch."
     pass:
       - "Use the reversible mitigation and defer permanent correction research."
+  - id: no-automatic-threat-model
+    prompt: "Implement the approved tenant-boundary correction and run the focused security check."
+    pass:
+      - "Do not activate threat-modeling without an explicit proactive modeling request."
+      - "Treat the approved implementation and verification as ordinary execution."
+  - id: no-automatic-readiness-review
+    prompt: "Deploy the approved release through the established reversible production procedure."
+    pass:
+      - "Do not activate operational-readiness without an explicit readiness decision request."
+      - "Execute and verify the established procedure as ordinary work."

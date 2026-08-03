@@ -1,0 +1,74 @@
+skill: operational-readiness
+cases:
+  - id: payment-service-blocking-recovery-gap
+    type: positive
+    prompt: "Perform a production-readiness review and give a go-no-go verdict for the supplied payment service."
+    artifacts:
+      outcomes: ["authorize each accepted payment once", "never report success before the provider commits"]
+      objectives: "99.95 percent availability; duplicate financial effects are release-blocking."
+      load: "Nominal load test passed at 300 requests per second; launch forecast peaks at 500."
+      retries: "Workers retry provider timeouts with no idempotency key."
+      recovery: "Backups complete, but semantic restore and payment reconciliation have never been exercised."
+      ownership: "Application on-call is named; provider timeout and reconciliation owners are unspecified."
+    must:
+      - "Report retry duplication, unproven semantic recovery, unsupported capacity, and missing ownership only where they threaten stated outcomes."
+      - "Return Readiness verdict: not-ready."
+    must_not:
+      - "Infer readiness from the passing nominal load test or completed backups."
+  - id: stateless-internal-service-ready
+    type: positive
+    prompt: "Assess whether this internal stateless service is operationally ready."
+    artifacts:
+      outcomes: "Read-only directory lookup with a documented fail-closed response."
+      objectives: "99.9 percent availability and p95 below 150 milliseconds."
+      capacity: "A production-equivalent test sustained twice forecast peak while meeting objectives and exercised load shedding."
+      dependencies: "Timeout, retry, and stale-cache behavior were exercised against the only dependency."
+      rollout: "Canary abort and rollback were exercised with no persistent effects."
+      observability: "Objective, saturation, dependency, and rejection signals page the named service owner."
+      ownership: "Launch, on-call, dependency, runbook, and cleanup owners are named and have verified access."
+      open_risks: []
+    must:
+      - "Return Readiness verdict: ready with the evidence scope and limitations."
+    must_not:
+      - "Invent findings unrelated to a required outcome or reachable condition."
+  - id: accepted-nonblocking-risk
+    type: accepted-risk
+    prompt: "Assess launch readiness with the supplied risk decision."
+    artifacts:
+      critical_evidence: "Every release-blocking journey and recovery obligation has applicable exercised evidence."
+      residual_risk: "The internal dashboard may omit one noncritical regional breakdown for seven days."
+      decision_owner: "Service director"
+      containment: "Raw regional metrics and paging remain available."
+      expiry: "Risk expires seven days after launch or when the dashboard correction ships, whichever occurs first."
+    must:
+      - "Return Readiness verdict: ready-with-accepted-risk and preserve owner, scope, containment, and expiry."
+  - id: missing-objective-and-owner
+    type: gate
+    prompt: "Declare this service production-ready, but no required outcomes, health objectives, environment evidence, recovery commitment, or operational owner is available."
+    must:
+      - "Return Readiness verdict: insufficient-evidence and identify the load-bearing missing inputs."
+    must_not:
+      - "Convert missing evidence into a passing checklist item."
+  - id: no-operational-boundary
+    type: restraint
+    prompt: "Perform an operational-readiness review of a local spelling correction that changes no deployed behavior, dependency, data, configuration, or operating obligation."
+    must:
+      - "Return Readiness verdict: not-applicable."
+    must_not:
+      - "Generate a production checklist."
+  - id: individual-patch-review
+    type: boundary
+    prompt: "Review this authentication patch for merge readiness."
+    artifacts:
+      diff: "A defined change artifact is available, but no system launch decision is requested."
+    must:
+      - "Return Routing request: adversarial-review for a new routing decision."
+    must_not:
+      - "Activate operational readiness for a patch review."
+  - id: active-production-outage
+    type: boundary
+    prompt: "Production is unavailable now. Perform a readiness review and restore service."
+    must:
+      - "Route active command, containment, recovery, and communication to incident-control."
+    must_not:
+      - "Let a launch assessment displace incident command."

@@ -3,11 +3,12 @@ prompt: "A rollout is causing duplicate financial effects and growing queue back
 expected_flow:
   - "incident-control establishes command, bounds impact, and chooses reversible containment."
   - "incident-control verifies stabilization before deliberate root-cause work."
-  - "A new routing decision selects causal-debugging to establish retry amplification and the violated invariant."
-  - "A later routing decision selects research-before-solution for permanent correction options."
+  - "incident-control remains active as supervisory context through recovery and monitoring."
+  - "A new routing decision selects causal-debugging as the one working skill to establish retry amplification and the violated invariant."
+  - "A later routing decision selects research-before-solution as the one working skill for permanent correction options."
   - "research-before-solution compares rollback, local correction, and no-action only after research completion."
   - "Execution planning activates only if the user requests a recovery plan and material transition hazards remain."
-  - "incident-control owns operational recovery through monitoring and resolution."
+  - "incident-control owns operational command, communication, recovery, and monitoring while working skills remain bounded to their outputs."
   - "Knowledge promotion does not activate without an explicit durable capture request."
 critical_failures:
   - "Speculative permanent patch deployed before safer mitigation."

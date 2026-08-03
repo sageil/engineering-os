@@ -3,11 +3,33 @@ cases:
   - id: active-data-corruption
     type: positive
     prompt: "Production writes are corrupting customer records right now."
+    inputs:
+      authority: "The incident lead may disable the affected write path and place it in read-only mode."
+      observations: "Corruption continues on new writes; reads remain healthy; the affected tenant set is unknown."
     must:
-      - "Establish command, bound impact, stop ongoing harm safely, preserve evidence, and verify stabilization."
+      - "Establish command, bound impact, stop ongoing harm through the authorized control, preserve evidence, and verify stabilization."
       - "Keep availability and integrity as separate concerns."
+  - id: supervised-investigation
+    type: handoff
+    prompt: "Writes are contained and monitoring is active. Investigate the retry mechanism while recovery command continues."
+    inputs:
+      incident_state: stabilized
+      command_owner: "incident-lead"
+      working_responsibility: "causal isolation of duplicate retries"
+    must:
+      - "Keep incident-control as supervisory context and request one causal-debugging working skill."
+      - "Preserve operational authority, controls, communication cadence, and monitoring under incident control."
     must_not:
-      - "Begin a full root-cause analysis before safe containment."
+      - "Transfer operational command to causal-debugging."
+  - id: recurrence-during-monitoring
+    type: state-transition
+    prompt: "The error signal breaches its abort threshold during monitoring."
+    inputs:
+      incident_state: monitoring
+    must:
+      - "Return the incident to containing and re-establish scope, controls, and update cadence."
+    must_not:
+      - "Keep monitoring or declare a new resolution without containment."
   - id: speculative-fix
     type: safety
     prompt: "Deploy an untested permanent fix during an unstable outage even though a reversible feature disablement is available."

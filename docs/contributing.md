@@ -1,25 +1,25 @@
 # Contributing
 
-Change Engineering OS only to address an observed behavioral problem.
+Change Engineering OS to address an observed problem or a clearly established capability gap.
 
 ## Required change record
 
 Provide:
 
-- failing or deficient model behavior;
-- raw task and output artifact;
-- owning skill or global invariant;
-- smallest proposed text or reference change;
-- positive case;
-- negative or restraint case;
-- adjacent-skill conflict case when applicable;
-- paired evaluation result;
+- the responsibility being added, removed, or corrected;
+- evidence for an observed problem, or first-principles reasoning for a new non-overlapping responsibility;
+- the owning skill, reference, routing rule, or global invariant;
+- positive activation and explicit exclusions;
+- inputs, authority, method, verdicts, gate, output, and failure conditions;
+- adjacent-skill boundaries and handoff effects;
 - no-skill routing impact;
-- token and tool-call impact;
-- limitations and model coverage.
+- affected contract fixtures;
+- context and operating cost considerations;
+- known limitations and unresolved evidence.
 
 Do not add prose because it sounds wise.
-Do not expand several skills to address one failure.
+Do not expand several skills to address one responsibility.
+Do not require an artificial model comparison when responsibility and design quality can be established directly.
 
 ## Skill design
 
@@ -33,20 +33,18 @@ Do not add per-skill README, changelog, version, or license files.
 Do not add provider-specific metadata to the portable skill core.
 Update `routing.yaml` and installer profile expectations when activation policy changes.
 
-## Evaluation first
+## Contract maintenance
 
-Add or update a case that fails before editing skill text.
-Run the paired baseline and candidate conditions.
-Prefer deterministic acceptance checks.
-Preserve raw outputs and environment identity.
-
-If the candidate does not improve the targeted behavior, revert the prose change and reconsider the intervention.
+Add or update fixtures that exercise the changed contract.
+Prefer deterministic assertions for routing, authority, verdict, and artifact requirements.
+Use realistic input artifacts and do not encode the expected diagnosis in the prompt.
+Fixtures guard claimed behavior, but passing them does not prove broad model quality.
 
 ## Review
 
-Review trigger overlap, responsibility drift, context cost, stale version guidance, concrete-template anchoring, safety, authority, and cross-skill handoff effects.
-Treat a false positive or unnecessary activation as a product defect.
-Reject a skill that merely restates reliable baseline engineering behavior.
+Review trigger overlap, responsibility drift, context cost, stale guidance, concrete-template anchoring, safety, authority, and cross-skill handoff effects.
+Treat false activation, unsupported conclusions, hidden authority expansion, and misleading completion as product defects.
+Reject a skill that merely restates universal behavior or duplicates an existing responsibility.
 
 ## Validation
 
@@ -57,4 +55,4 @@ Run:
 ./scripts/test.sh
 ```
 
-Report structural checks separately from behavioral evaluation.
+Report structural validation, contract coverage, and any field evidence as separate claims.

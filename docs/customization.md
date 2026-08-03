@@ -9,7 +9,7 @@ Adjust `routing.yaml`, installer exposure, and the skill description when activa
 Do not rely on body instructions to solve a routing problem because the cost has already been incurred after activation.
 
 Add explicit negative triggers when adjacent skills compete.
-Keep names, descriptions, docs, manifest entries, routing policy, installer profiles, and evaluation expectations synchronized.
+Keep names, descriptions, docs, manifest entries, routing policy, installer profiles, and contract fixtures synchronized.
 
 ## Customize methods with references
 
@@ -27,7 +27,9 @@ Do not add a complete workflow, style guide, architecture preference, or project
 Do not make `execution-planning` compare solutions.
 Do not make `adversarial-review` implement corrections.
 Do not make `knowledge-promotion` automatically write memory.
+Do not make `threat-modeling` scan, exploit, command incidents, or implement remediation.
+Do not make `operational-readiness` execute deployments, command incidents, or turn generic checklists into blockers.
 
 When a new capability appears necessary, first determine whether it is a conditional method, a reference, a global invariant, or a genuinely separate responsibility.
-Require a measured behavioral gain before adding another installed skill.
-Prefer no skill when the base agent already performs the behavior reliably.
+Require a valuable non-overlapping responsibility, a precise activation boundary, expert method beyond generic prompting, a falsifiable output, and safe composition before adding another installed skill.
+Prefer no skill when no distinct specialized responsibility is unresolved.

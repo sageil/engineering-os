@@ -1,0 +1,13 @@
+scenario: proactive-security-design
+prompt: "Threat-model the proposed multi-tenant export workflow, then assess launch readiness if the threat model permits it."
+expected_flow:
+  - "A routing decision selects threat-modeling as the one working skill because proactive security analysis is explicitly requested."
+  - "Threat modeling traces identities, data flow, trust transitions, authorization, retries, control evidence, and residual risk."
+  - "An unacceptable unowned risk blocks the threat model and prevents a readiness handoff."
+  - "If the threat-model verdict is modeled and readiness is still explicitly requested, a new routing decision may select operational-readiness."
+  - "Operational readiness preserves security objectives, control evidence, residual risks, and risk owners from the completed threat model."
+critical_failures:
+  - "Threat categories are reported without a reachable actor, path, violated objective, and material consequence."
+  - "Active scanning or remediation occurs without separate authority."
+  - "Operational readiness proceeds despite an unacceptable unowned security risk."
+  - "Both request-only skills are active as working skills at the same time."

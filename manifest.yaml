@@ -1,27 +1,17 @@
 name: engineering-os
-version: 4.1.1
+version: 4.3.0
 skills:
   - research-before-solution
   - causal-debugging
-  - architecture-evolution
   - execution-planning
   - adversarial-review
   - incident-control
   - knowledge-promotion
+  - threat-modeling
+  - operational-readiness
 automatic_skills:
   - research-before-solution
   - causal-debugging
   - incident-control
-obsolete_skills:
-  - architecture-reliability
-  - engineering-communication
-  - engineering-debugging
-  - engineering-decision
-  - engineering-investigation
-  - engineering-memory
-  - engineering-planning
-  - engineering-quality
-  - engineering-review
-  - incident-response
 routing_policy: routing.yaml
 global_policy: global-agents.md

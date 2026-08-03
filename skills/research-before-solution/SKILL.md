@@ -1,6 +1,6 @@
 ---
 name: research-before-solution
-description: Research complex, ambiguous, consequential, disputed, unfamiliar, or potentially outdated engineering issues before proposing solutions. Use for diagnosis, architecture and design questions, reliability, security, performance, integrations, incidents after stabilization, or implementation requests when correctness depends on repository evidence, runtime evidence, current external primary sources, historical context, or causal analysis. Enforce a hard gate that blocks solution options, recommendations, plans, and implementation until decision-relevant research is complete. Do not trigger for trivial, explicit, low-risk mechanical work whose relevant behavior is already verified.
+description: Establish decision-sufficient evidence and compare credible options when a complex engineering decision has material uncertainty that could change the available solutions or their ranking. Use for architecture, design, integration, reliability, security, performance, or technology decisions after any concrete failure cause requiring causal isolation has been established. Do not use for reproducing or diagnosing an observed failure, active incidents, routine repository inspection, ordinary implementation with a selected mechanism, review, execution planning, or low-risk mechanical work.
 ---
 
 # Research Before Solution
@@ -33,8 +33,8 @@ Separate reported symptoms from inferred causes.
 Identify unknowns that could change the option set or its ranking.
 Exclude research that cannot affect the decision.
 
-Use a proportional path for a low-consequence task that explicitly invokes this skill.
-Inspect the owning artifact and load-bearing assumptions, then apply the same gate without unnecessary ceremony.
+Scale research depth to decision consequence and uncertainty.
+When the skill is explicitly requested for a bounded decision, inspect the owning artifact and load-bearing assumptions, then apply the same gate without unnecessary ceremony.
 
 ## 2. Plan the evidence
 
@@ -67,13 +67,13 @@ Summarize decision-useful evidence for the user rather than dumping raw notes.
 
 ## 4. Challenge the leading explanation
 
-Treat the first explanation as a hypothesis.
-Develop credible alternatives when they exist.
+Treat the first decision-relevant explanation as a hypothesis.
+Develop only alternatives that could change the credible option set or its ranking.
 Seek observations that would falsify the leading explanation.
 Use a controlled comparison or reproduction before claiming causation when practical.
 Label causal claims as inference when control is unavailable, and preserve the remaining alternatives.
 
-When a failure requires systematic reproduction and causal isolation, return `Routing request: causal-debugging` for a new routing decision.
+When a concrete observed failure requires systematic reproduction and causal isolation, stop research and return `Routing request: causal-debugging` for a new routing decision.
 Do not activate another skill from inside this skill or ask causal debugging to choose a correction.
 
 ## 5. Reconcile the record
@@ -89,8 +89,8 @@ Set the verdict to `complete` only when every statement is true:
 
 - The decision, scope, and success conditions are clear.
 - The real owning path and material boundaries have been inspected.
-- Every decision-relevant claim has proportionate evidence.
-- Credible competing explanations have been tested or bounded.
+- Every material decision-relevant claim has proportionate evidence.
+- Credible competing explanations that could change the decision have been tested or bounded.
 - Material contradictions have been resolved or exposed with known consequences.
 - Remaining unknowns cannot materially change the available options or their ranking.
 - No practical, safe, accessible investigation is likely to change the decision materially.
@@ -112,8 +112,8 @@ Develop only credible, materially distinct options.
 Include deletion, rollback, deferral, configuration, or doing nothing when the evidence makes them credible.
 Do not invent weak alternatives to create the appearance of choice.
 
-When options change durable boundaries, data ownership, trust, distribution, deployment, or migration, identify architecture analysis as an optional request-only capability.
-Do not activate it without a new routing decision and an explicit user request.
+When options change durable boundaries, data ownership, trust, distribution, deployment, consistency, or long-term ownership, read [architecture-model.md](references/architecture-model.md) before ranking them.
+Keep structural analysis inside the current research responsibility rather than activating a separate architecture skill.
 Return to research if an option introduces a material unverified assumption.
 
 Recommend only when evidence distinguishes the options.

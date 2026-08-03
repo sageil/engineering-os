@@ -1,6 +1,6 @@
 ---
 name: knowledge-promotion
-description: Preserve verified, reusable engineering knowledge in the strongest appropriate durable artifact while preventing stale or unnecessary memory growth. Use only when the user explicitly requests durable knowledge capture for an accepted decision, completed incident learning, repeated verified failure pattern, or durable constraint. Prefer enforcement, tests, automation, documentation, ADRs, and runbooks over generic agent memory. Do not trigger automatically after another skill, for routine session summaries, temporary state, speculative lessons, or facts that are cheap to rediscover.
+description: Preserve verified, reusable engineering knowledge in the strongest appropriate durable artifact while preventing stale or unnecessary memory growth. Use only when the user explicitly requests durable knowledge capture for an accepted decision, completed incident learning, repeated verified failure pattern, or durable constraint. Select enforcement, tests, automation, documentation, ADRs, or runbooks before generic agent memory, but do not treat a capture request as authority to implement production code, schema, configuration, CI, monitoring, or test changes. Do not trigger automatically after another skill, for routine session summaries, temporary state, speculative lessons, or facts that are cheap to rediscover.
 ---
 
 # Knowledge Promotion
@@ -13,7 +13,7 @@ Default to not persisting when future value is unclear.
 
 Maintain one verdict:
 
-- `promote`: Create or update a stronger artifact with explicit authority.
+- `promote`: Select the stronger artifact and create or update it only when that artifact class is explicitly authorized.
 - `record`: Persist a scoped decision or lesson because no stronger artifact fits.
 - `already-encoded`: Existing code, automation, documentation, or decision record is authoritative.
 - `do-not-store`: Knowledge is temporary, speculative, sensitive, duplicated, cheap to rediscover, or not decision-useful.
@@ -36,7 +36,7 @@ Require:
 - absence of unresolved contradiction;
 - authorized and privacy-safe content.
 
-Use `research-before-solution` when the lesson is still a hypothesis.
+When the lesson is still a hypothesis, stop and return `Routing request: research-before-solution` for a new routing decision.
 Return `do-not-store` when knowledge cannot pass the durability gate.
 
 ## 3. Select the strongest artifact
@@ -54,8 +54,10 @@ Prefer in order when applicable:
 
 Do not maintain duplicate authoritative copies.
 Replace old guidance with a pointer only when context still improves judgment.
+A request to preserve knowledge authorizes placement analysis, not production enforcement changes.
+When code, schema, permissions, configuration, tests, CI, deployment guards, monitors, or alerts are the strongest artifact but that artifact class was not explicitly authorized, return the proposed artifact and required authority without modifying it.
 
-## 4. Distill and write
+## 4. Distill and write within authority
 
 Record:
 
@@ -114,6 +116,7 @@ Do not write anything when the verdict is `do-not-store` or `authority-required`
 Do not automatically create memory after every task.
 Do not use memory as a substitute for repository inspection.
 Do not store unresolved work as a durable conclusion.
+Do not implement production enforcement solely because the user requested knowledge capture.
 Do not write to shared artifacts without user authority.
 
 ## Failure conditions

@@ -123,29 +123,61 @@ AGENTS_BACKUPS="$STATE_DIR/backups/agents"
 
 ALL_SKILLS=$(mktemp)
 AUTOMATIC_SKILLS=$(mktemp)
-OBSOLETE_SKILLS=$(mktemp)
 PACKAGED_SKILLS=$(mktemp)
 OLD_SKILLS=$(mktemp)
-trap 'rm -f "$ALL_SKILLS" "$AUTOMATIC_SKILLS" "$OBSOLETE_SKILLS" "$PACKAGED_SKILLS" "$OLD_SKILLS"' EXIT
+SOURCE_SKILLS=$(mktemp)
+HASH_SKILLS=$(mktemp)
+trap 'rm -f "$ALL_SKILLS" "$AUTOMATIC_SKILLS" "$PACKAGED_SKILLS" "$OLD_SKILLS" "$SOURCE_SKILLS" "$HASH_SKILLS"' EXIT
 manifest_skills "$MANIFEST" > "$ALL_SKILLS"
 manifest_list "$MANIFEST" automatic_skills > "$AUTOMATIC_SKILLS"
-manifest_list "$MANIFEST" obsolete_skills > "$OBSOLETE_SKILLS"
 [[ -s "$ALL_SKILLS" ]] || fail "Manifest contains no skills."
 [[ -s "$AUTOMATIC_SKILLS" ]] || fail "Manifest contains no automatic skills."
-[[ -s "$OBSOLETE_SKILLS" ]] || fail "Manifest contains no obsolete skill inventory."
+find "$ROOT_DIR/skills" -mindepth 1 -maxdepth 1 -type d -exec basename {} \; > "$SOURCE_SKILLS"
+cmp -s <(LC_ALL=C sort "$ALL_SKILLS") <(LC_ALL=C sort "$SOURCE_SKILLS") || fail "Packaged skill directories do not match the manifest."
 
-if [[ -f "$SKILLS_STATE" ]]; then
+if [[ -f "$STATE_FILE" ]]; then
+  [[ "$(state_get "$STATE_FILE" STATE_SCHEMA 2>/dev/null || true)" == "$INSTALL_STATE_SCHEMA" ]] || fail "Unsupported installation state. Use a new skills target or remove the unsupported installation manually."
+  [[ -f "$SKILLS_STATE" ]] || fail "Installation state is missing skills.list."
+  [[ -f "$SKILLS_HASHES" ]] || fail "Installation state is missing skills.sha256."
   cp "$SKILLS_STATE" "$OLD_SKILLS"
+  duplicate=$(LC_ALL=C sort "$OLD_SKILLS" | uniq -d)
+  [[ -z "$duplicate" ]] || fail "Installation state contains a duplicate skill: $duplicate"
+  awk 'NF { if (NF != 2 || $1 !~ /^[a-z0-9-]+$/ || $2 !~ /^[0-9a-f]+$/ || length($2) != 64) exit 1; print $1 }' "$SKILLS_HASHES" > "$HASH_SKILLS" || fail "Installation state contains an invalid skill hash record."
+  cmp -s <(LC_ALL=C sort "$OLD_SKILLS") <(LC_ALL=C sort "$HASH_SKILLS") || fail "Installed skill and hash inventories do not match."
+
+  while IFS= read -r skill || [[ -n "$skill" ]]; do
+    [[ -n "$skill" ]] || continue
+    case "$skill" in
+      *[!a-z0-9-]*) fail "Installation state contains an invalid skill name: $skill" ;;
+    esac
+  done < "$OLD_SKILLS"
+
+  if [[ -f "$ORIGINAL_SKILLS" ]]; then
+    while IFS='=' read -r skill backup || [[ -n "$skill" ]]; do
+      [[ -n "$skill" ]] || continue
+      line_in_file "$skill" "$OLD_SKILLS" || fail "Skill backup mapping is not managed: $skill"
+      case "$backup" in
+        "$SKILLS_BACKUPS"/*) ;;
+        *) fail "Skill backup is outside the managed backup root: $backup" ;;
+      esac
+      [[ -d "$backup" ]] || fail "Pre-installation skill backup is missing: $backup"
+    done < "$ORIGINAL_SKILLS"
+  fi
+elif [[ -e "$SKILLS_STATE" || -e "$SKILLS_HASHES" || -e "$ORIGINAL_SKILLS" ]]; then
+  fail "Partial installation state exists without install-state.env. Remove or recover the state directory before installing."
 fi
 
 STORED_PROFILE=$(state_get "$STATE_FILE" PROFILE 2>/dev/null || true)
 
 if [[ -z "$PROFILE" ]]; then
-  case "$STORED_PROFILE" in
-    "") PROFILE=automatic ;;
-    automatic|full|none|custom) PROFILE=$STORED_PROFILE ;;
-    *) PROFILE=automatic ;;
-  esac
+  if [[ -f "$STATE_FILE" ]]; then
+    case "$STORED_PROFILE" in
+      automatic|full|none|custom) PROFILE=$STORED_PROFILE ;;
+      *) fail "Installation state contains an unsupported profile: ${STORED_PROFILE:-missing}" ;;
+    esac
+  else
+    PROFILE=automatic
+  fi
 fi
 
 case "$PROFILE" in
@@ -170,7 +202,7 @@ case "$PROFILE" in
     fi
     [[ -s "$PACKAGED_SKILLS" ]] || fail "Custom skill selection is empty."
     ;;
-  *) fail "Unsupported profile after migration: $PROFILE" ;;
+  *) fail "Unsupported profile: $PROFILE" ;;
 esac
 
 if [[ -n "$(LC_ALL=C sort "$ALL_SKILLS" | uniq -d)" ]]; then
@@ -194,7 +226,9 @@ while IFS= read -r skill || [[ -n "$skill" ]]; do
   source_dir="$ROOT_DIR/skills/$skill"
   [[ -d "$source_dir" && -f "$source_dir/SKILL.md" ]] || fail "Invalid packaged skill: $skill"
   grep -q "^name: $skill$" "$source_dir/SKILL.md" || fail "Skill name does not match manifest: $skill"
-done < "$PACKAGED_SKILLS"
+  grep -q '^description:' "$source_dir/SKILL.md" || fail "Skill description is missing: $skill"
+  [[ ! -e "$source_dir/agents" ]] || fail "Provider-specific agents metadata is not allowed: $skill"
+done < "$ALL_SKILLS"
 
 # Complete preflight for every old managed target before changing anything.
 while IFS= read -r skill || [[ -n "$skill" ]]; do
@@ -227,6 +261,22 @@ done < "$PACKAGED_SKILLS"
 
 managed_agents_hash=$(state_get "$STATE_FILE" AGENTS_INSTALLED_SHA256 2>/dev/null || true)
 existing_agents_action=$(state_get "$STATE_FILE" AGENTS_ACTION 2>/dev/null || true)
+if [[ -f "$STATE_FILE" ]]; then
+  [[ "$existing_agents_action" == keep || "$existing_agents_action" == replace ]] || fail "Installation state contains an unsupported AGENTS.md action: ${existing_agents_action:-missing}"
+  if [[ "$existing_agents_action" == replace ]]; then
+    original_agents_existed=$(state_get "$STATE_FILE" AGENTS_ORIGINAL_EXISTED 2>/dev/null || true)
+    original_agents_backup=$(state_get "$STATE_FILE" AGENTS_ORIGINAL_BACKUP 2>/dev/null || true)
+    [[ -n "$managed_agents_hash" ]] || fail "Installation state is missing the installed AGENTS.md hash."
+    [[ "$original_agents_existed" == 0 || "$original_agents_existed" == 1 ]] || fail "Installation state contains an invalid AGENTS.md origin flag."
+    if [[ "$original_agents_existed" == 1 ]]; then
+      case "$original_agents_backup" in
+        "$AGENTS_BACKUPS"/*) ;;
+        *) fail "AGENTS.md backup is outside the managed backup root: $original_agents_backup" ;;
+      esac
+      [[ -f "$original_agents_backup" ]] || fail "Original AGENTS.md backup is missing: $original_agents_backup"
+    fi
+  fi
+fi
 if [[ "$AGENTS_MODE" == replace && -e "$AGENTS_TARGET" && ! -f "$AGENTS_TARGET" ]]; then
   fail "AGENTS.md target is not a regular file: $AGENTS_TARGET"
 fi
@@ -238,24 +288,7 @@ else
   mkdir -p "$SKILLS_TARGET" "$STATE_DIR"
 fi
 
-# Remove obsolete Engineering OS skill names from the discovery directory.
-while IFS= read -r skill || [[ -n "$skill" ]]; do
-  [[ -n "$skill" ]] || continue
-  target_dir="$SKILLS_TARGET/$skill"
-  if [[ -d "$target_dir" ]]; then
-    if ((DRY_RUN)); then
-      info "Would remove obsolete Engineering OS skill: $target_dir"
-    else
-      safe_remove_managed_dir "$target_dir" "$SKILLS_TARGET"
-      state_remove "$ORIGINAL_SKILLS" "$skill"
-      info "Removed obsolete Engineering OS skill: $skill"
-    fi
-  elif [[ -e "$target_dir" ]]; then
-    fail "Obsolete Engineering OS skill target is not a directory: $target_dir"
-  fi
-done < "$OBSOLETE_SKILLS"
-
-# Reconcile managed skills removed from the new manifest.
+# Reconcile previously managed skills that are no longer selected or packaged.
 while IFS= read -r skill || [[ -n "$skill" ]]; do
   [[ -n "$skill" ]] || continue
   if line_in_file "$skill" "$PACKAGED_SKILLS"; then
@@ -266,7 +299,7 @@ while IFS= read -r skill || [[ -n "$skill" ]]; do
   original=$(state_get "$ORIGINAL_SKILLS" "$skill" 2>/dev/null || true)
   if [[ -n "$original" && -d "$original" ]]; then
     if ((DRY_RUN)); then
-      info "Would restore obsolete skill backup: $original -> $target_dir"
+      info "Would restore pre-installation skill backup: $original -> $target_dir"
     else
       atomic_replace_dir "$original" "$target_dir"
       safe_remove_managed_dir "$original" "$SKILLS_BACKUPS"
@@ -275,10 +308,10 @@ while IFS= read -r skill || [[ -n "$skill" ]]; do
     fi
   elif [[ -d "$target_dir" ]]; then
     if ((DRY_RUN)); then
-      info "Would remove obsolete managed skill: $target_dir"
+      info "Would remove managed skill no longer selected: $target_dir"
     else
       safe_remove_managed_dir "$target_dir" "$SKILLS_TARGET"
-      info "Removed obsolete managed skill: $skill"
+      info "Removed managed skill no longer selected: $skill"
     fi
   fi
 done < "$OLD_SKILLS"
@@ -317,6 +350,7 @@ else
     printf '%s %s\n' "$skill" "$(dir_sha256 "$SKILLS_TARGET/$skill")" >> "$SKILLS_HASHES"
   done < "$SKILLS_STATE"
   state_set "$STATE_FILE" VERSION "$(cat "$ROOT_DIR/VERSION")"
+  state_set "$STATE_FILE" STATE_SCHEMA "$INSTALL_STATE_SCHEMA"
   state_set "$STATE_FILE" PROFILE "$PROFILE"
   state_set "$STATE_FILE" SKILLS_TARGET "$SKILLS_TARGET"
   state_set "$STATE_FILE" AGENTS_TARGET "$AGENTS_TARGET"

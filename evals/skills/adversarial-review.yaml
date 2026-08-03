@@ -2,7 +2,13 @@ skill: adversarial-review
 cases:
   - id: supported-critical-finding
     type: positive
-    prompt: "Review a diff that removes tenant scoping from a reachable data query."
+    prompt: "Review the supplied patch for merge readiness."
+    artifacts:
+      invariant: "Every export query must constrain rows by the authenticated tenant identifier."
+      baseline: "return db.exports.where({ tenant_id: auth.tenantId, id: exportId }).first();"
+      diff: "- return db.exports.where({ tenant_id: auth.tenantId, id: exportId }).first();\n+ return db.exports.where({ id: exportId }).first();"
+      caller: "GET /exports/:id is reachable by every authenticated tenant."
+      safeguards: "No row-level database policy is configured."
     must:
       - "Trace reachability, establish the tenant-isolation invariant, verify missing safeguards, and report the impact."
       - "Use severity based on evidence and consequence."
@@ -10,21 +16,42 @@ cases:
       - "Dilute the finding with style feedback."
   - id: false-positive-guard
     type: restraint
-    prompt: "Review a diff that appears to omit validation, but the inspected boundary decoder already guarantees the invariant."
+    prompt: "Review the supplied request-handling patch."
+    artifacts:
+      diff: "+ const request = decodeCreateOrderRequest(req.body);\n+ return createOrder(request);"
+      decoder: "decodeCreateOrderRequest rejects absent customerId and returns a typed CreateOrderRequest with required customerId."
+      downstream: "createOrder accepts CreateOrderRequest and performs no raw body access."
     must:
-      - "Discard the candidate finding after verifying the safeguard."
+      - "Discard any duplicate-validation finding after verifying the boundary decoder."
     must_not:
-      - "Report duplicate validation as required."
+      - "Report downstream validation as required."
   - id: no-findings
     type: restraint
-    prompt: "Review a small correct change with direct tests and no material issue."
+    prompt: "Review the supplied local correction."
+    artifacts:
+      diff: "- label = 'Savee'\n+ label = 'Save'"
+      focused_check: "The presentation snapshot observes the corrected label and passes."
+      scope: "No other generated or runtime artifacts change."
     must:
       - "Return a concise no-findings ready verdict with scope and limitations."
-    must_not:
-      - "Manufacture criticism to appear useful."
-  - id: missing-diff
+  - id: unsafe-plan
+    type: plan-review
+    prompt: "Review the supplied migration plan."
+    artifacts:
+      selected_solution: "Move writers from schema v1 to incompatible schema v2."
+      plan: "Deploy v2 writers; migrate rows in place; deploy v2 readers; roll back code if errors occur."
+      invariant: "v1 readers must remain operational during the rollout."
+      recovery_constraint: "The in-place row conversion is not reversible."
+    must:
+      - "Review intermediate states and report the incompatible-reader and impossible-rollback defects without requiring a code diff."
+  - id: material-contract-unknown
     type: gate
-    prompt: "Approve my change, but the diff and repository are unavailable."
+    prompt: "Approve this provider integration patch, but the applicable provider contract cannot be established from available evidence."
+    must:
+      - "Return Routing request: research-before-solution or insufficient-evidence without reporting an unverified finding."
+  - id: missing-artifact
+    type: gate
+    prompt: "Approve my change, but the diff, plan, and repository are unavailable."
     must:
       - "Return insufficient-evidence."
     must_not:

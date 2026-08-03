@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="920" viewBox="0 0 1600 920" role="img" aria-labelledby="title description">
   <title id="title">Engineering OS context-gated routing map</title>
-  <desc id="description">The routing default is no skill. At most one capability is exposed. Research Before Solution, Causal Debugging, and Incident Control may activate automatically. Architecture Evolution, Execution Planning, Adversarial Review, and Knowledge Promotion require an explicit user request. Ordinary actions never trigger skills.</desc>
+  <desc id="description">The routing default is no skill. At most one working capability is exposed. Research Before Solution and Causal Debugging may activate automatically. Incident Control may persist as supervisory context. Execution Planning, Adversarial Review, Knowledge Promotion, Threat Modeling, and Operational Readiness require an explicit user request. Ordinary actions never trigger skills.</desc>
   <defs>
     <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#070b14"/>
@@ -37,6 +37,7 @@
       .heading { fill: #f8fafc; font: 700 40px Inter, ui-sans-serif, system-ui, sans-serif; }
       .section { fill: #cbd5e1; font: 650 17px Inter, ui-sans-serif, system-ui, sans-serif; letter-spacing: 2.5px; }
       .label { fill: #f8fafc; font: 650 21px Inter, ui-sans-serif, system-ui, sans-serif; }
+      .requested-label { fill: #f8fafc; font: 650 17px Inter, ui-sans-serif, system-ui, sans-serif; }
       .sub { fill: #9eacc2; font: 400 15px Inter, ui-sans-serif, system-ui, sans-serif; }
       .core-small { fill: #bae6fd; font: 650 16px Inter, ui-sans-serif, system-ui, sans-serif; letter-spacing: 2px; }
       .core-large { fill: #ffffff; font: 760 37px Inter, ui-sans-serif, system-ui, sans-serif; }
@@ -53,9 +54,9 @@
 
   <text x="72" y="72" class="eyebrow">ENGINEERING OS</text>
   <text x="72" y="122" class="heading">Context-gated capability routing</text>
-  <text x="72" y="154" class="sub">Start with no skill. Expose one capability only when the unresolved responsibility demands it.</text>
+  <text x="72" y="154" class="sub">Start with no working skill. Expose one only when the unresolved responsibility demands it.</text>
 
-  <text x="72" y="218" class="section">AUTOMATIC, WHEN STRICTLY QUALIFIED</text>
+  <text x="72" y="218" class="section">AUTOMATIC WORKING SKILLS AND INCIDENT SUPERVISION</text>
   <line x1="72" y1="234" x2="1528" y2="234" stroke="url(#automatic)" stroke-opacity="0.5"/>
 
   <g filter="url(#shadow)">
@@ -63,7 +64,7 @@
     <rect x="72" y="258" width="7" height="130" rx="3" fill="url(#automatic)"/>
     <circle cx="112" cy="302" r="10" fill="#22d3ee"/>
     <text x="139" y="309" class="label">Research Before Solution</text>
-    <text x="104" y="344" class="sub">Material uncertainty can change</text>
+    <text x="104" y="344" class="sub">Material decision uncertainty can change</text>
     <text x="104" y="366" class="sub">the options or their ranking.</text>
   </g>
 
@@ -81,8 +82,8 @@
     <rect x="1168" y="258" width="7" height="130" rx="3" fill="#f59e0b"/>
     <circle cx="1208" cy="302" r="10" fill="#fbbf24"/>
     <text x="1235" y="309" class="label">Incident Control</text>
-    <text x="1200" y="344" class="sub">Production harm is active</text>
-    <text x="1200" y="366" class="sub">or escalating.</text>
+    <text x="1200" y="344" class="sub">Supervises production harm, recovery,</text>
+    <text x="1200" y="366" class="sub">and incident monitoring.</text>
   </g>
 
   <path d="M 432 323 C 545 323, 565 444, 650 444" class="connector"/>
@@ -111,32 +112,44 @@
   <line x1="72" y1="702" x2="1528" y2="702" stroke="url(#requested)" stroke-opacity="0.5"/>
 
   <g filter="url(#shadow)">
-    <rect x="72" y="728" width="336" height="118" rx="20" fill="#14172a" stroke="#8b5cf6" stroke-opacity="0.68"/>
-    <circle cx="110" cy="769" r="9" fill="#8b5cf6"/>
-    <text x="136" y="776" class="label">Architecture Evolution</text>
-    <text x="104" y="813" class="sub">Requested structural option analysis</text>
+    <rect x="72" y="728" width="264" height="118" rx="20" fill="#14172a" stroke="#9f7aea" stroke-opacity="0.68"/>
+    <circle cx="100" cy="769" r="8" fill="#9f7aea"/>
+    <text x="120" y="775" class="requested-label">Execution Planning</text>
+    <text x="100" y="808" class="sub">Hazardous transition</text>
+    <text x="100" y="829" class="sub">plan</text>
   </g>
 
   <g filter="url(#shadow)">
-    <rect x="444" y="728" width="336" height="118" rx="20" fill="#14172a" stroke="#9f7aea" stroke-opacity="0.68"/>
-    <circle cx="482" cy="769" r="9" fill="#9f7aea"/>
-    <text x="508" y="776" class="label">Execution Planning</text>
-    <text x="476" y="813" class="sub">Requested hazardous transition plan</text>
+    <rect x="370" y="728" width="264" height="118" rx="20" fill="#14172a" stroke="#a78bfa" stroke-opacity="0.68"/>
+    <circle cx="398" cy="769" r="8" fill="#a78bfa"/>
+    <text x="418" y="775" class="requested-label">Adversarial Review</text>
+    <text x="398" y="808" class="sub">Independent change</text>
+    <text x="398" y="829" class="sub">challenge</text>
   </g>
 
   <g filter="url(#shadow)">
-    <rect x="816" y="728" width="336" height="118" rx="20" fill="#14172a" stroke="#a78bfa" stroke-opacity="0.68"/>
-    <circle cx="854" cy="769" r="9" fill="#a78bfa"/>
-    <text x="880" y="776" class="label">Adversarial Review</text>
-    <text x="848" y="813" class="sub">Requested independent challenge</text>
+    <rect x="668" y="728" width="264" height="118" rx="20" fill="#14172a" stroke="#b084f7" stroke-opacity="0.68"/>
+    <circle cx="696" cy="769" r="8" fill="#b084f7"/>
+    <text x="716" y="775" class="requested-label">Knowledge Promotion</text>
+    <text x="696" y="808" class="sub">Durable knowledge</text>
+    <text x="696" y="829" class="sub">capture</text>
   </g>
 
   <g filter="url(#shadow)">
-    <rect x="1188" y="728" width="340" height="118" rx="20" fill="#14172a" stroke="#c084fc" stroke-opacity="0.68"/>
-    <circle cx="1226" cy="769" r="9" fill="#c084fc"/>
-    <text x="1252" y="776" class="label">Knowledge Promotion</text>
-    <text x="1220" y="813" class="sub">Requested durable knowledge capture</text>
+    <rect x="966" y="728" width="264" height="118" rx="20" fill="#14172a" stroke="#b987f8" stroke-opacity="0.68"/>
+    <circle cx="994" cy="769" r="8" fill="#b987f8"/>
+    <text x="1014" y="775" class="requested-label">Threat Modeling</text>
+    <text x="994" y="808" class="sub">Attack paths and</text>
+    <text x="994" y="829" class="sub">residual risk</text>
   </g>
 
-  <text x="800" y="884" text-anchor="middle" class="sub">Maximum one active skill • New routing decision before every handoff • Provider-neutral core</text>
+  <g filter="url(#shadow)">
+    <rect x="1264" y="728" width="264" height="118" rx="20" fill="#14172a" stroke="#c084fc" stroke-opacity="0.68"/>
+    <circle cx="1292" cy="769" r="8" fill="#c084fc"/>
+    <text x="1312" y="775" class="requested-label">Operational Readiness</text>
+    <text x="1292" y="808" class="sub">Launch and sustained</text>
+    <text x="1292" y="829" class="sub">operation decision</text>
+  </g>
+
+  <text x="800" y="884" text-anchor="middle" class="sub">Maximum one working skill • Incident supervision may persist • Provider-neutral core</text>
 </svg>

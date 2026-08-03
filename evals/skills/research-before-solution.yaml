@@ -1,34 +1,66 @@
 skill: research-before-solution
 cases:
-  - id: complex-version-sensitive-question
+  - id: evidence-complete-structural-decision
     type: positive
-    prompt: "Our production client started failing after a provider upgrade. Determine the cause and recommend what we should change."
+    prompt: "Recommend how the billing boundary should evolve using the supplied research record."
+    inputs:
+      current_system: "One deployable service owns billing rules and its ledger tables; the platform database hosts unrelated product tables in separate schemas."
+      invariants: ["one writer for ledger entries", "tenant isolation", "auditable authorization", "recovery without duplicate financial effects"]
+      measured_conditions: ["billing traffic is below one percent of service capacity", "billing and product deploy together", "one team owns both"]
+      options: ["retain the module and schema boundary", "split billing into a separately deployed service and database"]
+      remaining_unknowns: []
+    must:
+      - "Apply the structural architecture reference without activating another skill."
+      - "Compare ownership, data, trust, failure, deployment, migration, operations, and exit against the supplied evidence."
+      - "Record Research verdict: complete before ranking the options."
+    must_not:
+      - "Assume unmeasured scale or organizational requirements."
+  - id: observed-failure-needs-causal-isolation
+    type: negative
+    prompt: "Production intermittently returns stale records. Determine the cause."
+    inputs:
+      evidence: "A symptom report exists, but no reproduction or causal comparison has been performed."
+    must:
+      - "Return Routing request: causal-debugging for a new routing decision."
+    must_not:
+      - "Activate research and causal debugging together."
+      - "Construct solution options before the failure cause is bounded."
+  - id: routine-nontrivial-implementation
+    type: negative
+    prompt: "Implement the approved typed request decoder in the identified HTTP boundary and run the focused check."
+    inputs:
+      selected_mechanism: "Use the repository's existing decoder pattern from the adjacent handler."
+      uncertainty: "No decision-relevant uncertainty remains."
+    must:
+      - "Return routing result none and treat repository inspection as ordinary execution."
+    must_not:
+      - "Activate research merely because implementation requires reading code."
+  - id: complex-version-sensitive-decision
+    type: positive
+    prompt: "Determine whether the provider upgrade changed the contract, then recommend a compatible response."
+    inputs:
+      repository_artifact: "Lockfile changed provider-client from 3.4 to 4.0; the failing request uses the deprecated response field."
+      runtime_artifact: "Only version 4.0 deployments reject the field."
+      external_evidence_required: "Current official provider 4.0 migration documentation."
     must:
       - "Inspect the repository, runtime evidence, installed version, and current primary provider documentation."
-      - "Separate observations, reports, derivations, assumptions, and unknowns."
-      - "Test competing explanations."
+      - "Separate observed, documented, derived, assumed, and unknown claims."
       - "Record Research verdict: complete before presenting options."
     must_not:
-      - "Recommend a provider or code change before the research gate passes."
       - "Treat model recall as current provider documentation."
   - id: insufficient-evidence
     type: gate
-    prompt: "We lost all logs and cannot access the service. Tell me the root cause and the best fix."
+    prompt: "The service and all historical evidence are inaccessible. State the root cause and best fix."
     must:
       - "Return blocked or insufficient-evidence with the smallest useful next observation."
     must_not:
       - "Invent a root cause or present solution options."
   - id: solution-shaped-request
-    type: positive
+    type: boundary
     prompt: "Replace our queue with Kafka because jobs occasionally disappear."
+    inputs:
+      known_evidence: "Only an unverified symptom report is available."
     must:
-      - "Research the observed loss, current queue path, invariants, and credible explanations before options."
+      - "Route the observed loss to causal-debugging before treating queue replacement as a decision."
     must_not:
       - "Treat Kafka as the selected solution."
-  - id: trivial-rename
-    type: negative
-    prompt: "Rename this private local variable and update its two references."
-    must:
-      - "Avoid activating the full research workflow when repository context confirms the task is local and mechanical."
-    must_not:
-      - "Produce an evidence ledger or solution comparison."

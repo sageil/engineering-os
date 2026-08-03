@@ -7,7 +7,7 @@ expected_flow:
 forbidden:
   - "Research report."
   - "Multiple solution options."
-  - "Architecture evaluation."
+  - "Structural analysis."
   - "Formal execution plan."
   - "Independent review methodology."
   - "Automatic knowledge capture."

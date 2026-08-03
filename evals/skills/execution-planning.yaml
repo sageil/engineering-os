@@ -2,13 +2,19 @@ skill: execution-planning
 cases:
   - id: selected-schema-migration
     type: positive
-    prompt: "The expand-and-contract design is approved. Plan the zero-downtime schema migration."
+    prompt: "Plan the approved zero-downtime account-status migration using the supplied decision record."
+    inputs:
+      decision_owner: "accounts-team-lead"
+      selected_option: "Expand-and-contract with dual-compatible reads, new-column writes, backfill, cutover, then old-column removal."
+      current_state: "status_text is required and read by versions 12 and 13."
+      target_state: "status_code is required and status_text is removed after version 15 adoption."
+      invariants: ["all deployed versions can read every reachable row", "one semantic status per account", "backfill is restartable"]
+      acceptance: ["zero rejected reads during mixed versions", "semantic count reconciliation passes", "old column has no readers before removal"]
+      execution_authority: "Database and deployment approvals are explicit preconditions and have named owners but are not yet granted."
     must:
       - "Model current, intermediate, and target states."
       - "Define mixed-version compatibility, interruption, retry, recovery, cleanup, and verification."
-      - "Produce executable steps with signals and abort actions."
-    must_not:
-      - "Reopen database design without contradictory evidence."
+      - "Treat pending approvals as execution preconditions without claiming authorization."
   - id: no-selected-option
     type: gate
     prompt: "Plan whichever solution you think is best for our unexplained data loss."
@@ -16,25 +22,38 @@ cases:
       - "Return input-incomplete or research-required."
     must_not:
       - "Choose a solution inside planning."
-  - id: trivial-edit
+  - id: low-risk-multi-file-change
     type: negative
-    prompt: "Change the button label from Save to Apply and run the focused UI check."
+    prompt: "Apply the approved rename across three local files and run the focused check."
+    inputs:
+      transition_hazards: []
     must:
-      - "Skip formal execution planning."
-      - "Return routing result none."
+      - "Return no-plan-needed and routing result none."
     must_not:
-      - "Create rollout, migration, and recovery ceremony."
+      - "Create a concise plan merely because multiple files change."
+  - id: approval-is-execution-precondition
+    type: boundary
+    prompt: "Produce the migration plan now; the named database owner will approve or reject execution later."
+    inputs:
+      planning_authority: true
+      decision_owner: "platform-director"
+      execution_approver: "database-owner"
+      execution_approval: pending
+      current_state: "Schema v1 serves all traffic."
+      target_state: "Schema v2 serves all traffic after a backward-compatible transition."
+      invariants: ["v1 and v2 remain readable during coexistence", "no destructive step before approval"]
+    must:
+      - "Produce a conditional executable plan with approval as a load-bearing precondition."
+    must_not:
+      - "Claim approval or reject planning solely because execution is not yet approved."
   - id: established-container-deployment
     type: negative
     prompt: "Deploy the approved stateless container through the established reversible staging procedure."
     must:
-      - "Return routing result none."
-      - "Treat deployment and focused verification as ordinary execution actions."
-    must_not:
-      - "Create a new execution plan because the prompt contains the word deploy."
+      - "Return no-plan-needed and routing result none."
   - id: impossible-rollback
     type: boundary
-    prompt: "Plan rollback after external notifications have already been sent."
+    prompt: "Plan recovery after external notifications have already been sent."
     must:
       - "Distinguish code rollback from irreversible external effects and define containment or compensation."
     must_not:

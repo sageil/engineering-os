@@ -11,10 +11,10 @@ Find the smallest causal explanation consistent with every material observation.
 Do not patch symptoms or select a correction before the causal gate passes.
 Preserve the original failure signal and distinguish observation from interpretation.
 
-Maintain one verdict:
+Maintain one working state or terminal verdict:
 
 - `unreproduced`: The symptom is reported but not established in a controlled observation.
-- `investigating`: Reproduction exists and causal discrimination continues.
+- `investigating`: A trustworthy failure signal exists and causal discrimination continues; do not stop in this state unless reporting requested progress.
 - `cause-established`: The causal gate passes.
 - `blocked`: A required environment, signal, input, or authority is unavailable.
 - `inconclusive`: Available experiments cannot distinguish the remaining explanations.
@@ -104,7 +104,7 @@ Do not activate another skill from inside this skill.
 - Competing causal models
 - Experiments and results
 - Causal chain and remaining uncertainty
-- `Debugging verdict: unreproduced | cause-established | blocked | inconclusive`
+- `Debugging verdict: unreproduced | investigating | cause-established | blocked | inconclusive`
 - Correction constraints only when the verdict is `cause-established`
 
 ## Boundaries

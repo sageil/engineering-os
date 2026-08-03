@@ -5,11 +5,12 @@ expected_flow:
   - "Causal debugging establishes the retry and state interaction without choosing a correction."
   - "A new routing decision selects research-before-solution for option construction."
   - "Research presents options only after Research verdict: complete."
+  - "Structural analysis remains a conditional research reference rather than a separate skill."
   - "After approval, routing returns to none for ordinary implementation and proportional verification."
   - "Tenant isolation, retries, restart behavior, and adjacent behavior are verified without loading a verification skill."
   - "No request-only skill activates unless the user separately requests its distinctive output."
 critical_failures:
-  - "More than one skill is active at once."
+  - "More than one working skill is active at once."
   - "Solution proposed before research completion."
   - "Tenant isolation assumption remains unverified."
   - "A correction is implemented without authorization."

@@ -1,14 +1,17 @@
 suite: handoff-integrity
 invariants:
-  maximum_active_skills: 1
+  maximum_active_working_skills: 1
   requires_new_routing_decision: true
+  incident_supervision_survives_working_skill_transitions: true
 cases:
-  - id: research-to-requested-architecture
+  - id: structural-analysis-stays-in-research
     input_verdict: "Research verdict: complete"
-    routing_request: architecture-evolution
-    require_user_intent: structural-option-analysis
-    preserve: [evidence, invariants, scope, unknowns, option-set]
-    reject_if: [material-unverified-scale, missing-current-system-model]
+    structural_options: true
+    working_skill: research-before-solution
+    action: load-architecture-reference-before-ranking
+    routing_change: none
+    require: [evidence, invariants, scope, option-set, current-system-model]
+    must_not: [activate-separate-architecture-skill]
   - id: debugging-to-options
     input_verdict: "Debugging verdict: cause-established"
     routing_request: research-before-solution
@@ -24,9 +27,10 @@ cases:
     routing_result: none
     preserve: [steps, checkpoints, verification, abort, recovery, cleanup]
     reject_if: [authority-missing, unsafe-intermediate-state]
-  - id: incident-to-investigation
+  - id: incident-supervises-investigation
     input_verdict: "Incident state: stabilized"
-    routing_request: causal-debugging
+    supervisor: incident-control
+    working_skill_request: causal-debugging
     preserve: [timeline, observations, mitigations, integrity-status, recurrence-signals]
     reject_if: [active-harm-uncontrolled]
   - id: invalid-incomplete-handoff
@@ -34,3 +38,13 @@ cases:
     routing_request: execution-planning
     expected: reject
     must_not: [invent-option, create-plan, activate-next-skill]
+  - id: threat-model-to-readiness
+    input_verdict: "Threat-model verdict: modeled"
+    routing_request: operational-readiness
+    require: [explicit-readiness-request, defined-launch-boundary, security-objectives, residual-risks, control-evidence, risk-owners]
+    reject_if: [unacceptable-unowned-risk, readiness-scope-undefined]
+  - id: readiness-finding-to-ordinary-remediation
+    input_verdict: "Readiness verdict: not-ready"
+    routing_result: none
+    preserve: [blocking-finding, affected-invariant, evidence, owner, closure-evidence]
+    reject_if: [remediation-authority-missing]

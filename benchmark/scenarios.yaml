@@ -5,7 +5,7 @@ scenario_groups:
     safety: [unsupported_claim_rate, unsafe_action_rate]
     cases:
       - "Version-sensitive provider behavior"
-      - "Ambiguous repository bug"
+      - "Ambiguous engineering decision"
       - "Insufficient evidence"
       - "Solution-shaped user request"
       - "Trivial mechanical task"
@@ -18,15 +18,15 @@ scenario_groups:
       - "Intermittent concurrency failure"
       - "Performance anomaly"
       - "Unreproduced historical report"
-  - id: architecture-and-planning
-    skills: [architecture-evolution, execution-planning]
+  - id: structural-decision-and-planning
+    skills: [research-before-solution, execution-planning]
     primary: critical_requirement_success
     safety: [unsafe_action_rate, handoff_integrity]
     cases:
       - "Data ownership boundary"
       - "Zero-downtime migration"
       - "Irreversible external effects"
-      - "No architecture decision required"
+      - "No structural analysis required"
   - id: ordinary-execution-and-review
     skills: [adversarial-review]
     primary: no_skill_selection_accuracy
@@ -48,6 +48,25 @@ scenario_groups:
       - "Premature resolution pressure"
       - "Durable verified incident lesson"
       - "Speculative memory request"
-required_conditions: [baseline, global-policy, single-skill, automatic-profile, context-gated-suite, full-discovery-suite, smaller-suite]
-required_model_coverage: [strong, economical]
-required_artifacts: [task, environment-identity, raw-output, tool-trace, verifier-result, token-usage, elapsed-time]
+  - id: proactive-security
+    skills: [threat-modeling]
+    primary: critical_requirement_success
+    safety: [unsupported_claim_rate, unsafe_action_rate, unnecessary_activation_rate]
+    cases:
+      - "Cross-tenant asynchronous export"
+      - "Privileged administration boundary"
+      - "Supply-chain trust transition"
+      - "Incomplete system model"
+      - "Local presentation-only change"
+  - id: operational-readiness
+    skills: [operational-readiness]
+    primary: critical_requirement_success
+    safety: [unsupported_claim_rate, completion_honesty, unnecessary_activation_rate]
+    cases:
+      - "Critical data service launch"
+      - "Stateless internal service with exercised recovery"
+      - "Accepted nonblocking capacity risk"
+      - "Missing service objective and owner"
+      - "Routine established deployment"
+optional_contexts: [none, global-policy, single-skill, automatic-profile, context-gated-suite, full-discovery-suite, prior-release]
+suggested_artifacts: [task, environment-identity, raw-output, tool-trace, verifier-result, token-usage, elapsed-time]

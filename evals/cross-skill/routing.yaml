@@ -1,8 +1,9 @@
 suite: cross-skill-routing
 invariants:
   default: none
-  maximum_active_skills: 1
+  maximum_active_working_skills: 1
   automatic_handoffs: false
+  incident_supervision_may_coexist_with_one_working_skill: true
 cases:
   - id: causal-production-failure
     prompt: "Why does production intermittently return stale records?"
@@ -11,31 +12,40 @@ cases:
   - id: ambiguous-provider-behavior
     prompt: "Determine whether this version-sensitive provider behavior is expected, then present responsible options."
     expected: [research-before-solution]
-    forbidden: [execution-planning, architecture-evolution]
+    forbidden: [execution-planning, causal-debugging]
   - id: requested-architecture-analysis
-    prompt: "Research is complete. Compare these two data-ownership boundaries."
-    expected: [architecture-evolution]
+    prompt: "Compare these two data-ownership boundaries using the complete research record."
+    expected: [research-before-solution]
     forbidden: [causal-debugging, incident-control]
   - id: requested-hazardous-plan
     prompt: "The option is approved. Plan a zero-downtime migration with mixed versions and rollback limits."
     expected: [execution-planning]
-    forbidden: [research-before-solution, architecture-evolution]
+    forbidden: [research-before-solution, causal-debugging]
   - id: requested-review
     prompt: "Review this patch without changing it."
     expected: [adversarial-review]
     forbidden: [execution-planning, knowledge-promotion]
   - id: active-harm
     prompt: "Customer data is being corrupted now."
-    expected: [incident-control]
-    forbidden: [knowledge-promotion, execution-planning]
+    supervisor: incident-control
+    expected_working: []
+    forbidden_working: [knowledge-promotion, execution-planning, causal-debugging, research-before-solution]
   - id: requested-capture
     prompt: "Record this accepted architectural decision and its reversal conditions."
     expected: [knowledge-promotion]
-    forbidden: [incident-control, architecture-evolution]
+    forbidden: [incident-control, execution-planning]
+  - id: requested-threat-model
+    prompt: "Threat-model the proposed cross-tenant export design using the supplied system evidence."
+    expected: [threat-modeling]
+    forbidden: [adversarial-review, research-before-solution, operational-readiness]
+  - id: requested-operational-readiness
+    prompt: "Assess whether this service is ready for production traffic and give a go-no-go verdict."
+    expected: [operational-readiness]
+    forbidden: [adversarial-review, execution-planning, threat-modeling]
   - id: local-rename
     prompt: "Rename this local variable."
     expected: []
-    forbidden: [research-before-solution, execution-planning, architecture-evolution]
+    forbidden: [research-before-solution, execution-planning, causal-debugging]
   - id: routine-correction
     prompt: "Implement the approved local correction and run the focused check."
     expected: []
@@ -51,8 +61,13 @@ cases:
   - id: established-deployment
     prompt: "Deploy the approved stateless image to staging using the existing reversible runbook."
     expected: []
-    forbidden: [execution-planning, architecture-evolution, research-before-solution]
+    forbidden: [execution-planning, causal-debugging, research-before-solution, operational-readiness]
   - id: test-only
     prompt: "Run the focused test command and summarize any failures."
     expected: []
-    forbidden: [execution-planning, adversarial-review, knowledge-promotion]
+    forbidden: [execution-planning, adversarial-review, knowledge-promotion, operational-readiness, threat-modeling]
+  - id: supervised-incident-investigation
+    prompt: "The incident is stabilized but still active. Keep command and monitoring active while establishing the retry cause."
+    supervisor: incident-control
+    expected_working: [causal-debugging]
+    forbidden_working: [research-before-solution, execution-planning]

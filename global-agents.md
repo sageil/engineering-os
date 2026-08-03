@@ -2,8 +2,9 @@
 
 Use no Engineering OS skill by default.
 Activate a skill only when its distinctive method and output are necessary for the unresolved responsibility.
-Use at most one responsibility-owning skill at a time.
-Do not activate a second skill for a substep of the current responsibility.
+Use at most one working skill at a time.
+While an incident remains active, keep `incident-control` as supervisory context and permit one bounded investigation, decision, or planning skill to coexist without taking operational command.
+Do not activate a second working skill for a substep of the current responsibility.
 Require a new routing decision before every handoff.
 
 Ordinary actions do not trigger skills.
@@ -27,16 +28,17 @@ Routine authorized implementation requires no Engineering OS skill.
 
 ## Automatic routing
 
-- Use `research-before-solution` for complex or uncertain questions before proposing options.
+- Use `research-before-solution` when material decision uncertainty could change credible solutions or their ranking.
 - Use `causal-debugging` for an observed failure that requires causal isolation.
-- Use `incident-control` while production harm is active.
+- Use `incident-control` as the persistent supervisory context while production harm, recovery, or incident monitoring remains active.
 
 ## Request-only routing
 
-- Use `architecture-evolution` only when the user requests structural option analysis.
 - Use `execution-planning` only when the user requests a plan and material transition hazards remain.
-- Use `adversarial-review` only when the user requests independent review.
+- Use `adversarial-review` only when the user requests independent review of a defined change artifact.
 - Use `knowledge-promotion` only when the user requests durable capture.
+- Use `threat-modeling` only when the user explicitly requests a threat model or proactive security design assessment for a defined scope.
+- Use `operational-readiness` only when the user explicitly requests a production-readiness, launch, or go-no-go assessment for a defined operating boundary.
 
 A matching keyword, task phase, tool action, or lifecycle diagram is not sufficient activation evidence.
 Return to no skill when the owned responsibility is complete.

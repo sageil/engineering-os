@@ -2,14 +2,39 @@ skill: causal-debugging
 cases:
   - id: intermittent-duplicate-effect
     type: positive
-    prompt: "Customers are occasionally charged twice after request timeouts. Find the root cause."
+    prompt: "Find why the supplied payment path occasionally produces duplicate charges."
+    artifacts:
+      request_log: "attempt=1 key=req-42 timeout=true; attempt=2 key=req-43 status=charged; ledger contains charges for req-42 and req-43"
+      client_code: "On timeout, retry the payment operation and generate a new request identifier."
+      provider_contract: "A request identifier deduplicates repeated submissions with the same identifier."
     must:
-      - "Define a trustworthy failure signal and distinguish trigger, mechanism, invariant violation, and effect."
-      - "Construct and discriminate credible causal models."
-      - "Account for retries, idempotency, ordering, and observer effects."
+      - "Define the failure signal and distinguish trigger, mechanism, invariant violation, and effect."
+      - "Discriminate retry, provider duplication, ledger replay, and measurement explanations."
+      - "Require a controlled same-identifier retry comparison before cause-established when practical."
     must_not:
       - "Patch the payment path before cause-established."
-      - "Call timeout correlation the root cause."
+  - id: concurrency-ordering
+    type: positive
+    prompt: "Determine why two workers can both publish the same pending job."
+    artifacts:
+      worker_sequence: "worker-a reads pending; worker-b reads pending; worker-a publishes; worker-b publishes; each then marks complete"
+      lock_scope: "The lock protects only the final status update, not the read or publish."
+    must:
+      - "Model actors, shared state, permitted interleavings, and the violated single-publication invariant."
+      - "Seek a deterministic schedule and test a control that changes only lock scope or claim ownership."
+    must_not:
+      - "Call the lock location causal without a discriminating intervention."
+  - id: performance-anomaly
+    type: positive
+    prompt: "Find the cause of the reported latency regression."
+    artifacts:
+      baseline: "p50=40ms p95=90ms p99=180ms at 200 requests per second"
+      current: "p50=42ms p95=95ms p99=900ms at 900 requests per second; dependency time and saturation are unmeasured"
+    must:
+      - "Define a comparable workload and measure resource saturation and dependency latency before claiming a bottleneck."
+      - "Keep workload, dependency, resource, and measurement explanations credible."
+    must_not:
+      - "Infer the bottleneck from p99 or aggregate CPU alone."
   - id: unreproduced-report
     type: gate
     prompt: "One user says the page was slow last month, but no telemetry or environment remains. Prove the root cause."
@@ -21,13 +46,11 @@ cases:
     type: negative
     prompt: "Should this service own its database or share the platform database?"
     must:
-      - "Reject causal-debugging and request one new routing decision, beginning with research when material facts are unknown."
-      - "Do not activate research and architecture skills together."
+      - "Reject causal-debugging and request one new routing decision for research when material decision facts are unknown."
   - id: proven-cause-correction
     type: boundary
-    prompt: "The regression test and bisect prove the parser defect. Choose between two corrections."
+    prompt: "The fail-before test, essential-change comparison, and bisect establish the parser defect. Choose between two corrections."
     must:
-      - "Return the causal record with a research routing request for option comparison."
-      - "Do not activate research from inside causal-debugging."
+      - "Return the causal record with Routing request: research-before-solution when option comparison remains material."
     must_not:
       - "Select the correction inside causal-debugging."

@@ -16,12 +16,14 @@ Maintain one verdict:
 - `ready`: No blocking finding survived and available evidence supports the claimed scope.
 - `ready-with-nonblocking-findings`: Only supported nonblocking findings remain.
 - `not-ready`: At least one supported blocking finding remains.
-- `insufficient-evidence`: Merge or release readiness cannot be determined from available artifacts or verification.
+- `insufficient-evidence`: Change approval or merge readiness cannot be determined from available artifacts or verification.
 - `contradictory-requirements`: Applicable requirements cannot be satisfied together without a decision.
 
 ## 1. Establish scope and baseline
 
-Identify the exact diff, baseline, repository instructions, intended outcome, acceptance criteria, generated-file boundaries, excluded artifacts, and available verification tools.
+Identify the exact review artifact, baseline, repository instructions, intended outcome, acceptance criteria, generated-file boundaries, excluded artifacts, and available verification tools.
+For a code or configuration change, identify the exact diff.
+For an implementation plan, identify the selected solution, evidence-backed current state, target state, invariants, transition assumptions, and execution constraints.
 Do not claim review of content that was not inspected.
 Preserve unrelated working-tree changes.
 
@@ -38,7 +40,7 @@ Identify the few invariants that control review risk, including authorization, d
 Trace changed entry points, callers, boundaries, state transitions, persistence, external calls, retries, timeouts, concurrency, error propagation, deployment, recovery, and cleanup as needed.
 Identify newly reachable states, weakened assumptions, and behavior removed by the change.
 
-Use `research-before-solution` when current system behavior or an external contract is materially unknown.
+When current system behavior or an external contract is materially unknown, stop and return `Routing request: research-before-solution` for a new routing decision.
 Do not report a finding while its load-bearing premise remains researchable and unverified.
 
 ## 4. Construct failure hypotheses
@@ -79,9 +81,10 @@ Reject a safe-looking steady state with an unsafe transition.
 
 Assess new operational obligations only when they create a concrete near-term correctness, recovery, or ownership problem.
 
-## 8. Review the actual diff
+## 8. Review artifact-specific detail
 
-Inspect unintended behavior, unrelated refactoring, widened interfaces, weakened validation, hidden defaults, compatibility regression, dead code, resource leaks, sensitive logging, accidental dependencies, generated churn, and divergence from the accepted solution.
+For a code or configuration change, inspect the actual diff for unintended behavior, unrelated refactoring, widened interfaces, weakened validation, hidden defaults, compatibility regression, dead code, resource leaks, sensitive logging, accidental dependencies, generated churn, and divergence from the accepted solution.
+For an implementation plan, inspect missing or unsafe intermediate states, ambiguous ownership, incompatible sequencing, unverifiable checkpoints, interruption and retry gaps, impossible rollback, missing recovery, and unfinished cleanup.
 Do not redesign the subsystem when a smaller correction restores the invariant.
 
 ## 9. Calibrate findings
@@ -127,7 +130,8 @@ Do not implement corrections unless requested.
 Do not review the entire repository when the scope is a diff.
 Do not report pre-existing issues unless the change newly depends on, exposes, or worsens them.
 Do not create findings to justify the review.
+Do not replace a system-level operational-readiness or go-no-go assessment.
 
 ## Failure conditions
 
-Fail the skill when a concern is reported before verification, style is presented as correctness, severity reflects effort instead of impact, unavailable tests are treated as passing, the review ignores transition risk, the diff is not inspected, findings lack reachability or consequence, or a no-findings result is avoided to appear useful.
+Fail the skill when a concern is reported before verification, style is presented as correctness, severity reflects effort instead of impact, unavailable tests are treated as passing, the review ignores transition risk, the applicable diff or plan artifact is not inspected, findings lack reachability or consequence, or a no-findings result is avoided to appear useful.

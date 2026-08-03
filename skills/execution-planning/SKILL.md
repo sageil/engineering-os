@@ -13,10 +13,11 @@ Do not implement while planning.
 
 Maintain one verdict:
 
-- `executable`: The plan can be performed and verified safely with stated authority.
+- `executable`: The plan can be performed and verified safely once its explicit execution preconditions and approvals are satisfied.
 - `input-incomplete`: The selected option, current state, target state, or acceptance criteria are missing.
 - `research-required`: New evidence invalidates or materially changes the selected option.
-- `authority-required`: Execution needs permission, ownership, or coordination not yet established.
+- `authority-required`: Missing ownership or access prevents the plan from defining a safe executable path.
+- `no-plan-needed`: The requested work has no material transition hazard and should return to ordinary execution.
 - `unsafe`: No credible transition, recovery, or data-preserving path is available.
 
 ## 1. Verify planning inputs
@@ -29,16 +30,16 @@ Require:
 - invariants and compatibility commitments;
 - acceptance and failure criteria;
 - known risks, assumptions, and constraints;
-- authorized execution scope.
+- authority to inspect the planning scope;
+- required execution owners, approvals, and coordination points, which may remain explicit preconditions.
 
 Return `input-incomplete` rather than reconstructing a missing decision from memory.
 Return `research-required` when new evidence could change the chosen option.
 
 ## 2. Choose planning depth
 
-Skip a formal plan for routine, local, reversible work with an explicit outcome and focused verification.
-Use a concise plan for multi-file but low-risk changes.
-Use the full transition model for persistent state, security, infrastructure, public contracts, distributed work, difficult rollback, or coordinated rollout.
+Return `no-plan-needed` for routine, local, reversible work with an explicit outcome and focused verification, including low-risk multi-file work.
+Use a concise transition model when one material hazard is bounded and a full transition model for persistent state, security, infrastructure, public contracts, distributed work, difficult rollback, or coordinated rollout.
 
 Do not equate diff size with consequence.
 
@@ -118,7 +119,7 @@ Set `executable` only when:
 - intermediate states are valid and observable;
 - partial execution and restart behavior are defined;
 - verification distinguishes success from the current state;
-- required authority and ownership exist;
+- every required owner and approval is identified, even when approval remains an execution precondition;
 - recovery is credible;
 - cleanup has an owner and completion signal.
 
@@ -132,7 +133,7 @@ Do not declare a plan executable while required work is described as follow-up.
 - Verification matrix
 - Rollout, abort, and recovery controls
 - Cleanup and target-state confirmation
-- `Planning verdict: executable | input-incomplete | research-required | authority-required | unsafe`
+- `Planning verdict: executable | input-incomplete | research-required | authority-required | no-plan-needed | unsafe`
 
 Return the executable plan to the user or orchestrator for authorized execution without activating another skill.
 
@@ -141,6 +142,7 @@ Return the executable plan to the user or orchestrator for authorized execution 
 Do not compare alternative solutions.
 Do not perform implementation.
 Do not invent execution authority.
+Do not treat an `executable` verdict as authorization to execute.
 Do not require a plan artifact for a trivial change.
 
 ## Failure conditions

@@ -5,50 +5,54 @@
 Engineering OS is a provider-neutral, evidence-gated capability suite for AI engineering agents.
 It makes no skill the default, exposes specialized methods only when their distinctive responsibility is necessary, and requires claims to match available evidence.
 
-Version 4.1.1 contains seven specialized skills.
+Version 4.3.0 contains eight specialized skills.
 Routine implementation and proportional verification are baseline agent behavior, not an installable skill.
 The foundational capability remains `research-before-solution`, which blocks solution options until decision-relevant research is complete.
 
-Engineering OS does not claim world-class status from prose alone.
-Every capability must earn its activation cost through paired behavioral evaluation across models and agent hosts.
+Engineering OS defines world-class capability by distinct responsibility, precise activation, expert method, evidence discipline, useful verdicts, safe composition, and bounded context cost.
+Contract fixtures preserve those boundaries, while field evidence records how the system behaves in real use.
 
 ## Context-gated operating model
 
 ```text
 default: no skill
 
-automatic, maximum one:
+automatic working skills, maximum one:
   research-before-solution
   causal-debugging
+
+automatic supervisory context during an active incident:
   incident-control
 
-request-only, maximum one:
-  architecture-evolution
+request-only working skills, maximum one:
   execution-planning
   adversarial-review
   knowledge-promotion
+  threat-modeling
+  operational-readiness
 
 ordinary execution:
   inspect -> edit -> build -> test -> verify -> package -> run -> deploy
   no skill activation unless the unresolved responsibility changes
 ```
 
-![Engineering OS context-gated routing from no skill to one specialized capability](assets/engineering-os-routing.svg)
+![Engineering OS routing from no working skill to one bounded capability with persistent incident supervision](assets/engineering-os-routing.svg)
 
 `routing.yaml` is the provider-neutral activation contract.
-It defines no skill as the default, permits only one active responsibility-owning skill, and prohibits automatic handoffs.
+It defines no working skill as the default, permits only one active working skill, retains incident control as supervisory context while harm or recovery remains active, and prohibits automatic handoffs.
 
 ## Included skills
 
 | Skill | Activation | Sole responsibility |
 | --- | --- | --- |
-| [`research-before-solution`](skills/research-before-solution/SKILL.md) | Automatic when material decision uncertainty exists | Establish decision-sufficient truth, then present evidence-grounded options. |
+| [`research-before-solution`](skills/research-before-solution/SKILL.md) | Automatic when material decision uncertainty exists | Establish decision-sufficient truth, analyze structural consequences when relevant, then present evidence-grounded options. |
 | [`causal-debugging`](skills/causal-debugging/SKILL.md) | Automatic for an observed failure needing causal isolation | Establish the smallest defensible causal chain. |
-| [`incident-control`](skills/incident-control/SKILL.md) | Automatic during active or escalating production harm | Control harm, preserve evidence, and verify recovery. |
-| [`architecture-evolution`](skills/architecture-evolution/SKILL.md) | Request-only | Evaluate expensive-to-reverse structural options. |
+| [`incident-control`](skills/incident-control/SKILL.md) | Automatic supervisory context during active production harm or recovery | Control harm, preserve command, supervise bounded working skills, and verify recovery. |
 | [`execution-planning`](skills/execution-planning/SKILL.md) | Request-only | Design a safe transition when material execution hazards remain. |
 | [`adversarial-review`](skills/adversarial-review/SKILL.md) | Request-only | Independently challenge a defined change and report supported findings. |
 | [`knowledge-promotion`](skills/knowledge-promotion/SKILL.md) | Request-only | Promote verified learning into the strongest appropriate durable artifact. |
+| [`threat-modeling`](skills/threat-modeling/SKILL.md) | Request-only | Model credible attack paths, control evidence, and explicitly owned residual risk for a defined security scope. |
+| [`operational-readiness`](skills/operational-readiness/SKILL.md) | Request-only | Decide whether a defined system or release can operate, degrade, and recover under named ownership. |
 
 ## Evidence before solutions
 
@@ -84,7 +88,7 @@ Install the default `automatic` profile, which exposes only three narrowly autom
 ./scripts/install.sh --agents keep
 ```
 
-Install all seven skills only when the host performs context gating or users explicitly select capabilities:
+Install all eight skills only when the host performs context gating or users explicitly select capabilities:
 
 ```bash
 ./scripts/install.sh --profile full --agents keep
@@ -132,20 +136,16 @@ Refresh an installation while preserving its recorded profile:
 ```
 
 Pass `--profile` or `--skills` to change the exposed capability set deliberately.
-An installation created before profile state existed migrates to the `automatic` profile unless the update command selects another profile.
-The update path reconciles removed managed skills safely and stops before changes when managed content has been modified.
+The current manifest is authoritative, and unknown skill names are rejected before target changes.
+The update path reconciles removed managed skills safely, rejects unsupported installation state, and stops before changes when managed content has been modified.
 
-## Version 4.1 changes
+## Version 4.3 changes
 
-- Version 4.1.1 fixes full-profile installation so it removes the ten obsolete Engineering OS skill directories and leaves only the seven current skills.
-- The default route is now no skill.
-- Only one responsibility-owning skill may be active.
-- Automatic handoffs are prohibited.
-- The default installer exposes only automatic capabilities.
-- `architecture-evolution`, `execution-planning`, `adversarial-review`, and `knowledge-promotion` are request-only.
-- `implement-and-prove` was removed because ordinary implementation and proportional verification are baseline behavior.
-- Provider-specific agent metadata files were removed.
-- Routing evaluations now include container, build, test, deployment, and other no-skill traps.
+- Version 4.3.0 adds request-only threat modeling for evidence-backed attack-path and residual-risk analysis.
+- Version 4.3.0 adds request-only operational readiness for evidence-backed launch and sustained-operation decisions.
+- Comparative model evaluation is no longer a contribution or release gate.
+- Evaluation artifacts are contract fixtures that preserve activation, restraint, verdict, authority, and handoff behavior.
+- World-class status is judged from responsibility, expert method, evidence, safety, composition, and real operating results rather than an artificial comparison requirement.
 
 ## Uninstall
 
@@ -170,18 +170,18 @@ Run installer profile and lifecycle smoke checks:
 ./scripts/test.sh
 ```
 
-These checks validate package behavior, not model improvement.
-Behavioral quality requires the paired evaluations described in [Evaluation](docs/evaluation.md).
+These checks validate package structure, routing, contract coverage, and installer behavior.
+See [Evaluation](docs/evaluation.md) for contract-fixture and field-evidence guidance.
 
 ## Repository map
 
 ```text
-skills/             Seven provider-neutral capability packages
+skills/             Eight provider-neutral capability packages
 routing.yaml        Canonical activation and context-gating contract
 scripts/            Profile-aware install, update, uninstall, and validation
 docs/               Architecture, orchestration, installation, and evaluation
-evals/              Trigger, no-skill, handoff, restraint, and end-to-end cases
-benchmark/          Paired benchmark design and release criteria
+evals/              Trigger, no-skill, handoff, restraint, and end-to-end contract fixtures
+benchmark/          Optional field-observation dimensions and scenarios
 global-agents.md    Optional minimal universal policy
 manifest.yaml       Version, capability inventory, and default exposure set
 skills.md           Human-readable capability routing map
@@ -191,8 +191,8 @@ assets/             README graphics
 ## Contributing
 
 Read [Contributing](docs/contributing.md) before changing a skill.
-Do not add skill prose without a failing behavioral case that demonstrates why the base agent needs it.
-Delete or demote a skill when it duplicates baseline behavior or does not justify its activation cost.
+Add or retain a skill only when it owns a valuable responsibility that baseline behavior, global policy, or an existing skill does not already own.
+Keep contract fixtures synchronized with activation, restraint, verdict, authority, and handoff changes.
 
 ## License
 

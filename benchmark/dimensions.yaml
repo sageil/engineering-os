@@ -28,7 +28,10 @@ dimensions:
     description: "A skill activates without owning a necessary unresolved responsibility."
   skill_stack_depth:
     type: measured
-    description: "Maximum simultaneously active responsibility-owning skills, which must not exceed one."
+    description: "Maximum simultaneously active working skills, which must not exceed one; persistent incident supervision is measured separately."
+  incident_supervision_integrity:
+    type: deterministic-or-blinded
+    description: "Incident command, controls, communication, monitoring, and recovery authority survive working-skill transitions."
   handoff_integrity:
     type: deterministic-or-blinded
     description: "Verdicts, evidence, invariants, authority, uncertainty, and stop conditions survive transitions."
@@ -41,15 +44,15 @@ dimensions:
   completion_honesty:
     type: deterministic-or-blinded
     description: "Skipped, unavailable, inconclusive, and unexecuted checks remain visible as missing evidence."
-  token_overhead:
+  token_cost:
     type: measured
-    description: "Candidate token use compared with baseline."
-  tool_call_overhead:
+    description: "Input and output token use for the observed task."
+  tool_call_cost:
     type: measured
-    description: "Candidate tool calls compared with baseline."
+    description: "Tool calls required for the observed task."
   elapsed_time:
     type: measured
-    description: "Candidate wall-clock duration compared with baseline."
+    description: "Wall-clock duration for the observed task."
   decision_usefulness:
     type: blinded-human
     description: "Evidence and options enable a responsible human decision with minimal ambiguity."

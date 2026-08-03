@@ -22,6 +22,8 @@ Maintain one incident state:
 - `blocked`: Required authority, access, ownership, or safe action is unavailable.
 
 Do not skip directly from action taken to resolved.
+When impact recurs from `stabilized`, `recovering`, or `monitoring`, return to `containing` and re-establish the affected scope, controls, and update cadence.
+Treat `resolved` as terminal unless new impact requires a new incident declaration.
 
 ## 1. Declare and establish command
 
@@ -91,13 +93,14 @@ Set `stabilized` only when:
 
 Stabilized does not mean root cause established.
 
-After stabilization, return the unresolved investigation responsibility for a new routing decision between `research-before-solution`, `causal-debugging`, or no skill.
-Keep incident control responsible for operational safety until resolution.
+After stabilization, keep incident control active as the supervisory context until resolution or an explicit transfer of command.
+A new routing decision may select one working skill, such as `causal-debugging`, `research-before-solution`, or `execution-planning`, while incident control continues to own operational actions, communication, monitoring, and recovery authority.
+The working skill owns only its bounded investigation, decision, or planning output and may not take operational command.
 
 ## 7. Recover deliberately
 
 Require an approved recovery path with current state, target state, intermediate states, observation, abort conditions, retry behavior, data validation, and rollback or roll-forward limits.
-When the user requests a recovery plan and recovery crosses persistent state, incompatible versions, or coordinated systems, return `Routing request: execution-planning`.
+When the user requests a recovery plan and recovery crosses persistent state, incompatible versions, or coordinated systems, return `Routing request: execution-planning` for one working-skill routing decision under the continuing incident supervisor.
 Do not activate the planning skill from inside incident control.
 
 Restore in bounded units.
@@ -126,6 +129,7 @@ Set `resolved` only when:
 - Current containment or recovery controls
 - Integrity and recurrence evidence
 - Blockers and required authority
+- Active working skill and its bounded responsibility when one is selected
 - `Incident state: declared | containing | stabilized | recovering | monitoring | resolved | blocked`
 
 Keep status updates short and operationally useful.

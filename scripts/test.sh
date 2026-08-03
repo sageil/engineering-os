@@ -25,44 +25,53 @@ actual=$(installed_count "$TEST_HOME")
 for skill in research-before-solution causal-debugging incident-control; do
   [[ -f "$TEST_HOME/.agents/skills/$skill/SKILL.md" ]] || fail "Automatic profile omitted: $skill"
 done
-[[ ! -e "$TEST_HOME/.agents/skills/execution-planning" ]] || fail "Automatic profile exposed request-only planning."
+for skill in execution-planning adversarial-review knowledge-promotion threat-modeling operational-readiness; do
+  [[ ! -e "$TEST_HOME/.agents/skills/$skill" ]] || fail "Automatic profile exposed request-only skill: $skill"
+done
 HOME="$TEST_HOME" "$ROOT_DIR/scripts/uninstall.sh" --agents keep >/dev/null
 remaining=$(installed_count "$TEST_HOME")
 [[ "$remaining" -eq 0 ]] || fail "Uninstall left managed skills behind."
 
-# Full installation exposes all packaged capabilities.
+# Full installation exposes all eight packaged capabilities.
 TEST_HOME="$TMP_ROOT/full"
 mkdir -p "$TEST_HOME"
 HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --profile full --agents keep >/dev/null
 actual=$(installed_count "$TEST_HOME")
-[[ "$actual" -eq 7 ]] || fail "Full profile installed $actual skills instead of 7."
+[[ "$actual" -eq 8 ]] || fail "Full profile installed $actual skills instead of 8."
+while IFS= read -r skill || [[ -n "$skill" ]]; do
+  [[ -n "$skill" ]] || continue
+  [[ -f "$TEST_HOME/.agents/skills/$skill/SKILL.md" ]] || fail "Full profile omitted manifest skill: $skill"
+done < <(manifest_skills "$ROOT_DIR/manifest.yaml")
+[[ ! -e "$TEST_HOME/.agents/skills/architecture-evolution" ]] || fail "Full profile installed a removed skill."
 
-# Full installation replaces the obsolete Engineering OS skill set.
-TEST_HOME="$TMP_ROOT/full-with-obsolete-skills"
-mkdir -p "$TEST_HOME/.agents/skills"
-while IFS= read -r skill || [[ -n "$skill" ]]; do
-  [[ -n "$skill" ]] || continue
-  mkdir -p "$TEST_HOME/.agents/skills/$skill"
-  printf 'obsolete skill\n' > "$TEST_HOME/.agents/skills/$skill/SKILL.md"
-done < <(manifest_list "$ROOT_DIR/manifest.yaml" obsolete_skills)
+# Full uninstall removes every managed skill and preserves unrelated skills.
+TEST_HOME="$TMP_ROOT/full-uninstall"
+mkdir -p "$TEST_HOME/.agents/skills/user-owned-skill"
+printf 'user-owned skill\n' > "$TEST_HOME/.agents/skills/user-owned-skill/SKILL.md"
 HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --profile full --agents keep >/dev/null
-actual=$(installed_count "$TEST_HOME")
-[[ "$actual" -eq 7 ]] || fail "Full profile left an incorrect number of installed skills: $actual."
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/uninstall.sh" --agents keep >/dev/null
 while IFS= read -r skill || [[ -n "$skill" ]]; do
   [[ -n "$skill" ]] || continue
-  [[ ! -e "$TEST_HOME/.agents/skills/$skill" ]] || fail "Full profile left an obsolete skill installed: $skill"
-done < <(manifest_list "$ROOT_DIR/manifest.yaml" obsolete_skills)
+  [[ ! -e "$TEST_HOME/.agents/skills/$skill" ]] || fail "Full uninstall left managed skill installed: $skill"
+done < <(manifest_skills "$ROOT_DIR/manifest.yaml")
+[[ -f "$TEST_HOME/.agents/skills/user-owned-skill/SKILL.md" ]] || fail "Full uninstall removed an unrelated skill."
+actual=$(installed_count "$TEST_HOME")
+[[ "$actual" -eq 1 ]] || fail "Full uninstall left an unexpected skill count: $actual"
+[[ ! -e "$TEST_HOME/.agents/.engineering-os" ]] || fail "Full uninstall left installation state behind."
 
 # Update preserves a recorded profile when no new selection is supplied.
+TEST_HOME="$TMP_ROOT/full"
 HOME="$TEST_HOME" "$ROOT_DIR/scripts/update.sh" --agents keep >/dev/null
 actual=$(installed_count "$TEST_HOME")
-[[ "$actual" -eq 7 ]] || fail "Update did not preserve the full profile."
+[[ "$actual" -eq 8 ]] || fail "Update did not preserve the full profile."
 
 # Deliberately shrinking a profile reconciles request-only skills.
 HOME="$TEST_HOME" "$ROOT_DIR/scripts/update.sh" --profile automatic --agents keep >/dev/null
 actual=$(installed_count "$TEST_HOME")
 [[ "$actual" -eq 3 ]] || fail "Profile change did not reconcile the full profile to automatic."
-[[ ! -e "$TEST_HOME/.agents/skills/execution-planning" ]] || fail "Profile change left request-only planning installed."
+for skill in execution-planning adversarial-review knowledge-promotion threat-modeling operational-readiness; do
+  [[ ! -e "$TEST_HOME/.agents/skills/$skill" ]] || fail "Profile change left request-only skill installed: $skill"
+done
 
 # Custom installation exposes exactly the requested subset.
 TEST_HOME="$TMP_ROOT/custom"
@@ -75,6 +84,14 @@ actual=$(installed_count "$TEST_HOME")
 HOME="$TEST_HOME" "$ROOT_DIR/scripts/update.sh" --agents keep >/dev/null
 actual=$(installed_count "$TEST_HOME")
 [[ "$actual" -eq 2 ]] || fail "Update did not preserve the custom skill selection."
+
+# A removed or unknown skill cannot be selected.
+TEST_HOME="$TMP_ROOT/invalid-selection"
+mkdir -p "$TEST_HOME"
+if HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --skills architecture-evolution --agents keep >/dev/null 2>&1; then
+  fail "Installer accepted a skill absent from the current manifest."
+fi
+[[ ! -e "$TEST_HOME/.agents" ]] || fail "Rejected skill selection changed target files."
 
 # None profile installs policy state without exposing skills.
 TEST_HOME="$TMP_ROOT/none"
@@ -98,17 +115,40 @@ HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --agents keep >/dev/null
 HOME="$TEST_HOME" "$ROOT_DIR/scripts/uninstall.sh" --agents keep >/dev/null
 grep -q '^original skill$' "$TEST_HOME/.agents/skills/research-before-solution/original.txt" || fail "Pre-existing skill was not restored."
 
-# An obsolete unchanged managed skill is removed during update.
-TEST_HOME="$TMP_ROOT/obsolete"
+# A previously managed skill absent from the current manifest is removed during update.
+TEST_HOME="$TMP_ROOT/removed-managed-skill"
 mkdir -p "$TEST_HOME"
 HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --agents keep >/dev/null
-obsolete="$TEST_HOME/.agents/skills/engineering-investigation"
-mkdir -p "$obsolete"
-printf '%s\n' '---' 'name: engineering-investigation' 'description: legacy' '---' > "$obsolete/SKILL.md"
-printf '%s\n' engineering-investigation >> "$TEST_HOME/.agents/.engineering-os/skills.list"
-printf '%s %s\n' engineering-investigation "$(dir_sha256 "$obsolete")" >> "$TEST_HOME/.agents/.engineering-os/skills.sha256"
+removed="$TEST_HOME/.agents/skills/architecture-evolution"
+mkdir -p "$removed"
+printf '%s\n' '---' 'name: architecture-evolution' 'description: removed' '---' > "$removed/SKILL.md"
+printf '%s\n' architecture-evolution >> "$TEST_HOME/.agents/.engineering-os/skills.list"
+printf '%s %s\n' architecture-evolution "$(dir_sha256 "$removed")" >> "$TEST_HOME/.agents/.engineering-os/skills.sha256"
 HOME="$TEST_HOME" "$ROOT_DIR/scripts/update.sh" --agents keep >/dev/null
-[[ ! -e "$obsolete" ]] || fail "Update left an obsolete managed skill installed."
+[[ ! -e "$removed" ]] || fail "Update left a removed managed skill installed."
+
+# State from an unsupported schema is rejected before changes.
+TEST_HOME="$TMP_ROOT/unsupported-state"
+mkdir -p "$TEST_HOME"
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --agents keep >/dev/null
+state_remove "$TEST_HOME/.agents/.engineering-os/install-state.env" STATE_SCHEMA
+if HOME="$TEST_HOME" "$ROOT_DIR/scripts/update.sh" --agents keep >/dev/null 2>&1; then
+  fail "Update accepted unsupported installation state."
+fi
+[[ -f "$TEST_HOME/.agents/skills/research-before-solution/SKILL.md" ]] || fail "Rejected state changed installed skills."
+
+# Corrupt uninstall state fails before any managed skill is removed.
+TEST_HOME="$TMP_ROOT/uninstall-preflight"
+mkdir -p "$TEST_HOME"
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --agents keep >/dev/null
+awk '$1 != "causal-debugging"' "$TEST_HOME/.agents/.engineering-os/skills.sha256" > "$TEST_HOME/.agents/.engineering-os/skills.sha256.invalid"
+mv "$TEST_HOME/.agents/.engineering-os/skills.sha256.invalid" "$TEST_HOME/.agents/.engineering-os/skills.sha256"
+if HOME="$TEST_HOME" "$ROOT_DIR/scripts/uninstall.sh" --agents keep >/dev/null 2>&1; then
+  fail "Uninstall accepted incomplete hash state."
+fi
+for skill in research-before-solution causal-debugging incident-control; do
+  [[ -f "$TEST_HOME/.agents/skills/$skill/SKILL.md" ]] || fail "Failed uninstall partially removed managed skill: $skill"
+done
 
 # A modified managed skill blocks update before replacement.
 TEST_HOME="$TMP_ROOT/modified-skill"

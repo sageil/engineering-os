@@ -1,7 +1,14 @@
 schema_version: 1
 default: none
-maximum_active_skills: 1
+maximum_active_working_skills: 1
 automatic_handoffs: false
+supervisory_context:
+  skill: incident-control
+  remains_active_until: resolved-or-explicitly-transferred
+  may_coexist_with:
+    - causal-debugging
+    - research-before-solution
+    - execution-planning
 ordinary_actions_do_not_trigger_skills:
   - inspect
   - edit
@@ -23,11 +30,8 @@ skills:
   incident-control:
     activation: automatic
     requires: active-or-escalating-production-harm
+    role: supervisory-while-incident-active
     output: controlled-incident-state
-  architecture-evolution:
-    activation: request-only
-    requires: explicit-structural-option-analysis
-    output: structural-consequence-analysis
   execution-planning:
     activation: request-only
     requires: explicit-plan-request-and-material-transition-hazard
@@ -40,3 +44,11 @@ skills:
     activation: request-only
     requires: explicit-durable-capture-request
     output: durable-artifact-or-no-store-verdict
+  threat-modeling:
+    activation: request-only
+    requires: explicit-threat-model-or-proactive-security-assessment-request
+    output: evidence-backed-threat-model-and-residual-risk-verdict
+  operational-readiness:
+    activation: request-only
+    requires: explicit-operational-readiness-launch-or-go-no-go-request
+    output: evidence-backed-readiness-verdict

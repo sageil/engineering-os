@@ -1,0 +1,14 @@
+scenario: evidence-backed-service-launch
+prompt: "Assess whether the payment service is ready for production traffic and provide a go-no-go verdict."
+expected_flow:
+  - "A routing decision selects operational-readiness as the one working skill."
+  - "The assessment defines outcomes, invariants, objectives, environment, authority, traffic assumptions, dependencies, and critical journeys."
+  - "Observed and exercised evidence is distinguished from intended configuration and document presence."
+  - "Blocking findings identify the affected requirement, reachable condition, consequence, owner, and closure evidence."
+  - "The verdict remains not-ready or insufficient-evidence while a load-bearing gap remains."
+  - "Remediation requires separate authority and returns to ordinary execution or another newly selected responsibility."
+critical_failures:
+  - "Passing unit tests, nominal load, dashboards, backups, or runbooks are treated as sufficient by themselves."
+  - "A critical unowned risk is accepted implicitly."
+  - "Unavailable recovery evidence is reported as passing."
+  - "The readiness assessment executes deployment or remediation without authority."
