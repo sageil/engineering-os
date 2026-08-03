@@ -37,6 +37,7 @@ Routine authorized implementation requires no Engineering OS skill.
 - Use `execution-planning` only when the user requests a plan and material transition hazards remain.
 - Use `adversarial-review` only when the user requests independent review of a defined change artifact.
 - Use `knowledge-promotion` only when the user requests durable capture.
+- Use `technical-communication` only when the user requests a substantial technical artifact or translation for a defined human audience.
 - Use `threat-modeling` only when the user explicitly requests a threat model or proactive security design assessment for a defined scope.
 - Use `operational-readiness` only when the user explicitly requests a production-readiness, launch, or go-no-go assessment for a defined operating boundary.
 

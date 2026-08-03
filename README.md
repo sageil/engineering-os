@@ -5,7 +5,7 @@
 Engineering OS is a provider-neutral, evidence-gated capability suite for AI engineering agents.
 It makes no skill the default, exposes specialized methods only when their distinctive responsibility is necessary, and requires claims to match available evidence.
 
-Version 4.3.0 contains eight specialized skills.
+Version 4.4.0 contains nine specialized skills.
 Routine implementation and proportional verification are baseline agent behavior, not an installable skill.
 The foundational capability remains `research-before-solution`, which blocks solution options until decision-relevant research is complete.
 
@@ -28,6 +28,7 @@ request-only working skills, maximum one:
   execution-planning
   adversarial-review
   knowledge-promotion
+  technical-communication
   threat-modeling
   operational-readiness
 
@@ -51,6 +52,7 @@ It defines no working skill as the default, permits only one active working skil
 | [`execution-planning`](skills/execution-planning/SKILL.md) | Request-only | Design a safe transition when material execution hazards remain. |
 | [`adversarial-review`](skills/adversarial-review/SKILL.md) | Request-only | Independently challenge a defined change and report supported findings. |
 | [`knowledge-promotion`](skills/knowledge-promotion/SKILL.md) | Request-only | Promote verified learning into the strongest appropriate durable artifact. |
+| [`technical-communication`](skills/technical-communication/SKILL.md) | Request-only | Turn verified technical material into an accurate, reader-centered artifact using human language without losing necessary precision. |
 | [`threat-modeling`](skills/threat-modeling/SKILL.md) | Request-only | Model credible attack paths, control evidence, and explicitly owned residual risk for a defined security scope. |
 | [`operational-readiness`](skills/operational-readiness/SKILL.md) | Request-only | Decide whether a defined system or release can operate, degrade, and recover under named ownership. |
 
@@ -88,7 +90,7 @@ Install the default `automatic` profile, which exposes only three narrowly autom
 ./scripts/install.sh --agents keep
 ```
 
-Install all eight skills only when the host performs context gating or users explicitly select capabilities:
+Install all nine skills only when the host performs context gating or users explicitly select capabilities:
 
 ```bash
 ./scripts/install.sh --profile full --agents keep
@@ -139,13 +141,11 @@ Pass `--profile` or `--skills` to change the exposed capability set deliberately
 The current manifest is authoritative, and unknown skill names are rejected before target changes.
 The update path reconciles removed managed skills safely and stops before changes when managed content has been modified.
 
-## Version 4.3 changes
+## Version 4.4 changes
 
-- Version 4.3.0 adds request-only threat modeling for evidence-backed attack-path and residual-risk analysis.
-- Version 4.3.0 adds request-only operational readiness for evidence-backed launch and sustained-operation decisions.
-- Comparative model evaluation is no longer a contribution or release gate.
-- Evaluation artifacts are contract fixtures that preserve activation, restraint, verdict, authority, and handoff behavior.
-- World-class status is judged from responsibility, expert method, evidence, safety, composition, and real operating results rather than an artificial comparison requirement.
+- Version 4.4.0 adds request-only technical communication for accurate, reader-centered technical artifacts and precision-preserving translation into human language.
+- The full installer profile now installs nine canonical skills, while the automatic profile remains limited to three.
+- Installation and uninstallation continue to use the manifest and recorded managed-skill inventory without aliases, migrations, or legacy skill mappings.
 
 ## Uninstall
 
@@ -176,7 +176,7 @@ See [Evaluation](docs/evaluation.md) for contract-fixture and field-evidence gui
 ## Repository map
 
 ```text
-skills/             Eight provider-neutral capability packages
+skills/             Nine provider-neutral capability packages
 routing.yaml        Canonical activation and context-gating contract
 scripts/            Profile-aware install, update, uninstall, and validation
 docs/               Architecture, orchestration, installation, and evaluation

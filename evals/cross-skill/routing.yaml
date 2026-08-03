@@ -34,6 +34,10 @@ cases:
     prompt: "Record this accepted architectural decision and its reversal conditions."
     expected: [knowledge-promotion]
     forbidden: [incident-control, execution-planning]
+  - id: requested-technical-communication
+    prompt: "Rewrite these verified migration notes as a production procedure for application operators."
+    expected: [technical-communication]
+    forbidden: [knowledge-promotion, research-before-solution, execution-planning]
   - id: requested-threat-model
     prompt: "Threat-model the proposed cross-tenant export design using the supplied system evidence."
     expected: [threat-modeling]
@@ -65,7 +69,7 @@ cases:
   - id: test-only
     prompt: "Run the focused test command and summarize any failures."
     expected: []
-    forbidden: [execution-planning, adversarial-review, knowledge-promotion, operational-readiness, threat-modeling]
+    forbidden: [execution-planning, adversarial-review, knowledge-promotion, technical-communication, operational-readiness, threat-modeling]
   - id: supervised-incident-investigation
     prompt: "The incident is stabilized but still active. Keep command and monitoring active while establishing the retry cause."
     supervisor: incident-control

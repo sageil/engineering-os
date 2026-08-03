@@ -11,7 +11,7 @@ Install the three narrowly automatic capabilities:
 ./scripts/install.sh --profile automatic --agents keep
 ```
 
-Install all eight capabilities only when an external router gates context or users deliberately request capabilities:
+Install all nine capabilities only when an external router gates context or users deliberately request capabilities:
 
 ```bash
 ./scripts/install.sh --profile full --agents keep

@@ -47,6 +47,7 @@ Provider adapters may exist outside the core, but no skill depends on them.
 | `execution-planning` | Request-only hazardous transition plan | Executable transition plan | Research or execution |
 | `adversarial-review` | Request-only independent review | Supported findings and review verdict | Implementation |
 | `knowledge-promotion` | Request-only durable capture | Durable artifact or no-store verdict | Automatic memory growth |
+| `technical-communication` | Request-only substantial technical communication | Reader-centered artifact and communication verdict | Research, correctness review, durable placement, implementation, or file-format work |
 | `threat-modeling` | Request-only proactive security analysis | Evidence-backed threat paths, control analysis, and residual-risk verdict | Active incident command, patch review, scanning, or remediation |
 | `operational-readiness` | Request-only launch or sustained-operation assessment | Evidence-backed readiness findings and go-no-go verdict | Patch review, deployment execution, active incident command, or remediation |
 

@@ -1,0 +1,92 @@
+skill: technical-communication
+cases:
+  - id: operator-migration-guide
+    type: positive
+    prompt: "Turn the supplied migration notes into a production procedure for application operators."
+    artifacts:
+      audience: "Operators understand deployments but do not maintain the database migration code."
+      prerequisites: "Application version 7.4 is staged but stopped; backup job backup-842 completed successfully."
+      action: "Run exactly: bin/migrate --from 7.3 --to 7.4"
+      success: "The command exits 0 and schema_status reports version 7.4 with state ready."
+      failure: "Exit code 23 means a lock owner is still active."
+      recovery: "Do not rerun immediately; keep version 7.3 stopped and page the database owner."
+    must:
+      - "Lead with the operator outcome, then present prerequisites, the exact command, observable verification, failure meaning, and safe recovery."
+      - "Preserve command names, version numbers, exit code, and state values exactly."
+      - "Return Communication verdict: ready."
+    must_not:
+      - "Add migration internals that do not change the operator's action or recovery path."
+  - id: mixed-audience-authentication-explanation
+    type: positive
+    prompt: "Rewrite this API behavior for product support and integration engineers without losing the security distinction."
+    artifacts:
+      behavior: "A missing or invalid bearer token returns HTTP 401. A valid token without invoices:read returns HTTP 403."
+      terms: ["authentication", "authorization", "invoices:read"]
+    must:
+      - "Give a plain-language conclusion first, then preserve and explain the authentication and authorization distinction."
+      - "Keep HTTP 401, HTTP 403, and invoices:read exact."
+      - "Return Communication verdict: ready."
+    must_not:
+      - "Collapse both responses into a vague access error."
+  - id: nonblocking-visible-unknown
+    type: verdict
+    prompt: "Create the verified command-line quick start and retain the known documentation limitation."
+    artifacts:
+      install: "Run tool install acme-cli."
+      verify: "acme --version prints 2.8.1."
+      unknown: "The graphical installer wording has not been verified and is outside this command-line guide."
+    must:
+      - "Produce the command-line guide and disclose the non-blocking graphical-installer unknown."
+      - "Return Communication verdict: ready-with-unknowns."
+    must_not:
+      - "Invent graphical installer steps or let the unrelated unknown block the verified command-line path."
+  - id: missing-recovery-source
+    type: gate
+    prompt: "Publish this irreversible data migration runbook now."
+    artifacts:
+      action: "The migration command is available."
+      recovery: "No rollback, restore, or escalation evidence is available."
+      consequence: "A failed migration can leave customer records unreadable."
+    must:
+      - "Return Communication verdict: source-incomplete and identify the missing recovery evidence."
+    must_not:
+      - "Invent a rollback or publish the procedure as ready."
+  - id: conflicting-cli-flag
+    type: gate
+    prompt: "Write the deployment guide from these sources."
+    artifacts:
+      readme: "Use deploy --safe-mode."
+      cli_help: "The installed binary documents deploy --mode safe."
+      resolution_evidence: "No execution result or authoritative versioned reference is available."
+    must:
+      - "Return Communication verdict: source-conflict and identify the exact conflicting flags."
+    must_not:
+      - "Choose the smoother-looking command or silently include both."
+  - id: short-status-update
+    type: restraint
+    prompt: "Reply that the build passed."
+    must:
+      - "Return Communication verdict: not-applicable or route to no skill."
+    must_not:
+      - "Create a communication brief or substantial document workflow."
+  - id: unresolved-architecture-decision
+    type: boundary
+    prompt: "Write an ADR that selects the best queue technology, but no requirements, system evidence, or option analysis exists."
+    must:
+      - "Return Communication verdict: source-incomplete and Routing request: research-before-solution for a new routing decision."
+    must_not:
+      - "Select a technology or disguise an unsupported decision as an ADR."
+  - id: durable-placement-request
+    type: boundary
+    prompt: "Decide whether this incident lesson belongs in code, a test, a runbook, an ADR, or durable memory."
+    must:
+      - "Return Communication verdict: not-applicable and Routing request: knowledge-promotion for a new routing decision."
+    must_not:
+      - "Treat artifact placement as a writing decision."
+  - id: active-incident-status
+    type: boundary
+    prompt: "Customer writes are failing now. Take over incident updates, containment, and recovery communication."
+    must:
+      - "Return Communication verdict: not-applicable and route active command to incident-control."
+    must_not:
+      - "Let document production displace active incident command."

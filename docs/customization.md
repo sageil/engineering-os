@@ -27,6 +27,7 @@ Do not add a complete workflow, style guide, architecture preference, or project
 Do not make `execution-planning` compare solutions.
 Do not make `adversarial-review` implement corrections.
 Do not make `knowledge-promotion` automatically write memory.
+Do not make `technical-communication` research missing engineering facts, approve correctness, choose durable placement, or simplify away exact technical distinctions.
 Do not make `threat-modeling` scan, exploit, command incidents, or implement remediation.
 Do not make `operational-readiness` execute deployments, command incidents, or turn generic checklists into blockers.
 

@@ -44,6 +44,10 @@ skills:
     activation: request-only
     requires: explicit-durable-capture-request
     output: durable-artifact-or-no-store-verdict
+  technical-communication:
+    activation: request-only
+    requires: explicit-substantial-technical-communication-request
+    output: reader-centered-artifact-and-communication-verdict
   threat-modeling:
     activation: request-only
     requires: explicit-threat-model-or-proactive-security-assessment-request

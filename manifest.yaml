@@ -1,5 +1,5 @@
 name: engineering-os
-version: 4.3.0
+version: 4.4.0
 skills:
   - research-before-solution
   - causal-debugging
@@ -7,6 +7,7 @@ skills:
   - adversarial-review
   - incident-control
   - knowledge-promotion
+  - technical-communication
   - threat-modeling
   - operational-readiness
 automatic_skills:

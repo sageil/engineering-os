@@ -39,6 +39,7 @@ When more than one appears applicable, choose the skill that owns the immediate 
 Use `execution-planning` only for a requested plan when a selected solution still has material transition hazards.
 Use `adversarial-review` only for requested independent review of a defined change artifact.
 Use `knowledge-promotion` only for requested durable capture.
+Use `technical-communication` only for requested creation or substantial revision of a technical artifact when a defined human audience must understand, decide, act, or recover from verified source material.
 Use `threat-modeling` only for a requested proactive security analysis of a defined system, feature, data flow, trust boundary, or design.
 Use `operational-readiness` only for a requested launch or sustained-operation assessment with a defined operating boundary.
 
@@ -64,6 +65,7 @@ Deploying a stateless container through an approved reversible procedure uses no
 Designing a zero-downtime migration with mixed versions and unsafe intermediate states may use `execution-planning` when the user requests the plan.
 Investigating why a container repeatedly crashes may use `causal-debugging`.
 Responding to a container that is corrupting customer data now uses `incident-control`.
+Rewriting a verified migration procedure for application operators uses `technical-communication` when the user explicitly requests the artifact.
 Modeling how a proposed multi-tenant export path could cross tenant boundaries uses `threat-modeling` when explicitly requested.
 Deciding whether a service is ready for production traffic uses `operational-readiness` when explicitly requested.
 
