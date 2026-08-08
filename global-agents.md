@@ -25,6 +25,183 @@ Routine authorized implementation requires no Engineering OS skill.
 - Attempt to falsify material completion and review claims.
 - Use direct human language and calibrate confidence to evidence.
 - Prefer enforceable artifacts over durable memory.
+- Prefer quality, simplicity, robustness, scalability, and long-term maintainability over short-term implementation convenience.
+- Prefer repository-native reuse over task-local invention.
+- Maintain one canonical implementation for one concept unless the architecture explicitly requires otherwise.
+- Treat tests as evidence of behavior, not as deliverables or coverage-generation exercises.
+
+## Communication defaults
+
+- Lead with the outcome, then explain supporting details.
+- Keep progress updates brief, concrete, and easy to scan.
+- Use plain language and avoid unnecessary jargon.
+- Keep final responses concise unless detailed explanation is requested.
+- Ask clarifying questions only when an assumption could materially change the result and cannot be resolved by inspection.
+- When blocked, identify the exact blocker and the smallest safe next action.
+- Do not reflexively agree after mistakes; correct the record with evidence.
+
+## Evidence-first implementation
+
+Before answering design, architecture, or implementation questions, inspect the relevant code paths when access is available.
+Cite or name the exact files, functions, commands, or runtime observations supporting material claims.
+Separate verified current behavior from opinion or recommendation.
+Label material conclusions as verified, inference, unknown, or proposal when that distinction matters.
+Do not claim causation without a controlled comparison, replay, or equivalent evidence.
+Inspect and reuse existing datasets, tests, stored records, and tooling before proposing new work.
+When evidence is insufficient, state what is unknown and perform the smallest safe read-only investigation that can resolve it when authorized.
+Do not recommend a design or implementation until decision-relevant evidence is sufficient.
+
+## Repository-native implementation
+
+Before introducing or materially changing production code, identify the existing execution path and owner of the relevant behavior.
+Inspect callers, consumers, adjacent implementations, interfaces, boundaries, nearby tests, shared helpers, fixtures, factories, builders, mocks, and semantically similar mechanisms as applicable.
+Search semantically, not only by exact identifier.
+The absence of an exact name match is not evidence that no existing mechanism owns the responsibility.
+
+Before creating a new implementation, helper, utility, service, abstraction, fixture, factory, builder, mock, test harness, or reusable mechanism, prefer in this order:
+
+1. Reuse an existing implementation unchanged.
+2. Extend an existing implementation in the smallest compatible way.
+3. Consolidate behavior into an existing appropriate owner.
+4. Create something new only when existing mechanisms are genuinely unsuitable.
+
+Do not introduce a parallel implementation merely because it is locally easier than understanding or modifying the existing one.
+Treat implementations that must remain behaviorally synchronized as a maintainability defect unless duplication is an explicit architectural requirement.
+Do not confuse superficial textual similarity with semantic duplication.
+
+## Change discipline
+
+Implement the smallest coherent repository-native change.
+Smallest does not mean fewest characters, fewest files inspected, or least investigation.
+Avoid unrelated refactoring, speculative abstractions, premature generalization, unnecessary files, dependencies, interfaces, wrappers, formatting churn, and unrelated renames.
+Before presenting implementation work as complete, review the full diff for correctness, maintainability, duplicated ownership, unnecessary test infrastructure, and divergence from established repository patterns.
+Preserve unrelated user work.
+Do not manually edit generated files or files the repository marks as generated.
+Do not use destructive Git operations without explicit authorization.
+When writing commit messages, do not auto-add the agent as a co-author.
+
+## Test quality and verification
+
+Running relevant existing tests is ordinary verification when authorized by the task and environment.
+Do not modify tests merely to make a failing implementation appear correct.
+Before adding or materially changing tests, inspect nearby tests and shared test infrastructure.
+Reuse existing fixtures, factories, builders, mocks, helpers, and assertion utilities where appropriate.
+Prefer extending an existing coherent test over creating a nearly identical parallel test.
+
+Every new or changed test should support a meaningful behavioral claim such as observable behavior, a relevant contract, a regression, a material edge case, an invariant, or interaction across a meaningful boundary.
+For a regression test, ask whether it would fail if the relevant defect were still present.
+If not, it is not sufficient evidence for the correction.
+
+Do not add tests solely to increase coverage, execute branches, mirror implementation details, prove trivial language or framework behavior, assert getters or setters, test mocks rather than production behavior, or duplicate cases already covered at a more meaningful level.
+Prefer fewer high-signal tests over many low-value tests.
+Be suspicious when production code and its test contain substantially identical algorithms.
+Mocks must not bypass the material boundary whose behavior the test claims to verify.
+
+Keep verification proportional to the actual change and its risk.
+For isolated documentation or presentation changes, run only focused checks that exercise the affected path.
+Do not run broad integration, database, deployment, or unrelated diagnostics unless the changed code can affect them or the user explicitly requests them.
+Do not rerun checks that already passed unless subsequent changes could invalidate them.
+Stop once the requested outcome and directly affected behavior are verified.
+When required verification cannot be performed, report the blocker instead of claiming completion.
+
+## Implementation completion gate
+
+Before declaring implementation complete, confirm proportionally to the change that:
+
+- the existing owner of the behavior was identified;
+- relevant implementations and callers were inspected;
+- established repository patterns were considered;
+- existing test infrastructure was considered;
+- existing code was reused or extended where appropriate;
+- no unnecessary parallel abstraction was introduced;
+- no production logic was unnecessarily duplicated;
+- no test setup or test infrastructure was unnecessarily duplicated;
+- new tests support meaningful behavioral claims;
+- regression tests would detect the regression they claim to cover;
+- mocks do not invalidate claimed evidence;
+- no unnecessary files, dependencies, or interfaces were introduced;
+- unrelated code was preserved;
+- the diff is the smallest coherent repository-native change.
+
+If a new reusable abstraction was introduced, be able to identify its responsibility, previous owner, alternatives inspected, why reuse or extension was unsuitable, and why the new mechanism does not create parallel ownership.
+
+## Language-specific defaults
+
+Apply these defaults when working in the named language unless repository-local instructions or clearly established project conventions specify otherwise.
+Repository-specific architecture and explicit local instructions take precedence over these defaults when they conflict.
+
+### TypeScript data shape and boundary rules
+
+- Avoid large inline conditional-spread object literals.
+- Avoid replacing them with long repeated `if (x !== undefined) target.x = x` blocks.
+- Do not copy optional fields one by one through production code unless constructing a narrow external DTO where absence is part of the contract.
+- If more than two optional fields are being copied, prefer a boundary decoder, normalized typed object, or named DTO builder.
+- Validate untrusted data exactly once at the boundary.
+- Boundaries include HTTP request bodies, database rows, external provider responses, JSON parsing, workflow or activity payloads and results, environment variables, CLI input, and filesystem metadata.
+- Name boundary readers clearly, such as `read*`, `parse*`, `decode*`, or `normalize*`.
+- After validation, pass concrete typed objects through the system and avoid repeating the same defensive checks downstream.
+- Prefer typed API, workflow, activity, and persistence contracts over `Record<string, unknown>` in internal application code.
+- Optional properties are only for genuinely optional domain data.
+- If production behavior requires a value, make it required after normalization and fail at the boundary when missing.
+- Do not make properties optional merely to simplify construction.
+- With `exactOptionalPropertyTypes`, prefer normalized objects or small named builders near the boundary when omission is semantically distinct from present `undefined`.
+- Before finalizing TypeScript changes, scan touched files for repeated conditional-spread construction, repeated undefined-copy blocks, downstream type checks against already typed data, new unstructured payloads, and optional fields required for normal production behavior.
+
+### Go data shape and boundary rules
+
+- Validate untrusted input at package or service boundaries.
+- Decode boundary data into typed structs before it reaches domain logic.
+- Do not pass `map[string]any`, `map[string]interface{}`, `any`, `interface{}`, or raw JSON through production code after decoding unless the domain truly requires arbitrary data.
+- Keep type assertions, reflection, and raw map indexing inside boundary readers or narrowly scoped adapters.
+- Use pointers, `sql.Null*`, custom nullable types, or `omitempty` only when absence is real boundary or domain semantics.
+- Do not use nil pointers, empty strings, zero numbers, or zero time values as hidden substitutes for required data.
+- If a value is required after validation, represent it as required in the normalized struct and return an error when missing.
+- Constructors and setup functions should validate required dependencies once and return concrete initialized structs.
+- Prefer small named decoder, normalizer, or constructor functions over repeated nil checks across call sites.
+- Before finalizing Go changes, scan touched files for repeated nil checks, raw map access, scattered type assertions, and optional fields required for normal production behavior.
+
+### Python data shape and boundary rules
+
+- Treat type hints as documentation and static-analysis input, not runtime validation.
+- Validate untrusted data at boundaries before it enters core application logic.
+- Prefer dataclasses, typed models, `TypedDict`, or project-standard validation models over unstructured `dict[str, Any]` in application code.
+- Keep `Any`, raw dictionaries, `getattr`, `hasattr`, repeated `.get(...)` defaults, and ad hoc type checks inside boundary readers or adapters.
+- Do not pass partially validated dictionaries through multiple layers.
+- If production behavior requires a value, make it required in the normalized model and fail during parsing when missing.
+- Use `Optional[...]` or `T | None` only when `None` is meaningful domain data.
+- Do not use `None`, empty strings, empty collections, or sentinel defaults to hide missing required values.
+- Prefer small named `parse_*`, `read_*`, `decode_*`, or `normalize_*` functions over local defensive checks at every call site.
+- Validate dependencies and configuration once at startup or construction, then pass concrete initialized objects through the system.
+- Before finalizing Python changes, scan touched files for repeated `.get(...)` chains, broad `Any`, scattered `isinstance` checks, and optional fields required for normal production behavior.
+
+### .NET C# data shape and boundary rules
+
+- Enable and respect nullable reference types in modern C# projects.
+- Validate untrusted input at boundaries before it reaches domain or application services.
+- Use typed request, response, domain, and persistence models instead of `dynamic`, `object`, `ExpandoObject`, `JObject`, or `Dictionary<string, object?>` in application code.
+- Keep dynamic access, reflection, and loose dictionary reads inside boundary adapters or serializers.
+- Use `required`, constructors, init-only properties, value objects, or validation attributes where they match the project style.
+- If production behavior requires a value, represent it as non-null after validation and fail at the boundary when missing.
+- Use nullable properties only when null is meaningful domain data or required by an external DTO contract.
+- Do not suppress nullability warnings with `!` unless the invariant is proven locally and cannot be represented cleanly in the type system.
+- Validate options and required dependencies once during startup or construction, then inject concrete initialized services and option objects.
+- Prefer named mapper, decoder, validator, or factory functions over repeated null checks across handlers and services.
+- Before finalizing C# changes, scan touched files for repeated null guards, `dynamic`, loose object dictionaries, null-forgiving operators, and nullable properties required for normal production behavior.
+
+### Rust data shape and boundary rules
+
+- Validate untrusted input at boundaries before it reaches domain logic.
+- Deserialize or convert boundary data into typed structs and enums before passing it through application code.
+- Prefer domain types, newtypes, and enums that make invalid states unrepresentable.
+- Do not pass `serde_json::Value`, `HashMap<String, Value>`, `Box<dyn Any>`, or loosely typed maps through production code after boundary decoding unless the domain truly requires arbitrary data.
+- Keep dynamic JSON access, downcasting, stringly typed dispatch, and ad hoc key lookups inside boundary adapters or serializers.
+- Use `Option<T>` only when absence is meaningful domain data or part of an external DTO contract.
+- If production behavior requires a value, represent it as `T` after validation and return an error when missing.
+- Do not use empty strings, zero numbers, empty collections, or default values to hide missing required data.
+- Prefer `Result<T, E>` with clear error types over panics for boundary validation and recoverable failures.
+- Constructors and configuration loaders should validate required dependencies once and return concrete initialized structs.
+- Prefer named `parse_*`, `decode_*`, `try_from`, `new`, or `normalize_*` functions over repeated local validation at call sites.
+- Before finalizing Rust changes, scan touched files for repeated `Option` unwrapping, scattered `serde_json::Value` access, stringly typed state, unnecessary `unwrap` or `expect`, and optional fields required for normal production behavior.
 
 ## Automatic routing
 

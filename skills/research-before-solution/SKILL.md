@@ -1,8 +1,8 @@
 ---
 name: research-before-solution
-description: Establish decision-sufficient evidence and compare credible options when a complex engineering decision has material uncertainty that could change the available solutions or their ranking. Use for architecture, design, integration, reliability, security, performance, or technology decisions after any concrete failure cause requiring causal isolation has been established. Do not use for reproducing or diagnosing an observed failure, active incidents, routine repository inspection, ordinary implementation with a selected mechanism, review, execution planning, or low-risk mechanical work.
+description: Establish decision-sufficient evidence and compare credible options when a complex engineering decision has material uncertainty that could change the available solutions or their ranking. Use for architecture, design, integration, reliability, security, performance, or technology decisions after any concrete failure cause requiring causal isolation has been established.
+Do not use for reproducing or diagnosing an observed failure, active incidents, routine repository inspection, ordinary implementation with a selected mechanism, review, execution planning, or low-risk mechanical work.
 ---
-
 # Research Before Solution
 
 ## Contract
@@ -16,9 +16,9 @@ Use two ordered phases:
 Do not leak solutions into research.
 Propose research actions when needed, but do not propose code, product, architecture, configuration, process, or operational changes.
 Do not let a solution-shaped request bypass the gate.
+For changes to an existing system, understanding existing ownership is part of understanding what is true.
 
 Maintain one research verdict:
-
 - `researching`: Continue gathering or testing decision-relevant evidence.
 - `complete`: Unlock solution options because the completion gate passes.
 - `blocked`: Stop because identifiable evidence exists but is inaccessible or requires missing authority.
@@ -32,8 +32,8 @@ State the exact question, affected scope, observable symptoms, constraints, and 
 Separate reported symptoms from inferred causes.
 Identify unknowns that could change the option set or its ranking.
 Exclude research that cannot affect the decision.
-
 Scale research depth to decision consequence and uncertainty.
+For an existing repository, include uncertainty about current ownership when it could affect credible solutions.
 When the skill is explicitly requested for a bounded decision, inspect the owning artifact and load-bearing assumptions, then apply the same gate without unnecessary ceremony.
 
 ## 2. Plan the evidence
@@ -41,12 +41,12 @@ When the skill is explicitly requested for a bounded decision, inspect the ownin
 Identify the strongest practical evidence for each material question and how to obtain it.
 Match evidence to the claim instead of using one universal hierarchy.
 Read [evidence-method.md](references/evidence-method.md) for evidence classes, source selection, external research, causal standards, and contradiction handling.
-
 Prefer direct inspection and reproducible observation over descriptions of behavior.
 Use current primary sources for external facts that vary by version, environment, or date.
-Inspect the owning execution path, callers, boundaries, configuration, persistence, tests, and runtime signals when they affect the question.
+Inspect the owning execution path, callers, boundaries, configuration, persistence, tests, runtime signals, and semantically adjacent implementations when they affect the question.
 Use history only when timing or intent is decision-relevant.
-
+For repository decisions, explicitly look for existing owners, extension points, shared abstractions, established conventions, and shared test infrastructure that could constrain the option set.
+Search semantically, not only by exact names.
 Keep research read-only by default.
 Use state-changing experiments only with authority and a clear target, risk, recovery path, and observation method.
 
@@ -63,6 +63,7 @@ Track each decision-relevant claim with:
 
 Do not count repeated claims from one origin as independent corroboration.
 Do not treat documentation, tests, source, runtime observations, and human reports as interchangeable.
+For repository changes, record what currently owns the relevant behavior, which callers depend on it, which related mechanisms already exist, and whether a proposed responsibility would overlap an existing owner.
 Summarize decision-useful evidence for the user rather than dumping raw notes.
 
 ## 4. Challenge the leading explanation
@@ -72,7 +73,6 @@ Develop only alternatives that could change the credible option set or its ranki
 Seek observations that would falsify the leading explanation.
 Use a controlled comparison or reproduction before claiming causation when practical.
 Label causal claims as inference when control is unavailable, and preserve the remaining alternatives.
-
 When a concrete observed failure requires systematic reproduction and causal isolation, stop research and return `Routing request: causal-debugging` for a new routing decision.
 Do not activate another skill from inside this skill or ask causal debugging to choose a correction.
 
@@ -82,6 +82,8 @@ Resolve contradictions by checking source authority, scope, version, environment
 Expose contradictions that cannot be resolved.
 Convert assumptions into research steps when practical.
 Retain unknowns only when they remain genuinely unresolved.
+When multiple mechanisms appear to own the same responsibility, determine whether they are intentionally distinct, compatibility layers, migration states, generated or vendored code, or genuinely duplicated ownership.
+Do not infer semantic duplication from textual similarity alone.
 
 ## 6. Apply the research gate
 
@@ -89,6 +91,8 @@ Set the verdict to `complete` only when every statement is true:
 
 - The decision, scope, and success conditions are clear.
 - The real owning path and material boundaries have been inspected.
+- Existing ownership and relevant adjacent mechanisms have been inspected when they could materially affect the options or ranking.
+- Established extension points and repository patterns have been identified when they constrain the decision.
 - Every material decision-relevant claim has proportionate evidence.
 - Credible competing explanations that could change the decision have been tested or bounded.
 - Material contradictions have been resolved or exposed with known consequences.
@@ -98,7 +102,6 @@ Set the verdict to `complete` only when every statement is true:
 
 Require decision sufficiency, not absolute certainty.
 Do not declare completion merely because time, context, or accessible sources ran out.
-
 If the gate fails, continue researching or return `blocked` or `insufficient-evidence` with the smallest useful next research action.
 Do not provide solution options in either failure state.
 
@@ -106,16 +109,22 @@ Do not provide solution options in either failure state.
 
 Enter only after recording `Research verdict: complete`.
 Read [options-method.md](references/options-method.md) before constructing options.
-
-Restate the evidence-backed problem, constraints, and invariants.
+Restate the evidence-backed problem, constraints, invariants, and existing ownership.
 Develop only credible, materially distinct options.
 Include deletion, rollback, deferral, configuration, or doing nothing when the evidence makes them credible.
 Do not invent weak alternatives to create the appearance of choice.
+For an existing repository, consider solution shapes in this order when evidence makes them credible:
 
+1. Use existing behavior unchanged.
+2. Extend the existing owning mechanism.
+3. Consolidate responsibility into an existing appropriate abstraction.
+4. Introduce a genuinely new mechanism.
+
+This ordering is a search discipline, not a predetermined recommendation.
+Do not present a new reusable abstraction as a credible option without establishing what currently owns the responsibility, which alternatives were inspected, why reuse or extension would not responsibly satisfy the requirement, and how the new mechanism avoids ambiguous or duplicated ownership.
 When options change durable boundaries, data ownership, trust, distribution, deployment, consistency, or long-term ownership, read [architecture-model.md](references/architecture-model.md) before ranking them.
 Keep structural analysis inside the current research responsibility rather than activating a separate architecture skill.
 Return to research if an option introduces a material unverified assumption.
-
 Recommend only when evidence distinguishes the options.
 Use a conditional recommendation or decline to recommend when uncertainty prevents responsible ranking.
 
@@ -127,6 +136,7 @@ Present results in this order:
 
 - Question and scope
 - Material evidence with exact artifact locations or citations
+- Existing ownership and relevant repository mechanisms when decision-relevant
 - Competing explanations and falsification results
 - Contradictions, limitations, and remaining unknowns
 - `Research verdict: complete | blocked | insufficient-evidence`
@@ -137,6 +147,7 @@ Stop unless the verdict is `complete`.
 
 - Decision criteria
 - Credible options and tradeoffs
+- Reuse, extension, consolidation, or new ownership implications when relevant
 - Recommendation when justified
 - Verification and conditions that would change the decision
 
@@ -153,4 +164,4 @@ When the user requests a transition plan and material transition hazards remain,
 
 ## Failure conditions
 
-Fail the skill when recall is presented as current fact, a solution is chosen before evidence collection, research searches only for confirmation, documentation is presented as runtime proof, tests are presented as production history, correlation is presented as causation, inaccessible evidence is treated as supporting evidence, file count substitutes for relevant evidence, research continues after further evidence cannot change the decision, or options appear before a `complete` verdict.
+Fail the skill when recall is presented as current fact, a solution is chosen before evidence collection, research searches only for confirmation, documentation is presented as runtime proof, tests are presented as production history, correlation is presented as causation, inaccessible evidence is treated as supporting evidence, file count substitutes for relevant evidence, existing ownership is ignored when it could change the option set, research continues after further evidence cannot change the decision, or options appear before a `complete` verdict.
