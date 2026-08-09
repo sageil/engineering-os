@@ -28,6 +28,40 @@ cases:
       - "Return Communication verdict: ready."
     must_not:
       - "Collapse both responses into a vague access error."
+  - id: coordinated-product-documentation
+    type: positive
+    prompt: "Review and substantially rewrite the supplied product documentation set for workspace members and administrators."
+    artifacts:
+      product_surface: "The document library supports browser-ready notifications, and both Ask and Chat support dictation when speech input is enabled."
+      readme: "The README repeats the complete installation procedure and provider capability matrix."
+      features: "The feature guide omits browser notifications and says dictation is available only in Ask."
+      configuration: "The configuration guide is the authoritative provider capability reference."
+      deployment: "The deployment guide owns the verified installation and storage procedure."
+    must:
+      - "Inventory the verified product surface before rewriting and correct the notification and Chat dictation omissions."
+      - "Keep the README focused on product orientation and task-based navigation."
+      - "Keep the provider matrix canonical in configuration and the installation procedure canonical in deployment, with descriptive cross-references instead of copied details."
+      - "Report the documentation checks performed and return Communication verdict: ready."
+    must_not:
+      - "Preserve contradictory speech claims or repeat the complete matrix and installation procedure in the README."
+      - "Invent features not present in the supplied product surface."
+  - id: dense-ai-runtime-explanation
+    type: positive
+    prompt: "Rewrite these verified AI runtime notes for administrators without losing operational constraints."
+    artifacts:
+      outcome: "Automatic context sizing requests enough context for supported local language requests."
+      scope: "It applies to native GGUF Ask, Chat, Query Expansion, and Indexing requests, but not embeddings, MLX models, or remote providers."
+      prerequisite: "The application provider limit and LOCAL_NUM_PARALLEL must both be 1."
+      behavior: "Ask and Chat use a calculated requirement with a 65,536-token floor and model-maximum ceiling; Query Expansion uses the floor; indexing, vision, tools, reasoning, and unbounded requests use the model maximum."
+      fallback: "Inspection failure or an unsupported format uses the configured fixed capacity."
+      lifecycle: "Model metadata is discovered lazily and cached for the application runtime."
+    must:
+      - "Lead with the outcome, scope, and prerequisite before the request-specific behavior and lifecycle detail."
+      - "Use a compact comparison when it clarifies the different request rules."
+      - "Preserve native GGUF, MLX, embedding, concurrency, token-floor, ceiling, and fallback distinctions exactly."
+      - "Return Communication verdict: ready."
+    must_not:
+      - "Lead with metadata caching or collapse every request type into a claim that all requests use the model maximum."
   - id: nonblocking-visible-unknown
     type: verdict
     prompt: "Create the verified command-line quick start and retain the known documentation limitation."

@@ -1,13 +1,14 @@
 ---
 name: technical-communication
-description: Create or substantially rewrite technical communication so a defined human audience can accurately understand, decide, act, or recover using verified source material. Use only when the user explicitly requests a README, technical guide, runbook, ADR, RFC, migration guide, API documentation, release note, decision memo, substantial technical explanation, or translation of complex technical material into human language. Preserve exact commands, identifiers, domain distinctions, constraints, and uncertainty while reducing avoidable jargon and cognitive load. Do not use for ordinary conversation, short status updates, simple proofreading, code comments, implementation, technical research, correctness or security review, active incident communication, operational-readiness assessment, deciding what knowledge should be stored, or document layout and file-format work.
+description: Create or substantially rewrite a technical artifact or coordinated documentation set so a defined human audience can accurately understand, decide, act, or recover using verified source material. Use only when the user explicitly requests a README, feature or configuration guide, in-product help, runbook, ADR, RFC, migration guide, API documentation, release note, decision memo, substantial technical explanation, or translation of complex technical material into human language. Preserve exact commands, identifiers, domain distinctions, constraints, and uncertainty while reducing avoidable jargon, duplication, and cognitive load. Do not use for ordinary conversation, short status updates, simple proofreading, code comments, implementation, technical research, correctness or security review, active incident communication, operational-readiness assessment, deciding whether knowledge should be stored, or document layout and file-format work.
 ---
 
 # Technical Communication
 
 ## Contract
 
-Enable the intended reader to form an accurate mental model and complete the intended action or decision with the least necessary effort.
+Enable the primary reader to form an accurate mental model and complete the intended action or decision with the least necessary effort.
+For a documentation set, give each reader task and substantive topic one clear home.
 
 Optimize in this order:
 
@@ -17,61 +18,65 @@ Optimize in this order:
 4. Brevity
 5. Tone
 
-Never trade accuracy for simplicity.
-Never trade usefulness for completeness.
-Never use polished prose to conceal missing evidence.
+Never trade accuracy for simplicity, usefulness for completeness, or visible uncertainty for polished prose.
 
 Maintain one verdict:
 
-- `ready`: The artifact is accurate, usable, appropriately detailed, and supported by the available sources.
-- `ready-with-unknowns`: The artifact is usable, and its non-blocking unknowns or assumptions are visible.
-- `source-incomplete`: Missing evidence prevents accurate communication of a load-bearing claim, instruction, or decision.
-- `source-conflict`: Available sources disagree in a way that could change the reader's understanding or action.
-- `not-applicable`: The request does not require the distinctive communication method owned by this skill.
+- `ready`: The artifact is accurate, usable, appropriately detailed, and supported.
+- `ready-with-unknowns`: The artifact is usable, and visible non-blocking unknowns cannot cause an incorrect action.
+- `source-incomplete`: Missing evidence blocks a load-bearing claim, instruction, or decision.
+- `source-conflict`: Available sources disagree in a way that could change understanding or action.
+- `not-applicable`: The request does not require this skill's distinctive method.
 
 ## 1. Establish the communication brief
 
 Identify:
 
-- the artifact being created or revised;
-- the primary reader;
-- what the reader already knows;
-- what the reader must understand, decide, or do;
+- the artifact or documentation set;
+- the primary reader and what they already know;
+- what they must understand, decide, or do;
 - the consequence of misunderstanding;
 - the authoritative source material;
-- required format, voice, terminology, and length;
+- the required format, voice, terminology, and length;
+- the files and product surfaces in scope;
 - material assumptions and unknowns.
 
 Choose one primary reader.
-Serve secondary readers through progressive disclosure rather than compromising the primary path.
-
-Infer obvious context when the assumption is low-risk and would not materially change the artifact.
-State material assumptions.
+Serve secondary readers through progressive disclosure instead of compromising the primary path.
+Infer only low-risk context that cannot materially change the artifact.
 Request missing information only when different answers would produce materially different communication.
 
-## 2. Establish the truth boundary
+## 2. Establish evidence and coverage
 
-Inspect the available source material before drafting consequential claims.
+Inspect the owning sources before drafting consequential claims.
+Separate observed behavior, documented behavior, accepted decisions, supported inference, and unresolved uncertainty.
+Do not treat existing prose as proof.
 
-Separate:
+For a documentation-set revision, inspect the relevant user-visible surfaces, such as:
 
-- observed behavior;
-- documented behavior;
-- accepted decisions;
-- supported inference;
-- unresolved uncertainty.
+- interface routes, labels, controls, and in-product help;
+- APIs and command-line entry points;
+- settings, defaults, validation, and capability catalogs;
+- deployment, migration, operations, permissions, states, and failure handling;
+- supported formats and focused tests or examples that define observable behavior.
 
-Preserve exact commands, flags, configuration keys, API names, error messages, version constraints, security boundaries, and domain distinctions.
+Build a working coverage map:
 
-Do not invent missing facts, examples, compatibility claims, outcomes, or recovery steps.
-Do not resolve contradictory sources through smoother wording.
+> Reader job | feature or claim | authoritative evidence | canonical document | entry points that should link to it
 
-Return `source-incomplete` when a missing fact could make the reader take an incorrect action.
-Return `source-conflict` when authoritative sources disagree and the conflict cannot be resolved through inspection.
+Mark omissions, stale claims, contradictions, and repeated explanations before editing.
+Use the map as an editing aid, not mandatory output.
+
+Preserve exact commands, flags, configuration keys, API names, UI labels, error messages, versions, security boundaries, and domain distinctions.
+Do not invent facts, examples, compatibility claims, outcomes, or recovery steps.
+Do not smooth over conflicting sources.
+
+Return `source-incomplete` when missing evidence could make the reader act incorrectly.
+Return `source-conflict` when inspection cannot resolve an authoritative disagreement.
 
 ## 3. Design the reader's path
 
-Choose the structure that matches the reader's dominant job.
+Use the reader's dominant job as the document spine.
 
 For action:
 
@@ -79,175 +84,101 @@ For action:
 
 For a decision:
 
-> Decision -> recommendation -> evidence -> material tradeoffs -> risks and unknowns -> next action
+> Decision -> recommendation -> evidence -> tradeoffs -> risks and unknowns -> next action
 
 For understanding:
 
-> Direct answer -> working mental model -> concrete example -> important boundaries -> implications
+> Direct answer -> working mental model -> example -> boundaries -> implications
 
 For adopting a change:
 
 > What changed -> who is affected -> required action -> timing -> verification -> rollback or recovery
 
-Use the selected path as a spine, not a mandatory template.
-Include only sections that improve the reader's result.
-
+Use only the sections that improve the reader's result.
 Place background where the reader first needs it.
-Do not make readers study architecture before they can understand the immediate outcome.
-Do not force readers to reconstruct the intended order from scattered details.
+Do not require architecture knowledge before the immediate outcome is clear.
 
-## 4. Calibrate technical language
+### Coordinate a documentation set
 
-Prefer an ordinary word when it preserves the full meaning.
+Give each document one dominant job.
+Use overviews for orientation, procedures for action, references for exact mappings, and explanations for mechanisms and boundaries.
+Do not make every document repeat all four forms.
 
-Retain the technical term when it is:
+Keep each exact command sequence, provider matrix, default table, recovery procedure, or detailed mechanism in one canonical location within the authorized set.
+Elsewhere, state the reader-specific consequence briefly and link to that location with a descriptive label.
+Retain enough local context for the link to make sense.
+Keep prerequisites, warnings, and recovery guidance next to the action they constrain even when details live elsewhere.
+Update, consolidate, or delete stale prose instead of appending another version.
 
-- the exact name of an interface or system element;
-- necessary to preserve a domain distinction;
-- a term the reader must recognize elsewhere;
-- the most precise available expression;
-- required for effective searching or troubleshooting.
+## 4. Explain AI behavior through progressive disclosure
 
-Define an unfamiliar term where the reader first needs it.
-Use the term consistently after defining it.
+For an AI-assisted feature, explain applicable information in this order:
 
-For example:
+> Reader outcome -> evidence used -> scope and exclusions -> prerequisites and privacy -> normal behavior and controls -> limits, fallback, failure, and recovery -> necessary internals
 
-> The service is idempotent: repeating the same request produces the same final state instead of creating another record.
+Separate application guarantees from model behavior and provider variability.
+Treat scores, predictions, generated summaries, and automated checks as advisory unless verified behavior makes them authoritative.
+Do not imply that an AI score proves correctness, generated text is source evidence, or local software remains private when a configured endpoint is remote.
 
-Do not replace precise terminology with vague language merely to sound accessible.
-Do not rename identifiers, commands, types, states, or error messages.
+Use a compact comparison table when request types or modes follow different exact rules.
+Do not lead with model metadata, cache lifetime, runner behavior, or token calculations when the reader first needs scope and prerequisites.
 
-Avoid:
-
-- unexplained abbreviations;
-- stacked technical nouns;
-- unnecessary implementation detail;
-- abstract descriptions where a concrete example would be clearer;
-- analogies that hide an important limitation;
-- claims that something is simple, easy, obvious, or intuitive.
-
-Explain a mechanism only when it changes the reader's action, decision, interpretation, or recovery path.
-
-For mixed audiences, provide a plain-language conclusion first and the exact technical detail immediately after it.
-
-## 5. Draft for human understanding
+## 5. Write for human understanding
 
 Lead with the answer, outcome, decision, or required action.
+Use direct sentences, concrete nouns, active verbs, and one main idea per paragraph.
+Name the actor responsible for an action and make causal relationships explicit.
+Use outcome-led headings, lists for choices or steps, and tables for repeated-field comparisons.
 
-Use direct sentences, concrete nouns, and active verbs.
-Name the actor responsible for an action.
-Keep one main idea in each paragraph.
-Make causal relationships explicit.
-Use headings that tell the reader what they will obtain or accomplish.
+Prefer ordinary words when they preserve the full meaning.
+Retain a technical term when it is an exact interface name, preserves a necessary distinction, is required for search or troubleshooting, or is the most precise expression.
+Define an unfamiliar necessary term where the reader first needs it, then use it consistently.
+Never rename identifiers, states, commands, types, or errors to sound accessible.
 
-Prefer:
-
-> Run the migration before starting the new application version.
-
-Instead of:
-
-> It should be noted that execution of the migration process is required prior to application startup.
-
-Prefer:
-
-> The request failed because the token expired.
-
-Instead of:
-
-> The request encountered an authentication-related failure condition.
-
+For mixed audiences, give the plain-language conclusion first and the exact technical detail immediately after it.
 Show a verified example early when it reduces abstraction.
-Place explanation after the action unless the explanation is required to perform the action safely.
+Place explanation after an action unless it is required for safe execution.
 
-Remove:
+Use descriptive link text.
+Do not identify interface elements only by color, position, shape, or direction.
+Do not use analogies that hide limitations or claims that work is simple, easy, obvious, or intuitive.
 
-- ceremonial introductions;
-- statements about what the document will discuss;
-- repeated conclusions;
-- corporate claims without evidence;
-- inflated adjectives;
-- mechanical transitions;
-- caveats that do not change the reader's behavior;
-- process narration that does not help the reader.
+Remove ceremonial introductions, repeated conclusions, unsupported corporate claims, inflated adjectives, mechanical transitions, irrelevant caveats, and process narration that does not help the reader.
 
-Judge language by function rather than by a fixed word blacklist.
-Keep a specialized word when it earns its place.
-Delete an ordinary word when it does not.
+## 6. Make action and decision safety explicit
 
-## 6. Make action and recovery explicit
+For an action, include the prerequisites, exact action, expected observable result, success check, likely failure signals, and safe recovery or escalation.
+Place warnings next to the constrained step.
+Do not report success through an internal event when the reader needs an external outcome.
 
-When the artifact asks the reader to act, include:
+For a decision, include the decision, decision rule, material alternatives, tradeoffs, risks, assumptions that could reverse the recommendation, and next responsible action.
 
-- required prerequisites;
-- the exact action;
-- the expected observable result;
-- a way to verify success;
-- likely failure signals;
-- safe recovery or escalation guidance.
+## 7. Challenge and validate the artifact
 
-Place warnings next to the action they constrain.
-Do not bury required conditions in background sections.
+Review from the reader's starting knowledge.
+Find the first point where the reader needs missing context, then move, define, demonstrate, or remove the obstruction.
+Confirm that the reader can identify the purpose, required action or decision, prerequisites, success signal, failure modes, recovery, and material constraints.
 
-When the artifact supports a decision, include:
+For a documentation set, confirm that:
 
-- the decision being made;
-- the decision rule;
-- material alternatives;
-- meaningful tradeoffs;
-- assumptions that could reverse the recommendation;
-- the next responsible action.
+- every verified in-scope feature has a deliberate home;
+- each document still serves its reader and dominant job;
+- repeated procedures, matrices, defaults, and mechanisms have one canonical explanation;
+- cross-references explain why their destination is useful;
+- commands, labels, settings, capabilities, defaults, versions, and examples match owning sources;
+- local links, anchors, and fragment targets resolve;
+- no stale roadmap, compatibility, privacy, or correctness claim remains.
 
-Do not report success using an internal event when the reader needs an externally observable outcome.
-
-## 7. Challenge the artifact
-
-Review the artifact from the reader's starting knowledge, not the author's.
-
-Confirm that the reader can answer:
-
-- What is this?
-- Why does it matter to me?
-- What should I do or decide?
-- What must already be true?
-- How do I know it worked?
-- What could fail?
-- How do I recover or escalate?
-- Which assumptions or constraints matter?
-
-Find the first point where the reader would need information they have not yet received.
-Move, define, demonstrate, or remove the obstruction.
-
-Check every technical term.
-Define it, retain it as known audience vocabulary, or replace it with a more direct expression.
-
-Check every factual claim against the available sources.
-Remove unsupported confidence.
+Run authorized, repository-specific documentation checks when available.
+Keep verification proportional, such as link, anchor, fragment, spelling, generated-reference, rendered-structure, or diff checks.
+Do not substitute unrelated implementation tests for documentation evidence.
 
 Delete a sentence when its removal does not change the reader's action, decision, mental model, risk awareness, or recovery ability.
+Do not force uniform sentence lengths or symmetrical sections.
 
-Do not force uniform sentence lengths, symmetrical sections, or identical bullet structures.
-Let the subject determine the shape of the writing.
-
-## 8. Apply the communication gate
-
-Set `ready` only when:
-
-- load-bearing claims are supported;
-- the primary reader and intended result are clear;
-- the information appears in the reader's order of need;
-- technical detail is precise but not gratuitous;
-- unfamiliar necessary terminology is explained;
-- required actions and decisions are unambiguous;
-- success is observable;
-- relevant failure and recovery paths are present;
-- material assumptions and limitations are visible;
-- no paragraph makes the reader work without a corresponding benefit.
-
-Set `ready-with-unknowns` only when the remaining unknowns are visible and cannot cause the reader to take an incorrect action.
-
-Do not polish an artifact that fails the gate.
-Correct its truth boundary, reader path, or explanation.
+Set `ready` only when load-bearing claims are supported, the reader path is usable, necessary terms are clear, success and recovery are observable, assumptions are visible, canonical content does not diverge, and checkable links and examples are valid.
+Set `ready-with-unknowns` only when every remaining unknown is visible and non-blocking.
+Correct the truth boundary or reader path before polishing an artifact that fails this gate.
 
 ## Output
 
@@ -255,39 +186,33 @@ Return:
 
 1. The completed artifact
 2. The intended reader and reader outcome
-3. Material assumptions, unknowns, or source conflicts
-4. Unsupported claims deliberately excluded
-5. `Communication verdict: ready | ready-with-unknowns | source-incomplete | source-conflict | not-applicable`
+3. The source, coverage, and documentation checks performed
+4. Material assumptions, unknowns, or source conflicts
+5. Unsupported claims deliberately excluded
+6. `Communication verdict: ready | ready-with-unknowns | source-incomplete | source-conflict | not-applicable`
 
-Keep the supporting note brief unless the user requests an editorial explanation.
+Keep the supporting note brief unless the user requests editorial reasoning.
 
 ## Boundaries
 
-Do not treat rewriting as evidence that a technical claim is correct.
-Do not choose an architecture or resolve an engineering decision.
-Do not implement code, configuration, infrastructure, or documentation storage policy.
-Do not approve security, correctness, launch readiness, or operational risk.
-Do not decide whether knowledge deserves durable preservation.
-Do not command communication during an active incident.
-Do not activate another skill for a substep of this responsibility.
+Do not treat rewriting as correctness evidence, choose an architecture, resolve an engineering decision, approve security or launch risk, or command an active incident.
+Within an authorized documentation set, reorganize and consolidate content only for the requested reader outcomes.
+Do not decide whether new knowledge deserves durable preservation, select its artifact class, or implement code, tests, configuration, or infrastructure.
+Do not activate another skill for a substep.
 
-Return a routing request when a different unresolved responsibility prevents accurate communication.
-Pass only the exact missing question, relevant evidence, material constraints, and the condition required to resume.
+When another unresolved responsibility blocks accurate communication, return a routing request with only the missing question, relevant evidence, constraints, and resume condition.
 
 ## Failure conditions
 
-Fail the skill when:
+Fail the skill when it:
 
-- invented facts make the prose appear complete;
-- simplification removes a load-bearing distinction;
-- jargon is replaced with vague language;
-- unexplained terminology blocks the intended reader;
-- background delays the answer without improving safety;
-- exact commands or identifiers are paraphrased;
-- required warnings are separated from the constrained action;
-- examples contradict the actual interface;
-- assumptions are presented as established facts;
-- a reader cannot verify success;
-- recovery guidance is omitted from a consequential procedure;
-- polished language conceals uncertainty;
-- the document optimizes for sounding professional rather than helping the reader succeed.
+- invents facts or presents assumptions as established behavior;
+- removes a load-bearing distinction, warning, fallback, privacy boundary, or uncertainty;
+- paraphrases an exact command, identifier, state, or error;
+- uses vague language in place of necessary terminology;
+- relies only on existing prose and misses verified product behavior;
+- creates duplicate authoritative-looking content that can diverge;
+- separates required context or recovery from the constrained action;
+- presents AI-generated content or advisory scores as proof;
+- omits observable verification or recovery from a consequential procedure;
+- optimizes for sounding professional instead of helping the reader succeed.
