@@ -3,15 +3,28 @@
 ## Prefer discriminating experiments
 
 Choose an experiment by how many credible explanations it can separate, not by how much data it produces.
-State the prediction before running the experiment.
+State the prediction before running it.
 Record a control and the factor being changed.
 Reject post-hoc stories that were not predicted unless a new experiment tests them.
+
+## Distinguish intervention meanings
+
+An intervention can:
+- remove the true cause;
+- remove a necessary enabling condition;
+- block an amplifier;
+- bypass the causal path;
+- compensate for the downstream effect; or
+- alter the observation itself.
+
+A successful workaround therefore does not by itself identify root cause.
+Ask which competing causal models predict the same successful intervention.
 
 ## Isolate boundaries
 
 Trace the failure across input, validation, transformation, persistence, concurrency, external dependency, and presentation boundaries.
 Use binary search to locate the first boundary where actual state diverges from expected state.
-Verify the boundary's input and output rather than assuming ownership from filenames or service names.
+Verify boundary input and output rather than assuming ownership from filenames or service names.
 
 ## Handle intermittent failures
 
@@ -36,18 +49,17 @@ Do not infer the bottleneck from aggregate CPU or wall-clock time alone.
 
 ## Use counterfactual evidence
 
-Strong causal support usually combines:
-
+Strong causal support often combines:
 - failure with the suspected mechanism present;
 - success when the mechanism is removed or controlled;
 - failure again when the mechanism is restored;
 - preservation of adjacent behavior.
 
 Use the strongest safe approximation when exact reversal is impossible.
-State the remaining causal uncertainty.
+State remaining causal uncertainty.
 
 ## Protect evidence
 
 Keep raw timestamps, inputs, traces, and commands separate from interpretation.
 Avoid destructive cleanup until evidence is preserved.
-Remove temporary instrumentation after the investigation, or document its deliberate retention and cost.
+Remove temporary instrumentation after the investigation, or document deliberate retention and cost.

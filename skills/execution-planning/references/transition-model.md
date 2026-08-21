@@ -1,5 +1,10 @@
 # Transition Model
 
+## Selected-solution integrity
+
+A transition plan may operationalize the chosen mechanism but must not silently redesign it.
+If a transition constraint requires a new source of truth, deployment boundary, owner, trust boundary, external capability, or compatibility model, return to research.
+
 ## Persistent data
 
 Define old and new representations, writers, readers, compatibility interval, backfill or transformation, validation, cutover, rollback limits, and cleanup.
@@ -26,7 +31,7 @@ Check partial application, incompatible configuration, unavailable dependencies,
 
 ## Feature flags and temporary compatibility
 
-Assign an owner, purpose, default, observation signal, removal condition, and deadline or event for review.
+Assign an owner, purpose, default, observation signal, removal condition, and deadline or review event.
 Plan behavior for every reachable flag combination.
 Treat a flag without a removal path as permanent configuration.
 
