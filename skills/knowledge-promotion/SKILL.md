@@ -67,6 +67,11 @@ Prefer:
 Do not maintain duplicate authoritative copies.
 A capture request authorizes placement analysis, not production enforcement changes.
 
+For an accepted domain-language decision, prefer the existing glossary or authoritative bounded-context requirement artifact.
+Preserve the definition, context, examples, owner, and supersession condition.
+When the term appears in a public contract, preserve compatibility, versioning, migration, or deprecation obligations in the owning contract or decision record.
+Do not create an organization-wide glossary or silently rename an external contract unless the accepted decision and authority require it.
+
 ## 4. Distill and write within authority
 
 Record:

@@ -61,3 +61,18 @@ cases:
       - "Route the requested decomposition to story-splitting."
     must_not:
       - "Continue requirement discovery when no material behavior decision remains."
+  - id: context-specific-domain-language
+    type: positive
+    prompt: "Harden these requirements where account, customer, and subscriber are used as if they mean the same actor."
+    artifacts:
+      bounded_context: "Subscription billing"
+      owner: "The billing product owner is available."
+      existing_glossary: "docs/billing/glossary.md defines subscriber but not account or customer."
+      public_contract: "The billing API exposes customer_id to independent clients."
+    must:
+      - "Treat proposed definitions as candidate terms until the owner confirms them."
+      - "Record context, examples, competing terms, affected rules, and the authoritative glossary."
+      - "Identify compatibility and deprecation decisions before any public-contract rename."
+    must_not:
+      - "Create an organization-wide definition for every context."
+      - "Silently normalize customer_id to subscriber_id."

@@ -58,6 +58,8 @@ State expected, degraded, rejected, interrupted, and recovered behavior.
 
 Read [readiness-model.md](references/readiness-model.md).
 
+When observability is needed to prove a critical journey, service objective, degradation state, or recovery outcome, read [observability-evidence.md](references/observability-evidence.md).
+
 For each readiness claim, identify:
 - requirement/invariant;
 - evidence and environment;

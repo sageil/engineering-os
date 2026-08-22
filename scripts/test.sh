@@ -26,6 +26,15 @@ while IFS= read -r skill || [[ -n "$skill" ]]; do
   [[ -n "$skill" ]] || continue
   [[ -f "$TEST_HOME/.agents/skills/$skill/SKILL.md" ]] || fail "Default installation omitted manifest skill: $skill"
 done < <(manifest_skills "$ROOT_DIR/manifest.yaml")
+for relative in \
+  research-before-solution/references/architecture-opportunity-review.md \
+  research-before-solution/references/public-api-contracts.md \
+  research-before-solution/references/observability-design.md \
+  operational-readiness/references/observability-evidence.md \
+  requirements-hardening/references/domain-language.md; do
+  [[ -f "$TEST_HOME/.agents/skills/$relative" ]] || fail "Default installation omitted reference: $relative"
+  cmp -s "$ROOT_DIR/skills/$relative" "$TEST_HOME/.agents/skills/$relative" || fail "Installed reference differs from source: $relative"
+done
 HOME="$TEST_HOME" "$ROOT_DIR/scripts/uninstall.sh" --agents keep >/dev/null
 remaining=$(installed_count "$TEST_HOME")
 [[ "$remaining" -eq 0 ]] || fail "Default uninstall left managed skills behind."

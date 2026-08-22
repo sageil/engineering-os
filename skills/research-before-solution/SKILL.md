@@ -90,6 +90,9 @@ Read [evidence-method.md](references/evidence-method.md).
 When the decision introduces, replaces, or materially expands a generic dependency, framework, tool, service, platform primitive, or custom subsystem, read [existing-solutions.md](references/existing-solutions.md) now.
 Use its bespoke baseline, current primary evidence, hard gates, and total-ownership dimensions in the research record.
 
+When the decision is where architecture investment is worthwhile across a repository or subsystem, read [architecture-opportunity-review.md](references/architecture-opportunity-review.md) now.
+Use its change-pressure, boundary, caller-burden, counterevidence, and confidence checks before choosing a design target.
+
 For each material unknown, identify:
 
 - the claim that must be established;
@@ -322,6 +325,12 @@ Keep structural analysis inside this skill rather than activating a separate arc
 
 When an eligible option creates, removes, combines, splits, or materially changes an in-process module or package contract, read [module-contract-design.md](references/module-contract-design.md) before ranking it.
 Use its caller-burden, knowledge-leakage, depth, seam, test-fidelity, and design-comparison checks.
+
+When an eligible option creates or materially changes an externally consumed or independently versioned API contract, read [public-api-contracts.md](references/public-api-contracts.md) before ranking it.
+Use its consumer, compatibility, error, retry, concurrency, pagination, deprecation, and contract-verification checks.
+
+When an eligible option defines or materially changes telemetry, service indicators or objectives, alert policy, sampling, cardinality, or telemetry privacy and cost, read [observability-design.md](references/observability-design.md) before ranking it.
+Use its operator-question, signal-contract, loss, actionability, privacy, and verification checks.
 
 If detailed option analysis reveals a material unknown, stop solution work and return to `researching`.
 

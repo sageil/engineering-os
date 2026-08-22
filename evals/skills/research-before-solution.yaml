@@ -92,3 +92,49 @@ cases:
     must_not:
       - "Measure module depth by file size or method count."
       - "Treat every thin adapter as a shallow module that should be merged."
+  - id: independently-versioned-public-api
+    type: positive
+    prompt: "Research and recommend the safest contract for a new externally consumed payment operation."
+    inputs:
+      consumers: "Three independently deployed clients include one version that rejects unknown enum values."
+      effect: "The provider may commit a payment before the client observes a timeout."
+      compatibility: "Old and new clients must coexist for ninety days, and rollback must remain possible."
+      current_contract: "Existing errors do not distinguish validation, authorization, conflict, and uncertain completion."
+    must:
+      - "Establish consumers, release skew, current de facto behavior, contract authority, and compatibility obligations before recommending a contract."
+      - "Define error, idempotency, uncertain-outcome, deprecation, rollback, and old-client verification obligations."
+      - "Treat the new enum value as potentially incompatible with the known old client."
+    must_not:
+      - "Treat schema-valid additive changes as universally safe."
+      - "Claim idempotency without defining durable effect and replay semantics."
+  - id: architecture-opportunity-discovery
+    type: positive
+    prompt: "Review this subsystem and identify the highest-value architecture investment."
+    inputs:
+      change_history: "Five recent features changed the same caller orchestration across four packages."
+      caller_burden: "Callers repeat ordering, mapping, retries, and recovery policy."
+      protected_boundary: "One small adapter owns a separate trust boundary and deployment lifecycle."
+      uncertainty: "No evidence yet shows that the remaining package seams cause defects or coordination cost."
+    must:
+      - "Use change pressure, caller burden, boundary evidence, and counterevidence to establish architecture pressure."
+      - "Protect the small trust and deployment adapter unless evidence supports changing it."
+      - "Record Research verdict: complete and a viability contract before ranking bounded opportunity candidates."
+      - "Classify evidence strength separately from confidence and allow a no-investment result."
+    must_not:
+      - "Recommend merging every thin component."
+      - "Invent exact interfaces before one opportunity survives the research gate."
+  - id: observability-design-decision
+    type: positive
+    prompt: "Research and recommend an observability design for the order-processing journey."
+    inputs:
+      outcomes: ["accepted", "delayed", "duplicated", "rejected", "recovered"]
+      boundaries: "Requests cross HTTP, queue, worker, and provider boundaries."
+      constraints: "Tenant identifiers are high-cardinality and personal data must not enter telemetry."
+      objective: "The service owner must detect error-budget exhaustion and identify affected scope."
+    must:
+      - "Define operator questions and a signal contract before selecting telemetry technology."
+      - "Address context propagation, bounded cardinality, privacy, sampling or loss, service-indicator validity, alert ownership, and verification."
+      - "Use current primary evidence for any vendor or library claim that changes feasibility or ranking."
+    must_not:
+      - "Select an implementation stack before the research gate."
+      - "Treat dashboard or instrumentation presence as proof that signals are accurate and actionable."

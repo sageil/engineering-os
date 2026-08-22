@@ -5,7 +5,7 @@
 Engineering OS is a provider-neutral, evidence-gated capability suite for AI engineering agents.
 It makes no skill the default, exposes specialized methods only when their distinctive responsibility is necessary, and requires claims to match available evidence.
 
-Version 4.6.0 contains fourteen specialized skills.
+Version 4.7.0 contains fourteen specialized skills.
 Routine implementation and proportional verification are baseline agent behavior, not an installable skill.
 The foundational capability remains `research-before-solution`, which blocks solution options until decision-relevant research is complete.
 
@@ -151,14 +151,12 @@ Pass `--profile` or `--skills` to change the exposed capability set deliberately
 The current manifest is authoritative, and unknown skill names are rejected before target changes.
 The update path reconciles removed managed skills safely and stops before changes when managed content has been modified.
 
-## Version 4.6 changes
+## Version 4.7 changes
 
-- Version 4.6.0 adds request-only requirements hardening and OAuth or OpenID Connect security design, assessment, and migration analysis.
-- Requirements hardening combines requirement discovery and gap closure before story splitting or implementation.
-- OAuth and OpenID Connect security uses current primary standards, explicit transaction bindings, control evidence, and negative tests.
-- Research now includes a focused established-solution evaluation method for material dependency and build-versus-adopt decisions.
-- Research now evaluates consequential module contracts through caller burden, hidden knowledge, cohesive depth, justified seams, test fidelity, and independent contract alternatives.
-- Causal debugging now strengthens evidence safety, controlled comparison, and mutation authority.
+- Version 4.7.0 adds conditional methods for public API contracts, architecture opportunity discovery, and observability design inside research-before-solution.
+- Operational readiness now requires deployed observability evidence when telemetry is load-bearing for a launch verdict.
+- Adversarial review now checks scope fidelity and states the actual independence of the review context.
+- Requirements hardening and knowledge promotion now govern bounded-context language decisions without silently changing public contracts.
 - New installations expose all fourteen canonical skills for discovery, while the explicit automatic profile remains limited to three.
 - Installation and uninstallation continue to use the manifest and recorded managed-skill inventory without aliases, migrations, or legacy skill mappings.
 

@@ -36,11 +36,18 @@ For a plan, identify selected solution, evidence-backed current state, target st
 Do not claim review of content that was not inspected.
 Preserve unrelated work.
 
+Record whether the review has a fresh read-only context, whether the reviewer authored material parts of the change, and what prior conclusions were supplied.
+Do not claim independent confirmation when the review context is not independent.
+
 ## 2. Understand intent and invariants
 
 Determine changed behavior and what must remain true.
 Use the request, accepted design, tests, interfaces, surrounding code, and relevant documentation.
 Do not invent business requirements.
+
+Check scope fidelity against the original objective and accepted constraints.
+Identify unrequested additions, removed or weakened required behavior, altered exclusions, and skipped, deleted, or weakened tests.
+Report them only when they materially change the accepted outcome or its evidence.
 
 Identify the few invariants that control review risk.
 
@@ -125,6 +132,7 @@ Findings first, ordered by severity.
 
 Then:
 - review scope and limitations;
+- independence and scope-fidelity limitations;
 - verification performed;
 - rejected candidate findings when decision-useful;
 - `Review verdict: ready | ready-with-nonblocking-findings | not-ready | insufficient-evidence | contradictory-requirements`

@@ -42,7 +42,7 @@ Provider adapters may exist outside the core, but no skill depends on them.
 
 | Skill | Activation | Produces | Does not own |
 | --- | --- | --- | --- |
-| `research-before-solution` | Automatic for material decision uncertainty | Research verdict and evidence-grounded options, including structural analysis when needed | Failure diagnosis, planning, or implementation |
+| `research-before-solution` | Automatic for material decision uncertainty | Research verdict and evidence-grounded options, including conditional architecture, public API contract, and observability design methods | Failure diagnosis, planning, or implementation |
 | `causal-debugging` | Automatic for observed failure needing causal isolation | Causal verdict and correction constraints | Correction selection |
 | `incident-control` | Automatic for active production harm | Supervisory incident state, controlled operations, and verified recovery | The bounded investigation or planning output of a coexisting working skill |
 | `execution-planning` | Request-only hazardous transition plan | Executable transition plan | Research or execution |

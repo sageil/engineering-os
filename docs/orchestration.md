@@ -29,6 +29,7 @@ Use the optional `automatic`, `custom`, or `none` profile only when the environm
 Use `incident-control` when production harm is active or escalating.
 Use `causal-debugging` when an observed failure needs controlled reproduction and causal discrimination.
 Use `research-before-solution` when material decision uncertainty could change the available solutions or their ranking.
+Public API contract design, observability design, and architecture opportunity discovery remain conditional methods inside `research-before-solution` rather than separate discoverable skills.
 When more than one appears applicable, choose the skill that owns the immediate unresolved responsibility rather than stacking them.
 
 ## Request-only routing

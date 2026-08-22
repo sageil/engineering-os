@@ -68,6 +68,9 @@ Otherwise ask neutrally and do not anchor the owner to invented options.
 In `audit` mode, map each existing normative statement, example, question, exclusion, and linked surface before finding gaps.
 Do not rewrite before you understand the current meaning.
 
+When synonyms, overloaded terms, renames, or context-dependent vocabulary can change requirement meaning, read [domain-language.md](references/domain-language.md).
+Keep candidate terms separate from accepted language.
+
 ## 3. Challenge rules and examples
 
 For every rule, test:
@@ -121,6 +124,7 @@ Set `requirements-ready` only when:
 - material roles, failures, boundaries, state changes, and quality constraints are explicit;
 - contradictions across linked requirements and UI states are resolved;
 - candidate terms and exclusions are visible;
+- every term that can materially change behavior is accepted or parked with an accountable owner and consequence;
 - no unresolved decision can materially change the required behavior.
 
 Set `needs-decisions` when owner decisions remain but useful requirements work can continue.

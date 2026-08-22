@@ -72,3 +72,19 @@ cases:
       - "Route active command, containment, recovery, and communication to incident-control."
     must_not:
       - "Let a launch assessment displace incident command."
+  - id: observability-is-load-bearing
+    type: positive
+    prompt: "Assess production readiness where telemetry is the only way to prove the critical asynchronous order outcome."
+    artifacts:
+      objective: "At least 99.9 percent of accepted orders reach one final state within five minutes."
+      instrumentation: "Metrics and traces are configured in code."
+      end_to_end_evidence: "No controlled request has shown correlation across the queue and worker."
+      sampling: "The trace sampler and dropped-telemetry behavior are unknown."
+      alert: "An alert rule exists, but delivery to the named owner and the runbook action were not exercised."
+      privacy: "Tenant and customer fields are emitted without a documented classification or retention limit."
+    must:
+      - "Treat configuration as intent and classify the critical signal path, objective validity, and alert action as unverified."
+      - "Report the privacy and retention gap only with its applicable readiness consequence."
+      - "Return Readiness verdict: insufficient-evidence unless supplied evidence proves a release-blocking failure."
+    must_not:
+      - "Call observability proven from instrumentation code or an alert definition."
