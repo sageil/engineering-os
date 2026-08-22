@@ -84,12 +84,12 @@ actual=$(installed_count "$TEST_HOME")
 
 # Update preserves a recorded profile when no new selection is supplied.
 TEST_HOME="$TMP_ROOT/full"
-HOME="$TEST_HOME" "$ROOT_DIR/scripts/update.sh" --agents keep >/dev/null
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --agents keep >/dev/null
 actual=$(installed_count "$TEST_HOME")
 [[ "$actual" -eq 14 ]] || fail "Update did not preserve the full profile."
 
 # Deliberately shrinking a profile reconciles request-only skills.
-HOME="$TEST_HOME" "$ROOT_DIR/scripts/update.sh" --profile automatic --agents keep >/dev/null
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --profile automatic --agents keep >/dev/null
 actual=$(installed_count "$TEST_HOME")
 [[ "$actual" -eq 3 ]] || fail "Profile change did not reconcile the full profile to automatic."
 for skill in execution-planning adversarial-review acceptance-review story-splitting reduce-system-complexity requirements-hardening secure-oauth-oidc knowledge-promotion technical-communication threat-modeling operational-readiness; do
@@ -106,7 +106,7 @@ for skill in acceptance-review requirements-hardening secure-oauth-oidc; do
   [[ -f "$TEST_HOME/.agents/skills/$skill/SKILL.md" ]] || fail "Custom profile omitted: $skill"
 done
 [[ ! -e "$TEST_HOME/.agents/skills/causal-debugging" ]] || fail "Custom profile installed an unrequested skill."
-HOME="$TEST_HOME" "$ROOT_DIR/scripts/update.sh" --agents keep >/dev/null
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --agents keep >/dev/null
 actual=$(installed_count "$TEST_HOME")
 [[ "$actual" -eq 3 ]] || fail "Update did not preserve the custom skill selection."
 
@@ -149,7 +149,7 @@ mkdir -p "$removed"
 printf '%s\n' '---' 'name: architecture-evolution' 'description: removed' '---' > "$removed/SKILL.md"
 printf '%s\n' architecture-evolution >> "$TEST_HOME/.agents/.engineering-os/skills.list"
 printf '%s %s\n' architecture-evolution "$(dir_sha256 "$removed")" >> "$TEST_HOME/.agents/.engineering-os/skills.sha256"
-HOME="$TEST_HOME" "$ROOT_DIR/scripts/update.sh" --agents keep >/dev/null
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --agents keep >/dev/null
 [[ ! -e "$removed" ]] || fail "Update left a removed managed skill installed."
 
 # Corrupt uninstall state fails before any managed skill is removed.
@@ -170,10 +170,42 @@ TEST_HOME="$TMP_ROOT/modified-skill"
 mkdir -p "$TEST_HOME"
 HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --agents keep >/dev/null
 printf '\nuser modification\n' >> "$TEST_HOME/.agents/skills/research-before-solution/SKILL.md"
-if HOME="$TEST_HOME" "$ROOT_DIR/scripts/update.sh" --agents keep >/dev/null 2>&1; then
+printf '\nsecond user modification\n' >> "$TEST_HOME/.agents/skills/causal-debugging/SKILL.md"
+if HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --agents keep >/dev/null 2>&1; then
   fail "Update replaced a modified managed skill."
 fi
 grep -q 'user modification' "$TEST_HOME/.agents/skills/research-before-solution/SKILL.md" || fail "Modified skill content was lost."
+grep -q 'second user modification' "$TEST_HOME/.agents/skills/causal-debugging/SKILL.md" || fail "Second modified skill content was lost."
+[[ ! -e "$TEST_HOME/.agents/.engineering-os/backups/modified-skills" ]] || fail "Blocked update created modified-skill backups."
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --replace-modified --agents keep --dry-run >/dev/null
+grep -q 'user modification' "$TEST_HOME/.agents/skills/research-before-solution/SKILL.md" || fail "Dry-run replacement changed research content."
+grep -q 'second user modification' "$TEST_HOME/.agents/skills/causal-debugging/SKILL.md" || fail "Dry-run replacement changed debugging content."
+[[ ! -e "$TEST_HOME/.agents/.engineering-os/backups/modified-skills" ]] || fail "Dry-run replacement created modified-skill backups."
+
+# Explicit replacement preserves every changed package, installs canonical content, and refreshes hashes.
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --replace-modified --agents keep >/dev/null
+cmp -s "$ROOT_DIR/skills/research-before-solution/SKILL.md" "$TEST_HOME/.agents/skills/research-before-solution/SKILL.md" || fail "Explicit replacement did not install canonical research content."
+cmp -s "$ROOT_DIR/skills/causal-debugging/SKILL.md" "$TEST_HOME/.agents/skills/causal-debugging/SKILL.md" || fail "Explicit replacement did not install canonical debugging content."
+modified_backup_root="$TEST_HOME/.agents/.engineering-os/backups/modified-skills"
+actual=$(find "$modified_backup_root" -mindepth 1 -maxdepth 1 -type d | wc -l | tr -d ' ')
+[[ "$actual" -eq 2 ]] || fail "Explicit replacement created $actual modified-skill backups instead of 2."
+grep -R -q '^user modification$' "$modified_backup_root" || fail "Research modification was not preserved in a backup."
+grep -R -q '^second user modification$' "$modified_backup_root" || fail "Debugging modification was not preserved in a backup."
+while read -r skill recorded_hash; do
+  current_hash=$(dir_sha256 "$TEST_HOME/.agents/skills/$skill")
+  [[ "$current_hash" == "$recorded_hash" ]] || fail "Explicit replacement did not refresh the managed hash for: $skill"
+done < "$TEST_HOME/.agents/.engineering-os/skills.sha256"
+
+# Explicit profile reduction preserves a changed managed skill before removal.
+printf '\nremoved-skill-local-change\n' >> "$TEST_HOME/.agents/skills/operational-readiness/SKILL.md"
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --profile automatic --replace-modified --agents keep >/dev/null
+[[ ! -e "$TEST_HOME/.agents/skills/operational-readiness" ]] || fail "Explicit profile reduction left a deselected managed skill installed."
+grep -R -q '^removed-skill-local-change$' "$modified_backup_root" || fail "Deselected modified skill was not preserved in a backup."
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/uninstall.sh" --agents keep >/dev/null
+[[ -d "$modified_backup_root" ]] || fail "Uninstall removed modified-skill backups."
+grep -R -q '^user modification$' "$modified_backup_root" || fail "Uninstall removed the research backup."
+grep -R -q '^second user modification$' "$modified_backup_root" || fail "Uninstall removed the debugging backup."
+grep -R -q '^removed-skill-local-change$' "$modified_backup_root" || fail "Uninstall removed the deselected-skill backup."
 
 # Original AGENTS.md is restored.
 TEST_HOME="$TMP_ROOT/restore-agents"

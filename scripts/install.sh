@@ -8,6 +8,7 @@ source "$SCRIPT_DIR/common.sh"
 
 AGENTS_MODE=""
 DRY_RUN=0
+REPLACE_MODIFIED=0
 PROFILE=""
 CUSTOM_SKILLS=""
 SELECTION_SET=0
@@ -28,6 +29,7 @@ Options:
   --agents keep|replace  Keep or replace the global AGENTS.md.
   --skills-target PATH   Skills directory (default: ~/.agents/skills).
   --agents-target PATH   AGENTS.md path (default: ~/.agents/AGENTS.md).
+  --replace-modified     Back up and replace changed managed skills.
   --dry-run              Show operations without changing files.
   -h, --help             Show this help.
 USAGE
@@ -64,6 +66,10 @@ while (($#)); do
       [[ $# -ge 2 ]] || fail "--agents-target requires a path"
       AGENTS_TARGET=$2
       shift 2
+      ;;
+    --replace-modified)
+      REPLACE_MODIFIED=1
+      shift
       ;;
     --dry-run)
       DRY_RUN=1
@@ -119,6 +125,7 @@ SKILLS_STATE="$STATE_DIR/skills.list"
 SKILLS_HASHES="$STATE_DIR/skills.sha256"
 ORIGINAL_SKILLS="$STATE_DIR/original-skills.env"
 SKILLS_BACKUPS="$STATE_DIR/backups/skills"
+MODIFIED_SKILLS_BACKUPS="$STATE_DIR/backups/modified-skills"
 AGENTS_BACKUPS="$STATE_DIR/backups/agents"
 
 ALL_SKILLS=$(mktemp)
@@ -127,7 +134,15 @@ PACKAGED_SKILLS=$(mktemp)
 OLD_SKILLS=$(mktemp)
 SOURCE_SKILLS=$(mktemp)
 HASH_SKILLS=$(mktemp)
-trap 'rm -f "$ALL_SKILLS" "$AUTOMATIC_SKILLS" "$PACKAGED_SKILLS" "$OLD_SKILLS" "$SOURCE_SKILLS" "$HASH_SKILLS"' EXIT
+MODIFIED_SKILLS=$(mktemp)
+STAGED_HASHES=""
+cleanup() {
+  rm -f "$ALL_SKILLS" "$AUTOMATIC_SKILLS" "$PACKAGED_SKILLS" "$OLD_SKILLS" "$SOURCE_SKILLS" "$HASH_SKILLS" "$MODIFIED_SKILLS"
+  if [[ -n "$STAGED_HASHES" ]]; then
+    rm -f "$STAGED_HASHES"
+  fi
+}
+trap cleanup EXIT
 manifest_skills "$MANIFEST" > "$ALL_SKILLS"
 manifest_list "$MANIFEST" automatic_skills > "$AUTOMATIC_SKILLS"
 [[ -s "$ALL_SKILLS" ]] || fail "Manifest contains no skills."
@@ -230,6 +245,7 @@ while IFS= read -r skill || [[ -n "$skill" ]]; do
 done < "$ALL_SKILLS"
 
 # Complete preflight for every old managed target before changing anything.
+: > "$MODIFIED_SKILLS"
 while IFS= read -r skill || [[ -n "$skill" ]]; do
   [[ -n "$skill" ]] || continue
   target_dir="$SKILLS_TARGET/$skill"
@@ -237,11 +253,20 @@ while IFS= read -r skill || [[ -n "$skill" ]]; do
   [[ -n "$installed_hash" ]] || fail "Installation state is missing a hash for managed skill: $skill"
   if [[ -d "$target_dir" ]]; then
     current_hash=$(dir_sha256 "$target_dir")
-    [[ "$current_hash" == "$installed_hash" ]] || fail "Managed skill changed since installation: $target_dir. Preserve or remove it before updating."
+    if [[ "$current_hash" != "$installed_hash" ]]; then
+      printf '%s\n' "$skill" >> "$MODIFIED_SKILLS"
+    fi
   elif [[ -e "$target_dir" ]]; then
     fail "Managed skill target is not a directory: $target_dir"
   fi
 done < "$OLD_SKILLS"
+
+if [[ -s "$MODIFIED_SKILLS" && $REPLACE_MODIFIED -eq 0 ]]; then
+  while IFS= read -r skill; do
+    info "Managed skill changed since installation: $SKILLS_TARGET/$skill"
+  done < "$MODIFIED_SKILLS"
+  fail "Preserve the changed skills or rerun with --replace-modified to back them up and install the packaged versions."
+fi
 
 # Validate untracked targets that will become managed.
 while IFS= read -r skill || [[ -n "$skill" ]]; do
@@ -286,6 +311,24 @@ if ((DRY_RUN)); then
 else
   mkdir -p "$SKILLS_TARGET" "$STATE_DIR"
 fi
+
+# Preserve changed managed skills outside discovery before replacement or removal.
+while IFS= read -r skill || [[ -n "$skill" ]]; do
+  [[ -n "$skill" ]] || continue
+  target_dir="$SKILLS_TARGET/$skill"
+  if ((DRY_RUN)); then
+    info "Would back up modified managed skill: $target_dir -> $MODIFIED_SKILLS_BACKUPS/"
+    continue
+  fi
+
+  mkdir -p "$MODIFIED_SKILLS_BACKUPS"
+  backup=$(mktemp -d "$MODIFIED_SKILLS_BACKUPS/$skill.$(utc_stamp).XXXXXX")
+  if ! cp -R "$target_dir"/. "$backup"/; then
+    safe_remove_managed_dir "$backup" "$MODIFIED_SKILLS_BACKUPS"
+    fail "Could not back up modified managed skill: $target_dir"
+  fi
+  info "Backed up modified managed skill: $target_dir -> $backup"
+done < "$MODIFIED_SKILLS"
 
 # Reconcile previously managed skills that are no longer selected or packaged.
 while IFS= read -r skill || [[ -n "$skill" ]]; do
@@ -343,11 +386,14 @@ skill_count=$(wc -l < "$PACKAGED_SKILLS" | tr -d ' ')
 if ((DRY_RUN)); then
   info "Would record installation state for $skill_count skills."
 else
-  cp "$PACKAGED_SKILLS" "$SKILLS_STATE"
-  : > "$SKILLS_HASHES"
+  atomic_copy_file "$PACKAGED_SKILLS" "$SKILLS_STATE"
+  STAGED_HASHES=$(mktemp "$STATE_DIR/.skills.sha256.XXXXXX")
   while IFS= read -r skill; do
-    printf '%s %s\n' "$skill" "$(dir_sha256 "$SKILLS_TARGET/$skill")" >> "$SKILLS_HASHES"
+    printf '%s %s\n' "$skill" "$(dir_sha256 "$SKILLS_TARGET/$skill")" >> "$STAGED_HASHES"
   done < "$SKILLS_STATE"
+  chmod 0600 "$STAGED_HASHES"
+  mv -f "$STAGED_HASHES" "$SKILLS_HASHES"
+  STAGED_HASHES=""
   state_set "$STATE_FILE" VERSION "$(cat "$ROOT_DIR/VERSION")"
   state_set "$STATE_FILE" PROFILE "$PROFILE"
   state_set "$STATE_FILE" SKILLS_TARGET "$SKILLS_TARGET"

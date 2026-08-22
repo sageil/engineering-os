@@ -84,13 +84,13 @@ Dry run reports the selected installation operations without writing target file
 Preserve the recorded profile:
 
 ```bash
-./scripts/update.sh --agents keep
+./scripts/install.sh --agents keep
 ```
 
 Change the exposed set deliberately:
 
 ```bash
-./scripts/update.sh --profile automatic --agents keep
+./scripts/install.sh --profile automatic --agents keep
 ```
 
 Before changing managed files, update verifies each installed skill against its recorded hash.
@@ -98,9 +98,22 @@ A modified managed skill stops the update before any managed target changes.
 Managed skills no longer selected or present in the current manifest are removed or replaced by their pre-installation backup.
 Incomplete installation state is rejected before any target changes.
 
+To replace changed managed skills explicitly:
+
+```bash
+./scripts/install.sh --replace-modified --agents keep
+```
+
+`--replace-modified` backs up every changed managed skill under `.engineering-os/backups/modified-skills/` before replacement or removal.
+The backup directory is outside the default skill discovery directory.
+Selected skills are then replaced with the packaged versions, and the managed hashes are refreshed.
+Replacement backups remain after later updates and uninstallation until the user removes them.
+Without this option, changed managed skills continue to block the update.
+
 ## Backups
 
 When installation replaces an untracked skill with the same name, it copies the original directory under `.engineering-os/backups/skills/` and records the mapping.
+When `--replace-modified` replaces a changed managed skill, it preserves the changed directory under `.engineering-os/backups/modified-skills/`.
 When global policy replacement overwrites an existing file, it stores a permission-restricted backup under `.engineering-os/backups/agents/`.
 
 ## Uninstalling
@@ -118,4 +131,6 @@ It validates all skill hashes, backup paths, target types, and global-policy res
 
 If installation stops during preflight, no managed targets have changed.
 If directory replacement fails, the installer attempts to restore the previous target before reporting failure.
+Replacement backups are complete before any changed managed target is replaced or removed.
+Managed hashes are refreshed only after every selected skill is installed.
 Backups remain whenever user-owned content may still need recovery.
