@@ -1,20 +1,20 @@
 # Installation
 
-The installer controls skill visibility because portable Markdown instructions cannot reliably prevent every agent from overactivating visible skills.
-New installations default to the `automatic` profile.
+The installer copies skill packages to an agent discovery directory.
+New installations default to the `full` profile so every packaged skill is discoverable.
 
 ## Profiles
 
-Install the three narrowly automatic capabilities:
+Install all fourteen capabilities:
+
+```bash
+./scripts/install.sh --agents keep
+```
+
+Install only the three narrowly automatic capabilities when reduced discoverability is explicitly required:
 
 ```bash
 ./scripts/install.sh --profile automatic --agents keep
-```
-
-Install all nine capabilities only when an external router gates context or users deliberately request capabilities:
-
-```bash
-./scripts/install.sh --profile full --agents keep
 ```
 
 Install no skills and optionally install the global policy:

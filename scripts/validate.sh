@@ -36,6 +36,8 @@ line_in_file research-before-solution "$PACKAGED_SKILLS" || fail "research-befor
 line_in_file threat-modeling "$PACKAGED_SKILLS" || fail "threat-modeling must be packaged."
 line_in_file operational-readiness "$PACKAGED_SKILLS" || fail "operational-readiness must be packaged."
 line_in_file technical-communication "$PACKAGED_SKILLS" || fail "technical-communication must be packaged."
+line_in_file requirements-hardening "$PACKAGED_SKILLS" || fail "requirements-hardening must be packaged."
+line_in_file secure-oauth-oidc "$PACKAGED_SKILLS" || fail "secure-oauth-oidc must be packaged."
 
 duplicate=$(LC_ALL=C sort "$PACKAGED_SKILLS" | uniq -d)
 [[ -z "$duplicate" ]] || fail "Manifest contains duplicate skill: $duplicate"
@@ -43,7 +45,7 @@ duplicate=$(LC_ALL=C sort "$PACKAGED_SKILLS" | uniq -d)
 manifest_count=$(wc -l < "$PACKAGED_SKILLS" | tr -d ' ')
 automatic_count=$(wc -l < "$AUTOMATIC_SKILLS" | tr -d ' ')
 directory_count=$(find "$ROOT_DIR/skills" -mindepth 1 -maxdepth 1 -type d | wc -l | tr -d ' ')
-[[ "$manifest_count" -eq 9 ]] || fail "Version $VERSION must package exactly 9 skills."
+[[ "$manifest_count" -eq 14 ]] || fail "Version $VERSION must package exactly 14 skills."
 [[ "$automatic_count" -eq 3 ]] || fail "Version $VERSION must expose exactly 3 automatic skills."
 [[ "$manifest_count" -eq "$directory_count" ]] || fail "Manifest lists $manifest_count skills, but skills/ contains $directory_count directories."
 

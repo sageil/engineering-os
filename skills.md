@@ -25,6 +25,11 @@ Require a new routing decision before a handoff.
 | --- | --- | --- |
 | `execution-planning` | Request a transition plan. | A selected solution still has material transition hazards. |
 | `adversarial-review` | Request independent review, audit, approval, or merge-readiness assessment of a defined change. | A diff, plan, migration, configuration, or other change artifact and its baseline are available. |
+| `acceptance-review` | Request a criterion-by-criterion acceptance verdict. | One current authoritative requirement artifact and the implementation subject are available. |
+| `story-splitting` | Request product or backlog decomposition into vertical slices. | The parent outcome and decision owner are known, and unresolved rules do not materially change the split. |
+| `reduce-system-complexity` | Request a net-mechanism reduction target or verification. | One existing behavior path and its conserved outcomes are selected. |
+| `requirements-hardening` | Request specification, acceptance-criteria hardening, example mapping, or gap closure. | An accountable decision owner and authoritative artifact are known or can be established. |
+| `secure-oauth-oidc` | Request OAuth or OpenID Connect security design, protocol assessment, hardening, or migration analysis. | The protocol parties, flows, issuers, resources, and primary standards can be established from evidence. |
 | `knowledge-promotion` | Request durable knowledge capture. | The learning is verified, reusable, and worth maintaining. |
 | `technical-communication` | Request creation or substantial revision of a technical artifact for a human audience. | The primary reader, intended outcome, and authoritative source material are known or can be established without material invention. |
 | `threat-modeling` | Request a threat model, abuse-case analysis, attack-surface analysis, or proactive security design assessment. | The security scope, assets, identities, trust boundaries, and decision owner are defined or can be established from evidence. |

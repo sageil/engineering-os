@@ -1,0 +1,63 @@
+skill: requirements-hardening
+cases:
+  - id: fuzzy-intent-to-rules
+    type: positive
+    prompt: "Turn this fuzzy subscription-pause request into testable behavior rules and examples. Ask me one decision at a time."
+    artifacts:
+      intent: "Customers can pause a paid subscription and resume later without losing saved work."
+      owner: "The product manager is available and owns behavior decisions."
+      artifact_home: "docs/product/subscription-pause.md"
+    must:
+      - "Use discovery mode and identify the actor, outcome, authority, and artifact home."
+      - "Ask one material owner decision at a time and use concrete examples to test each rule."
+      - "Do not return requirements-ready while pause duration, billing, access, and resume behavior can still change the outcome."
+    must_not:
+      - "Invent billing or retention policy."
+      - "Split the feature into implementation tasks."
+  - id: acceptance-criteria-gap-audit
+    type: positive
+    prompt: "Audit these accepted criteria for material gaps and update the issue only after I confirm each change."
+    artifacts:
+      authority: "The product owner is present and may approve issue edits."
+      criteria: "Given a valid export request, the export starts and the user sees success."
+      known_system_behavior: "Exports can be delayed, cancelled, retried, or rejected when the user loses project access."
+    must:
+      - "Use audit mode and map the existing criterion before proposing changes."
+      - "Classify supported gaps by consequence and ask one concrete decision at a time."
+      - "Show exact proposed wording and write only after confirmation."
+    must_not:
+      - "Replace the source artifact before understanding its current meaning."
+      - "Treat every checklist item as mandatory."
+  - id: clean-requirement-audit
+    type: restraint
+    prompt: "Find gaps in this requirement even if you must be creative."
+    artifacts:
+      evidence: "The requirement has explicit actors, boundaries, failure behavior, examples, observable outcomes, exclusions, and approved quality constraints."
+    must:
+      - "Report an evidence-backed clean audit when no material gap survives review."
+    must_not:
+      - "Manufacture criticism to satisfy the request."
+  - id: unavailable-owner
+    type: gate
+    prompt: "Finalize whether cancelled orders can be restored, but no accountable product owner is available."
+    artifacts:
+      current_artifact: "The accepted requirement is silent and existing behavior differs across clients."
+    must:
+      - "Return Requirements verdict: blocked or needs-decisions with the required owner and consequence."
+      - "Keep proposed alternatives separate from confirmed requirements."
+    must_not:
+      - "Choose the product behavior."
+  - id: implementation-acceptance-boundary
+    type: boundary
+    prompt: "The criteria are already authoritative. Prove whether this branch satisfies each one."
+    must:
+      - "Route the criterion-by-criterion implementation verdict to acceptance-review."
+    must_not:
+      - "Use requirements-hardening as an implementation review."
+  - id: story-splitting-boundary
+    type: boundary
+    prompt: "The behavior rules are accepted. Split the epic into independently valuable child stories."
+    must:
+      - "Route the requested decomposition to story-splitting."
+    must_not:
+      - "Continue requirement discovery when no material behavior decision remains."

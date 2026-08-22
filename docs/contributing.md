@@ -31,7 +31,8 @@ Keep `SKILL.md` below 500 lines and move conditional detail into directly linked
 
 Do not add per-skill README, changelog, version, or license files.
 Do not add provider-specific metadata to the portable skill core.
-Update `routing.yaml` and installer profile expectations when activation policy changes.
+Update `routing.yaml` when the packaged skill inventory or cross-skill evaluation metadata changes.
+Update installer profile expectations separately when installation behavior changes.
 
 ## Contract maintenance
 

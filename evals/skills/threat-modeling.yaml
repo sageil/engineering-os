@@ -72,6 +72,13 @@ cases:
       - "Route active command, containment, preservation, and recovery to incident-control."
     must_not:
       - "Let proactive modeling displace incident command."
+  - id: oauth-protocol-assessment-boundary
+    type: boundary
+    prompt: "Assess this OpenID Connect relying party for issuer, nonce, audience, signature, and account-binding correctness."
+    must:
+      - "Route the protocol-specific assessment to secure-oauth-oidc."
+    must_not:
+      - "Replace the protocol control assessment with a general threat taxonomy."
   - id: undefined-system-boundary
     type: gate
     prompt: "Threat-model my platform, but no architecture, identities, assets, environment, data flow, or decision scope is available."

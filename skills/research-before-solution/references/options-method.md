@@ -77,9 +77,9 @@ For each candidate shape, test every relevant viability constraint.
 
 Classify:
 
-- **eligible** — no known constraint disqualifies it and every material prerequisite is evidenced;
-- **rejected** — known evidence or a constraint disqualifies it;
-- **research-needed** — feasibility depends on a material unverified prerequisite.
+- **eligible** - no known constraint disqualifies it and every material prerequisite is evidenced;
+- **rejected** - known evidence or a constraint disqualifies it;
+- **research-needed** - feasibility depends on a material unverified prerequisite.
 
 A candidate is not `eligible` merely because it is technically possible in general.
 
@@ -103,7 +103,7 @@ Record the shortest evidence-backed rejection when it prevents repeat investigat
 
 Example:
 
-> Rejected: provider webhooks — current provider documentation for this product exposes no push/event capability.
+> Rejected: provider webhooks - current provider documentation for this product exposes no push/event capability.
 
 That is enough. Do not then design signing, retries, endpoints, or queues for it.
 

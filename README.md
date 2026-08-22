@@ -5,14 +5,14 @@
 Engineering OS is a provider-neutral, evidence-gated capability suite for AI engineering agents.
 It makes no skill the default, exposes specialized methods only when their distinctive responsibility is necessary, and requires claims to match available evidence.
 
-Version 4.4.0 contains nine specialized skills.
+Version 4.6.0 contains fourteen specialized skills.
 Routine implementation and proportional verification are baseline agent behavior, not an installable skill.
 The foundational capability remains `research-before-solution`, which blocks solution options until decision-relevant research is complete.
 
 Engineering OS defines world-class capability by distinct responsibility, precise activation, expert method, evidence discipline, useful verdicts, safe composition, and bounded context cost.
 Contract fixtures preserve those boundaries, while field evidence records how the system behaves in real use.
 
-## Context-gated operating model
+## Agent discovery model
 
 ```text
 default: no skill
@@ -27,6 +27,11 @@ automatic supervisory context during an active incident:
 request-only working skills, maximum one:
   execution-planning
   adversarial-review
+  acceptance-review
+  story-splitting
+  reduce-system-complexity
+  requirements-hardening
+  secure-oauth-oidc
   knowledge-promotion
   technical-communication
   threat-modeling
@@ -39,8 +44,8 @@ ordinary execution:
 
 ![Engineering OS routing from no working skill to one bounded capability with persistent incident supervision](assets/engineering-os-routing.svg)
 
-`routing.yaml` is the provider-neutral activation contract.
-It defines no working skill as the default, permits only one active working skill, retains incident control as supervisory context while harm or recovery remains active, and prohibits automatic handoffs.
+Installed skills are discovered through their `SKILL.md` descriptions.
+The description is the agent-facing discovery and activation contract.
 
 ## Included skills
 
@@ -51,6 +56,11 @@ It defines no working skill as the default, permits only one active working skil
 | [`incident-control`](skills/incident-control/SKILL.md) | Automatic supervisory context during active production harm or recovery | Control harm, preserve command, supervise bounded working skills, and verify recovery. |
 | [`execution-planning`](skills/execution-planning/SKILL.md) | Request-only | Design a safe transition when material execution hazards remain. |
 | [`adversarial-review`](skills/adversarial-review/SKILL.md) | Request-only | Independently challenge a defined change and report supported findings. |
+| [`acceptance-review`](skills/acceptance-review/SKILL.md) | Request-only | Prove criterion-by-criterion whether an implementation satisfies one authoritative contract. |
+| [`story-splitting`](skills/story-splitting/SKILL.md) | Request-only | Split a broad outcome into independently valuable vertical child stories. |
+| [`reduce-system-complexity`](skills/reduce-system-complexity/SKILL.md) | Request-only | Establish or verify a net reduction of mechanism while conserving accepted behavior. |
+| [`requirements-hardening`](skills/requirements-hardening/SKILL.md) | Request-only | Turn product intent or an existing requirement artifact into explicit, testable behavior without inventing owner decisions. |
+| [`secure-oauth-oidc`](skills/secure-oauth-oidc/SKILL.md) | Request-only | Design or assess end-to-end OAuth and OpenID Connect security invariants against current primary standards. |
 | [`knowledge-promotion`](skills/knowledge-promotion/SKILL.md) | Request-only | Promote verified learning into the strongest appropriate durable artifact. |
 | [`technical-communication`](skills/technical-communication/SKILL.md) | Request-only | Turn verified technical material into an accurate, reader-centered artifact using human language without losing necessary precision. |
 | [`threat-modeling`](skills/threat-modeling/SKILL.md) | Request-only | Model credible attack paths, control evidence, and explicitly owned residual risk for a defined security scope. |
@@ -82,18 +92,18 @@ Requirements:
 
 - Bash 3.2 or newer;
 - `sha256sum` or `shasum`;
-- an agent host that discovers `SKILL.md` packages, or an orchestration layer that can inject selected skill content.
+- an agent host that discovers `SKILL.md` packages.
 
-Install the default `automatic` profile, which exposes only three narrowly automatic skills:
+Install all fourteen skills for agent discovery, which is the default:
 
 ```bash
 ./scripts/install.sh --agents keep
 ```
 
-Install all nine skills only when the host performs context gating or users explicitly select capabilities:
+Install only the three narrowly automatic skills when reduced discoverability is explicitly required:
 
 ```bash
-./scripts/install.sh --profile full --agents keep
+./scripts/install.sh --profile automatic --agents keep
 ```
 
 Install an exact subset:
@@ -126,8 +136,8 @@ The portable core contains no provider-specific agent metadata.
 Each skill contains only `SKILL.md` and directly related references.
 Host-specific adapters may be developed separately, but they are not required by or embedded in the capability definitions.
 
-When dynamic context gating is unavailable, installer profiles enforce scarcity by limiting which skills are discoverable.
-The `full` profile deliberately trades that protection for availability and should be used only with disciplined routing.
+The default `full` profile installs every skill so agents can discover the appropriate capability from its description.
+The `automatic`, `custom`, and `none` profiles are explicit controls for environments that need a smaller discoverable set.
 
 ## Update
 
@@ -141,10 +151,15 @@ Pass `--profile` or `--skills` to change the exposed capability set deliberately
 The current manifest is authoritative, and unknown skill names are rejected before target changes.
 The update path reconciles removed managed skills safely and stops before changes when managed content has been modified.
 
-## Version 4.4 changes
+## Version 4.6 changes
 
-- Version 4.4.0 adds request-only technical communication for accurate, reader-centered technical artifacts and precision-preserving translation into human language.
-- The full installer profile now installs nine canonical skills, while the automatic profile remains limited to three.
+- Version 4.6.0 adds request-only requirements hardening and OAuth or OpenID Connect security design, assessment, and migration analysis.
+- Requirements hardening combines requirement discovery and gap closure before story splitting or implementation.
+- OAuth and OpenID Connect security uses current primary standards, explicit transaction bindings, control evidence, and negative tests.
+- Research now includes a focused established-solution evaluation method for material dependency and build-versus-adopt decisions.
+- Research now evaluates consequential module contracts through caller burden, hidden knowledge, cohesive depth, justified seams, test fidelity, and independent contract alternatives.
+- Causal debugging now strengthens evidence safety, controlled comparison, and mutation authority.
+- New installations expose all fourteen canonical skills for discovery, while the explicit automatic profile remains limited to three.
 - Installation and uninstallation continue to use the manifest and recorded managed-skill inventory without aliases, migrations, or legacy skill mappings.
 
 ## Uninstall
@@ -176,8 +191,8 @@ See [Evaluation](docs/evaluation.md) for contract-fixture and field-evidence gui
 ## Repository map
 
 ```text
-skills/             Nine provider-neutral capability packages
-routing.yaml        Canonical activation and context-gating contract
+skills/             Fourteen provider-neutral capability packages
+routing.yaml        Maintainer-only routing inventory and validation fixture
 scripts/            Profile-aware install, update, uninstall, and validation
 docs/               Architecture, orchestration, installation, and evaluation
 evals/              Trigger, no-skill, handoff, restraint, and end-to-end contract fixtures

@@ -6,8 +6,9 @@ description: >-
   abuse-case analysis, attack-surface analysis, or proactive security design assessment.
   Identify assets, identities, attacker capabilities, trust transitions, credible threat
   paths, control evidence, and residual risk. Do not use for active security incidents,
-  change-specific patch review, vulnerability scanning/exploitation, generic architecture
-  discussion, compliance-only checklists, or remediation implementation.
+  change-specific patch review, OAuth or OpenID Connect protocol-specific security
+  assessment, vulnerability scanning/exploitation, generic architecture discussion,
+  compliance-only checklists, or remediation implementation.
 ---
 
 # Threat Modeling
@@ -122,6 +123,7 @@ Set `unacceptable-risk` when a required objective remains credibly violable with
 
 Do not actively scan/exploit without authority.
 Do not replace adversarial review.
+Use `secure-oauth-oidc` when OAuth or OpenID Connect protocol correctness is the principal security scope.
 Do not command active incidents.
 Do not turn compliance categories into unsupported threats.
 Do not implement remediation.

@@ -1,0 +1,42 @@
+skill: reduce-system-complexity
+cases:
+  - id: complete-mechanism-removal
+    type: positive
+    prompt: "Find the smallest responsible way to remove the selected retry subsystem without changing accepted behavior."
+    artifacts:
+      scope: "One job path has application retries, queue retries, and a recovery cron job."
+      contract: "At-least-once delivery, bounded duplicate effects, operator-visible terminal failure, and replay after provider recovery."
+      evidence: "Tests and operational records cover success, timeout, duplicate, terminal failure, and replay behavior."
+    must:
+      - "Baseline behavior and whole-path mechanism before selecting a target."
+      - "Reject a target that merely moves retries into callers or operations."
+      - "Return Complexity-reduction verdict: reduction-selected without claiming achieved reduction."
+  - id: verification-relocated-complexity
+    type: positive
+    prompt: "Verify the claim that this completed change reduced system complexity."
+    artifacts:
+      before: "One adapter performs provider selection and retry policy."
+      after: "The adapter is deleted, but every one of six callers now selects providers and implements retries."
+      behavior: "Observable outcomes remain unchanged."
+    must:
+      - "Pass or assess the behavior gate separately from the mechanism gate."
+      - "Return Complexity-reduction verdict: not-reduced because burden moved to callers."
+  - id: missing-preservation-evidence
+    type: gate
+    prompt: "Remove this fallback path, but no accepted behavior or reachability evidence exists."
+    must:
+      - "Return Complexity-reduction verdict: insufficient-evidence with the smallest required observation."
+    must_not:
+      - "Treat absence of tests as proof that the fallback is obsolete."
+  - id: routine-local-cleanup
+    type: negative
+    prompt: "Rename two local variables and inline a trivial helper."
+    must:
+      - "Do not activate reduce-system-complexity for routine cleanup."
+  - id: implementation-boundary
+    type: restraint
+    prompt: "Select and implement a whole-path mechanism reduction."
+    must:
+      - "Complete the read-only reduction target and return accepted implementation to ordinary authorized execution."
+    must_not:
+      - "Edit while the reduction skill is active."

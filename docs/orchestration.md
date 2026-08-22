@@ -1,26 +1,23 @@
 # Orchestration
 
-Engineering OS uses context gating rather than asking a model to resist every visible skill.
+Engineering OS installs skills for agent discovery through `SKILL.md` descriptions.
 The default working selection is no skill.
-Expose zero or one working skill for the current unresolved responsibility.
-Retain `incident-control` as supervisory context while an incident remains active, allowing one bounded working skill to coexist without operational authority.
+The agent selects a skill only when its activation description matches the current unresolved responsibility.
+`incident-control` remains supervisory context while an incident is active.
 
-## Provider-neutral routing contract
+## Agent selection contract
 
-`routing.yaml` is the canonical activation policy.
-It defines automatic and request-only capabilities without relying on provider metadata.
-An agent host, launcher, or other orchestration layer should read that policy and expose only the selected working `SKILL.md` body, plus `incident-control` when its supervisory state remains active.
+Each installed `SKILL.md` description is the discovery and activation boundary available to the agent.
 
-If the host cannot gate context dynamically, use the installer profiles to limit which skills are discoverable.
-The default `automatic` profile exposes only the three narrowly automatic capabilities.
-The `full` profile is intended for environments with an external router or disciplined explicit selection.
+The default `full` profile installs every packaged skill.
+Use the optional `automatic`, `custom`, or `none` profile only when the environment requires a smaller discoverable set.
 
 ## Routing algorithm
 
 1. Start with `none`.
 2. Identify the single unresolved responsibility, not the current tool action or lifecycle phase.
 3. Check whether an automatic capability has all of its positive conditions and none of its exclusions.
-4. Check request-only capabilities only when the user requested their distinctive output.
+4. Select a request-only capability only when the user requested its distinctive output.
 5. Select at most one working skill.
 6. Keep that selection stable while performing ordinary substeps.
 7. Return to `none` when the working responsibility is complete.
@@ -38,6 +35,11 @@ When more than one appears applicable, choose the skill that owns the immediate 
 
 Use `execution-planning` only for a requested plan when a selected solution still has material transition hazards.
 Use `adversarial-review` only for requested independent review of a defined change artifact.
+Use `acceptance-review` only for a requested criterion-by-criterion verdict against one authoritative acceptance contract.
+Use `story-splitting` only for requested product or backlog decomposition into independently valuable child stories.
+Use `reduce-system-complexity` only for a requested net-mechanism-reduction target or verification.
+Use `requirements-hardening` only for requested requirement discovery, acceptance-criteria hardening, example mapping, or gap closure before implementation.
+Use `secure-oauth-oidc` only for requested OAuth or OpenID Connect security design, protocol assessment, hardening, or insecure-flow migration analysis.
 Use `knowledge-promotion` only for requested durable capture.
 Use `technical-communication` only for requested creation or substantial revision of a technical artifact when a defined human audience must understand, decide, act, or recover from verified source material.
 Use `threat-modeling` only for a requested proactive security analysis of a defined system, feature, data flow, trust boundary, or design.
@@ -68,10 +70,15 @@ Responding to a container that is corrupting customer data now uses `incident-co
 Rewriting a verified migration procedure for application operators uses `technical-communication` when the user explicitly requests the artifact.
 Modeling how a proposed multi-tenant export path could cross tenant boundaries uses `threat-modeling` when explicitly requested.
 Deciding whether a service is ready for production traffic uses `operational-readiness` when explicitly requested.
+Proving every accepted criterion for a completed feature uses `acceptance-review` when explicitly requested.
+Splitting an epic into independently valuable outcomes uses `story-splitting` when explicitly requested.
+Establishing whether a selected path can remove total mechanism uses `reduce-system-complexity` when explicitly requested.
+Turning a fuzzy feature request into explicit behavior rules and examples uses `requirements-hardening` when explicitly requested.
+Assessing redirect, PKCE, issuer, token, refresh, and identity bindings for an authorization deployment uses `secure-oauth-oidc` when explicitly requested.
 
 ## Handoffs
 
 A skill may return `Routing request: <skill-name>` when another responsibility becomes unresolved.
-That output is a request for the orchestrator to reconsider context, not permission for automatic activation.
+That output asks the agent or host to make a new discovery and activation decision.
 Reject a handoff when the prior verdict is incomplete, evidence is missing, authority is absent, or the target responsibility is not currently necessary.
 During an incident, preserve the incident timeline, controls, command authority, communication cadence, integrity status, and working-skill boundary across every routing decision.

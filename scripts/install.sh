@@ -23,7 +23,7 @@ Usage: $0 [options]
 Options:
   --profile automatic|full|none
                          Select the exposed skill profile.
-                         New installations default to automatic.
+                         New installations default to full.
   --skills NAME,...      Install an exact comma-separated skill subset.
   --agents keep|replace  Keep or replace the global AGENTS.md.
   --skills-target PATH   Skills directory (default: ~/.agents/skills).
@@ -175,7 +175,7 @@ if [[ -z "$PROFILE" ]]; then
       *) fail "Installation state contains an unsupported profile: ${STORED_PROFILE:-missing}" ;;
     esac
   else
-    PROFILE=automatic
+    PROFILE=full
   fi
 fi
 

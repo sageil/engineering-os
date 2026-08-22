@@ -15,7 +15,8 @@ Routine authorized implementation requires no Engineering OS skill.
 
 - Treat model memory as hypotheses, not evidence.
 - Inspect reality before consequential claims or changes.
-- Distinguish observed, reproduced, documented, reported, derived, assumed, and unknown.
+- Prioritize correctness over agreement, and do not validate an unsupported claim because the user presents it confidently.
+- Distinguish observed, reproduced, documented, reported, derived, inferred, assumed, and unknown, and do not present inference as fact.
 - Do not present solution options before decision-relevant research is complete.
 - Do not implement without a selected solution and authority.
 - Preserve unrelated user work and respect repository instructions.
@@ -68,6 +69,8 @@ Before creating a new implementation, helper, utility, service, abstraction, fix
 Do not introduce a parallel implementation merely because it is locally easier than understanding or modifying the existing one.
 Treat implementations that must remain behaviorally synchronized as a maintainability defect unless duplication is an explicit architectural requirement.
 Do not confuse superficial textual similarity with semantic duplication.
+Prefer readable imperative code over dense expression-style code.
+When logic branches, validates, or derives multiple values, prefer explicit control flow, local variables, and named intermediate values over nested callbacks, long chained expressions, or one large return expression.
 
 ## Change discipline
 
@@ -75,10 +78,19 @@ Implement the smallest coherent repository-native change.
 Smallest does not mean fewest characters, fewest files inspected, or least investigation.
 Avoid unrelated refactoring, speculative abstractions, premature generalization, unnecessary files, dependencies, interfaces, wrappers, formatting churn, and unrelated renames.
 Before presenting implementation work as complete, review the full diff for correctness, maintainability, duplicated ownership, unnecessary test infrastructure, and divergence from established repository patterns.
+Resolve every critical, high, and medium correctness finding before commit or deployment.
 Preserve unrelated user work.
 Do not manually edit generated files or files the repository marks as generated.
 Do not use destructive Git operations without explicit authorization.
 When writing commit messages, do not auto-add the agent as a co-author.
+When writing or substantially editing long Markdown files, keep each complete sentence on one physical line without fixed-column hard wrapping.
+Preserve normal Markdown structure and correct newly introduced sentence wrapping before completion.
+
+## Durable workflow changes
+
+Before editing a durable workflow, define and obtain approval for its states, transitions, invariants, failure and restart behavior, authorization, and verification plan.
+Treat cleanup across systems as durable and retryable.
+Define the terminal success state and do not report success while required cleanup or recovery work remains incomplete.
 
 ## Test quality and verification
 
@@ -106,7 +118,9 @@ When required verification cannot be performed, report the blocker instead of cl
 
 ## Implementation completion gate
 
-Before declaring implementation complete, confirm proportionally to the change that:
+Before declaring implementation complete, verify applicable acceptance criteria, state transitions, failure paths, and end-to-end behavior with tests or equivalent evidence.
+
+Also confirm proportionally to the change that:
 
 - the existing owner of the behavior was identified;
 - relevant implementations and callers were inspected;
@@ -213,6 +227,11 @@ Repository-specific architecture and explicit local instructions take precedence
 
 - Use `execution-planning` only when the user requests a plan and material transition hazards remain.
 - Use `adversarial-review` only when the user requests independent review of a defined change artifact.
+- Use `acceptance-review` only when the user requests a criterion-by-criterion verdict against one authoritative acceptance contract.
+- Use `story-splitting` only when the user requests product or backlog decomposition into independently valuable child stories.
+- Use `reduce-system-complexity` only when the user requests a net-mechanism reduction target or verification over a selected behavior path.
+- Use `requirements-hardening` only when the user requests requirement discovery, acceptance-criteria hardening, example mapping, or gap closure before implementation.
+- Use `secure-oauth-oidc` only when the user requests OAuth or OpenID Connect security design, protocol assessment, hardening, or migration analysis.
 - Use `knowledge-promotion` only when the user requests durable capture.
 - Use `technical-communication` only when the user requests a substantial technical artifact or translation for a defined human audience.
 - Use `threat-modeling` only when the user explicitly requests a threat model or proactive security design assessment for a defined scope.

@@ -87,6 +87,9 @@ When the skill is explicitly requested for a bounded decision, inspect the ownin
 
 Read [evidence-method.md](references/evidence-method.md).
 
+When the decision introduces, replaces, or materially expands a generic dependency, framework, tool, service, platform primitive, or custom subsystem, read [existing-solutions.md](references/existing-solutions.md) now.
+Use its bespoke baseline, current primary evidence, hard gates, and total-ownership dimensions in the research record.
+
 For each material unknown, identify:
 
 - the claim that must be established;
@@ -316,6 +319,9 @@ Do not create a new reusable abstraction without establishing:
 When options change durable boundaries, data ownership, trust, distribution, deployment, consistency, or long-term ownership, read [architecture-model.md](references/architecture-model.md) before ranking them.
 
 Keep structural analysis inside this skill rather than activating a separate architecture skill.
+
+When an eligible option creates, removes, combines, splits, or materially changes an in-process module or package contract, read [module-contract-design.md](references/module-contract-design.md) before ranking it.
+Use its caller-burden, knowledge-leakage, depth, seam, test-fidelity, and design-comparison checks.
 
 If detailed option analysis reveals a material unknown, stop solution work and return to `researching`.
 

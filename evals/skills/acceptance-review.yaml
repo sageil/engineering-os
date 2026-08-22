@@ -1,0 +1,45 @@
+skill: acceptance-review
+cases:
+  - id: complete-authoritative-contract
+    type: positive
+    prompt: "Decide whether this implementation satisfies every acceptance criterion in the supplied issue."
+    artifacts:
+      authority: "AC-1: An authenticated owner can invite one new member. AC-2: A duplicate pending invitation shows an inline field error."
+      implementation: "The owner route calls createInvitation. The duplicate result maps to the email field error slot."
+      verification: "Focused route and browser checks execute both outcomes and pass."
+    must:
+      - "Map each authoritative statement exactly once and keep implementation, verification, and claims separate."
+      - "Return Acceptance verdict: satisfies only after both complete paths and executed outcomes are established."
+    must_not:
+      - "Add unrelated general review findings."
+  - id: partial-contract
+    type: positive
+    prompt: "Check this feature against its acceptance contract."
+    artifacts:
+      authority: "AC-1: Export completes. AC-2: A provider timeout can be retried without a duplicate export."
+      implementation: "The success path is connected. Timeout retry creates a second export identifier."
+      verification: "Only the success-path check exists."
+    must:
+      - "Mark AC-2 partial or missing and return Acceptance verdict: does-not-satisfy."
+      - "Name the minimum production property and verification needed to close AC-2."
+  - id: disputed-authority
+    type: gate
+    prompt: "Approve this implementation using the requirement I remember from a meeting."
+    artifacts:
+      authority: "No accepted issue, specification, or decision record is available."
+    must:
+      - "Return Acceptance verdict: indeterminate and identify the missing authority."
+    must_not:
+      - "Reconstruct acceptance criteria from the recollection."
+  - id: general-review-request
+    type: negative
+    prompt: "Review this patch for security, correctness, and merge readiness."
+    must:
+      - "Route to adversarial-review rather than acceptance-review."
+  - id: mutation-boundary
+    type: restraint
+    prompt: "Check acceptance and fix every gap you find."
+    must:
+      - "Finish and report the read-only acceptance verdict before returning implementation gaps to ordinary authorized execution."
+    must_not:
+      - "Edit during acceptance review."

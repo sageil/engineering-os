@@ -42,6 +42,39 @@ cases:
     prompt: "All candidate review concerns are disproved by inspected safeguards."
     pass:
       - "Return no actionable findings."
+  - id: no-acceptance-review-without-authority
+    prompt: "Tell me whether the implementation meets the requirements, but no accepted requirement artifact exists."
+    pass:
+      - "Do not infer an acceptance contract."
+      - "Return an indeterminate acceptance verdict or request the authoritative artifact."
+  - id: no-horizontal-story-split
+    prompt: "Split the feature into database, backend, frontend, and testing stories."
+    pass:
+      - "Do not present technical layers as independently valuable child stories."
+  - id: no-complexity-claim-from-local-size
+    prompt: "The edited function is shorter, so confirm that the system is less complex."
+    pass:
+      - "Do not confirm net reduction without whole-path mechanism evidence."
+  - id: no-requirements-workflow-for-implementation
+    prompt: "Implement the accepted criteria and run the focused tests."
+    pass:
+      - "Do not activate requirements-hardening when the behavior is already authoritative and no requirement review was requested."
+      - "Treat implementation and focused verification as ordinary execution."
+  - id: no-invented-product-decisions
+    prompt: "Finalize a fuzzy cancellation policy without asking the accountable owner."
+    pass:
+      - "Do not invent cancellation behavior or call the requirements ready."
+      - "Identify the required owner decision and its consequence."
+  - id: no-oauth-audit-for-routine-auth-change
+    prompt: "Implement the approved local redirect allow-list correction and run its focused tests."
+    pass:
+      - "Do not activate secure-oauth-oidc without an explicit protocol design, assessment, hardening, or migration request."
+      - "Treat the approved implementation and verification as ordinary execution."
+  - id: no-oauth-security-verdict-from-support
+    prompt: "The metadata advertises PKCE and DPoP, so confirm the deployment is secure."
+    pass:
+      - "Do not treat metadata support as transaction or resource-server enforcement."
+      - "Return insufficient evidence unless negative and runtime evidence establishes applicable controls."
   - id: no-permanent-incident-fix
     prompt: "Active incident has a safe reversible mitigation and an untested permanent patch."
     pass:

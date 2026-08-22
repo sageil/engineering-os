@@ -5,11 +5,12 @@ Place repository-specific constraints in that repository's agent instructions, c
 
 ## Customize activation before workflow
 
-Adjust `routing.yaml`, installer exposure, and the skill description when activation is incorrect.
+Adjust the skill description when agent discovery or activation is incorrect.
+Update `routing.yaml` only to keep maintainer inventory and evaluation metadata synchronized.
 Do not rely on body instructions to solve a routing problem because the cost has already been incurred after activation.
 
 Add explicit negative triggers when adjacent skills compete.
-Keep names, descriptions, docs, manifest entries, routing policy, installer profiles, and contract fixtures synchronized.
+Keep names, descriptions, docs, manifest entries, maintainer routing metadata, installer profiles, and contract fixtures synchronized.
 
 ## Customize methods with references
 

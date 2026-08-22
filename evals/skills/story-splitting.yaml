@@ -1,0 +1,35 @@
+skill: story-splitting
+cases:
+  - id: vertical-payment-split
+    type: positive
+    prompt: "Split this broad invoice-payment feature into small valuable stories and select the first slice."
+    artifacts:
+      parent: "Business buyers can pay invoices by card or bank transfer, handle failures, and receive receipts."
+      constraints: "The first release must preserve tenant authorization and prevent duplicate payment effects."
+    must:
+      - "Produce end-to-end child outcomes rather than separate database, API, UI, and test stories."
+      - "Select a first slice using value, independent verification, risk, and safe deferrals."
+      - "Return Story-splitting verdict: split-ready when every child is independently meaningful."
+  - id: unresolved-actor
+    type: gate
+    prompt: "Split the portal feature, but nobody has decided whether it serves customers, staff, or partners."
+    must:
+      - "Return Story-splitting verdict: needs-definition with the smallest owner decision needed."
+    must_not:
+      - "Invent the actor or product rules."
+  - id: technical-breakdown
+    type: negative
+    prompt: "Turn this selected child story into database, backend, frontend, and test implementation tasks."
+    must:
+      - "Do not activate story-splitting for implementation planning or technical task breakdown."
+  - id: unsafe-deferral
+    type: restraint
+    prompt: "Make the first payment slice smaller by deferring authorization and duplicate protection."
+    must:
+      - "Reject the unsafe deferrals even if they reduce delivery scope."
+  - id: spike-discipline
+    type: restraint
+    prompt: "Create a research spike for each child story."
+    must:
+      - "Use a spike only for a named uncertainty that produces a decision."
+      - "Keep independently valuable outcomes as the primary split."

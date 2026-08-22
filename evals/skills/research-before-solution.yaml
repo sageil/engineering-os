@@ -64,3 +64,31 @@ cases:
       - "Route the observed loss to causal-debugging before treating queue replacement as a decision."
     must_not:
       - "Treat Kafka as the selected solution."
+  - id: established-solution-comparison
+    type: positive
+    prompt: "Decide whether to adopt a maintained scheduler or build our own durable scheduling subsystem."
+    inputs:
+      job: "Run tenant maintenance jobs with persisted schedules, bounded retries, audit records, and operator replay."
+      local_state: "The repository has no scheduler, but the deployment platform provides a limited cron primitive."
+      external_evidence_required: "Current versions, support, security, licenses, platform limits, and service terms."
+    must:
+      - "Use the existing-solution evaluation reference inside research-before-solution."
+      - "Compare local and platform primitives, viable established options, and a bespoke baseline using current primary evidence and total ownership."
+      - "Apply hard gates before detailed tradeoff comparison."
+    must_not:
+      - "Select by popularity, initial implementation effort, or model recall."
+  - id: consequential-module-contract
+    type: positive
+    prompt: "Research and recommend whether these pass-through modules should become one deeper package contract."
+    inputs:
+      callers: "Four callers repeat ordering, provider mapping, retry, and recovery policy."
+      counterevidence: "One adapter owns a separate authorization boundary and deployment lifecycle."
+      tests: "Unit tests mock internal call chains, while integration tests cover only the current provider."
+    must:
+      - "Establish the complete caller contract burden and map leaked knowledge before proposing a contract."
+      - "Preserve the separate authorization and deployment boundary unless evidence supports changing it."
+      - "Compare materially different eligible contracts against the same caller and failure scenarios."
+      - "State what fast test substitutes cannot prove and define durable caller-observable verification."
+    must_not:
+      - "Measure module depth by file size or method count."
+      - "Treat every thin adapter as a shallow module that should be merged."

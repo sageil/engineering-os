@@ -6,8 +6,9 @@ description: >-
   requests, branches, commits, patches, diffs, migrations, configuration, infrastructure,
   or implementation plans when the user requests review, audit, approval, or merge-readiness.
   Report only findings introduced, exposed, or materially worsened by the reviewed change
-  and supported by evidence. Do not use to implement requested work, perform a general
-  repository audit, manufacture criticism, or review artifacts that have not been inspected.
+  and supported by evidence. Do not use for criterion-by-criterion satisfaction of one
+  authoritative acceptance contract, implementation, general repository audit, manufactured
+  criticism, or artifacts that have not been inspected.
 ---
 
 # Adversarial Review
@@ -136,6 +137,9 @@ Do not report pre-existing issues unless the change newly depends on, exposes, o
 Do not create findings to justify the review.
 Do not replace operational-readiness assessment.
 Do not choose a new architecture merely because a finding exists.
+Use `acceptance-review` when the primary question is whether every criterion in one authoritative contract is satisfied.
+Use `secure-oauth-oidc` when the primary request is a protocol-specific OAuth or OpenID Connect security assessment rather than review of one defined change.
+Keep acceptance and general review verdicts separate when the user requests both.
 
 ## Failure conditions
 
