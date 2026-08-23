@@ -101,10 +101,21 @@ Reuse existing fixtures, factories, builders, mocks, helpers, and assertion util
 Prefer extending an existing coherent test over creating a nearly identical parallel test.
 
 Every new or changed test should support a meaningful behavioral claim such as observable behavior, a relevant contract, a regression, a material edge case, an invariant, or interaction across a meaningful boundary.
+Test behavior through the public interface at the layer named by the claim.
+An exported operation can own a domain claim, an HTTP request can own an API claim, rendered output and public events can own a component claim, and browser actions and visible outcomes can own a browser or user-journey claim.
+Do not use a lower layer as evidence for a higher-layer claim.
+For example, a direct HTTP request proves an HTTP contract, not that a user can complete the same action through the browser.
 For a regression test, ask whether it would fail if the relevant defect were still present.
 If not, it is not sufficient evidence for the correction.
 
 Do not add tests solely to increase coverage, execute branches, mirror implementation details, prove trivial language or framework behavior, assert getters or setters, test mocks rather than production behavior, or duplicate cases already covered at a more meaningful level.
+Do not create a test file for every implementation file by default.
+Organize tests around stable behavior and contracts unless an implementation file is itself the public unit that owns the claim.
+Treat a test as implementation-coupled when a behavior-preserving internal refactor would make it fail.
+An assertion against a callback or dependency supplied through the public interface can prove an observable interaction contract.
+A spy on an internal collaborator that the caller did not supply usually proves implementation structure rather than behavior.
+An assertion that raw markup contains a string proves only that source text exists.
+It does not prove rendered structure, accessibility, interaction, navigation, or browser lifecycle behavior.
 Prefer fewer high-signal tests over many low-value tests.
 Be suspicious when production code and its test contain substantially identical algorithms.
 Mocks must not bypass the material boundary whose behavior the test claims to verify.
@@ -236,6 +247,7 @@ Repository-specific architecture and explicit local instructions take precedence
 - Use `technical-communication` only when the user requests a substantial technical artifact or translation for a defined human audience.
 - Use `threat-modeling` only when the user explicitly requests a threat model or proactive security design assessment for a defined scope.
 - Use `operational-readiness` only when the user explicitly requests a production-readiness, launch, or go-no-go assessment for a defined operating boundary.
+- Use `testing` only when the user explicitly requests test design, a test-quality audit, behavior-versus-implementation assessment, or test consolidation or removal analysis for a defined subject.
 
 A matching keyword, task phase, tool action, or lifecycle diagram is not sufficient activation evidence.
 Return to no skill when the owned responsibility is complete.

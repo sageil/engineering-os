@@ -76,3 +76,7 @@ skills:
     activation: request-only
     requires: explicit-operational-readiness-launch-or-go-no-go-request
     output: evidence-backed-readiness-verdict
+  testing:
+    activation: request-only
+    requires: explicit-test-design-quality-consolidation-or-removal-request
+    output: test-design-verdict-and-behavior-evidence-map

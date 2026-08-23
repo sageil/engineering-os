@@ -1,0 +1,67 @@
+skill: testing
+cases:
+  - id: implementation-coupled-collaborator-spy
+    type: positive
+    prompt: "Audit this payment test and tell me whether it proves behavior."
+    artifacts:
+      claim: "A payment with a negative amount is rejected."
+      public_interface: "processPayment(payment) returns an accepted or rejected result."
+      test: "The test spies on the private validateAmount helper, calls processPayment, and asserts only that validateAmount received the amount."
+      implementation: "processPayment can reject the same payment through an inline check without changing its public result."
+    must:
+      - "Classify the test as implementation-coupled because it does not assert the rejected public result."
+      - "Recommend replacement through processPayment rather than direct testing of the private helper."
+      - "Return Test-design verdict: replace."
+    must_not:
+      - "Use line coverage as proof of value."
+  - id: wrong-browser-evidence-layer
+    type: positive
+    prompt: "Review whether this test proves that a user can create a workspace in the browser."
+    artifacts:
+      test: "The test sends POST /api/workspaces directly and asserts HTTP 201."
+      browser_path: "The UI must submit the form, include browser security headers, handle a redirect, and render the new workspace."
+    must:
+      - "State that the test proves only the HTTP API contract."
+      - "Identify browser-initiated action and visible outcome evidence as the required layer for the stated claim."
+      - "Return Test-design verdict: strengthen or replace."
+  - id: supplied-callback-is-behavior
+    type: restraint
+    prompt: "Remove this test because its only assertion checks a mock call."
+    artifacts:
+      contract: "subscribe(onMessage) invokes the caller-supplied callback once for every accepted message."
+      test: "The caller supplies onMessage, publishes one accepted message, and asserts that onMessage received the decoded value once."
+    must:
+      - "Retain the test as evidence of the public callback contract."
+      - "Do not classify every mock-call assertion as implementation coupling."
+  - id: unsupported-bulk-deletion
+    type: gate
+    prompt: "Delete these 400 tests because the suite is too large and many tests cover the same lines."
+    artifacts:
+      available_evidence: "Only test counts, runtime, and aggregate line coverage are available."
+      missing_evidence: "Behavior claims, public interfaces, case overlap, and accepted removals are unknown."
+    must:
+      - "Return Test-design verdict: insufficient-evidence."
+      - "Identify the smallest behavior and boundary evidence required before recommending deletion."
+    must_not:
+      - "Treat shared coverage as proof of redundancy."
+  - id: verified-redundant-case
+    type: positive
+    prompt: "Decide whether these tests can be consolidated."
+    artifacts:
+      contract: "normalizeTag lowercases one non-empty ASCII tag and rejects an empty tag."
+      tests: "Five separate tests submit Finance, FINANCE, finance, FiNaNcE, and fInAnCe and assert the same lowercase result. One separate test covers the empty rejection."
+      boundary: "All cases call the same exported normalizeTag operation."
+    must:
+      - "Identify the five case variants as candidates for one clear parameterized behavior test."
+      - "Retain separate negative evidence for the empty rejection."
+      - "Return Test-design verdict: consolidate."
+  - id: routine-test-execution
+    type: negative
+    prompt: "Run the focused test file after changing the parser and report the result."
+    must:
+      - "Do not activate testing for ordinary test execution or routine implementation verification."
+  - id: general-change-review-boundary
+    type: negative
+    prompt: "Review this pull request for correctness, security, maintainability, and merge readiness, including its tests."
+    must:
+      - "Route the request to adversarial-review rather than testing."

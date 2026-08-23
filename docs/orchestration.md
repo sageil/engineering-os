@@ -45,6 +45,7 @@ Use `knowledge-promotion` only for requested durable capture.
 Use `technical-communication` only for requested creation or substantial revision of a technical artifact when a defined human audience must understand, decide, act, or recover from verified source material.
 Use `threat-modeling` only for a requested proactive security analysis of a defined system, feature, data flow, trust boundary, or design.
 Use `operational-readiness` only for a requested launch or sustained-operation assessment with a defined operating boundary.
+Use `testing` only for requested test design, test-quality audit, behavior-versus-implementation assessment, or test consolidation or removal analysis for a defined subject.
 
 ## Ordinary execution route
 
@@ -76,6 +77,7 @@ Splitting an epic into independently valuable outcomes uses `story-splitting` wh
 Establishing whether a selected path can remove total mechanism uses `reduce-system-complexity` when explicitly requested.
 Turning a fuzzy feature request into explicit behavior rules and examples uses `requirements-hardening` when explicitly requested.
 Assessing redirect, PKCE, issuer, token, refresh, and identity bindings for an authorization deployment uses `secure-oauth-oidc` when explicitly requested.
+Deciding which tests prove a public behavior and which tests only mirror implementation uses `testing` when explicitly requested.
 
 ## Handoffs
 

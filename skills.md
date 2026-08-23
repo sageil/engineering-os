@@ -34,6 +34,7 @@ Require a new routing decision before a handoff.
 | `technical-communication` | Request creation or substantial revision of a technical artifact for a human audience. | The primary reader, intended outcome, and authoritative source material are known or can be established without material invention. |
 | `threat-modeling` | Request a threat model, abuse-case analysis, attack-surface analysis, or proactive security design assessment. | The security scope, assets, identities, trust boundaries, and decision owner are defined or can be established from evidence. |
 | `operational-readiness` | Request an operational-readiness, production-readiness, launch, or go-no-go assessment. | A real launch boundary, required outcomes, operating environment, and decision authority exist. |
+| `testing` | Request test design, a test-quality audit, behavior-versus-implementation analysis, or test consolidation or removal analysis. | The subject, claimed behavior layer, public interface, and relevant tests or proposed cases are available. |
 
 ## Ordinary execution
 

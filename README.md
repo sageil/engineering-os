@@ -5,7 +5,7 @@
 Engineering OS is a provider-neutral, evidence-gated capability suite for AI engineering agents.
 It makes no skill the default, exposes specialized methods only when their distinctive responsibility is necessary, and requires claims to match available evidence.
 
-Version 4.8.0 contains fourteen specialized skills.
+Version 4.9.0 contains fifteen specialized skills.
 Routine implementation and proportional verification are baseline agent behavior, not an installable skill.
 The foundational capability remains `research-before-solution`, which blocks solution options until decision-relevant research is complete.
 
@@ -36,6 +36,7 @@ request-only working skills, maximum one:
   technical-communication
   threat-modeling
   operational-readiness
+  testing
 
 ordinary execution:
   inspect -> edit -> build -> test -> verify -> package -> run -> deploy
@@ -65,6 +66,7 @@ The description is the agent-facing discovery and activation contract.
 | [`technical-communication`](skills/technical-communication/SKILL.md) | Request-only | Turn verified technical material into an accurate, reader-centered artifact using human language without losing necessary precision. |
 | [`threat-modeling`](skills/threat-modeling/SKILL.md) | Request-only | Model credible attack paths, control evidence, and explicitly owned residual risk for a defined security scope. |
 | [`operational-readiness`](skills/operational-readiness/SKILL.md) | Request-only | Decide whether a defined system or release can operate, degrade, and recover under named ownership. |
+| [`testing`](skills/testing/SKILL.md) | Request-only | Decide whether tests provide meaningful behavior evidence and identify justified retention, strengthening, consolidation, replacement, or removal. |
 
 ## Evidence before solutions
 
@@ -94,7 +96,7 @@ Requirements:
 - `sha256sum` or `shasum`;
 - an agent host that discovers `SKILL.md` packages.
 
-Install all fourteen skills for agent discovery, which is the default:
+Install all fifteen skills for agent discovery, which is the default:
 
 ```bash
 ./scripts/install.sh --agents keep
@@ -152,14 +154,12 @@ The current manifest is authoritative, and unknown skill names are rejected befo
 The update path reconciles removed managed skills safely and stops before changes when managed content has been modified.
 Use `--replace-modified` to back up changed managed skills and replace them with packaged versions explicitly.
 
-## Version 4.8 changes
+## Version 4.9 changes
 
-- Version 4.8.0 adds recoverable replacement of modified managed skills through `--replace-modified`.
-- Changed managed packages remain protected by default.
-- Explicit replacement preserves each changed package outside skill discovery before installing canonical content.
-- Managed skill hashes are refreshed through a staged atomic file replacement.
-- New installations expose all fourteen canonical skills for discovery, while the explicit automatic profile remains limited to three.
-- Installation and uninstallation continue to use the manifest and recorded managed-skill inventory without aliases, migrations, or legacy skill mappings.
+- Version 4.9.0 adds the request-only `testing` capability for explicit test design and test-suite quality decisions.
+- The testing capability installs concrete behavior, factory, coverage-theater, mutation, execution-scope, and organization examples as required runtime guidance.
+- The universal policy now requires tests to prove behavior through the public interface at the layer named by the claim.
+- New installations expose all fifteen canonical skills for discovery, while the explicit automatic profile remains limited to three.
 
 ## Uninstall
 

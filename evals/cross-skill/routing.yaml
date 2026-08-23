@@ -66,6 +66,10 @@ cases:
     prompt: "Assess whether this service is ready for production traffic and give a go-no-go verdict."
     expected: [operational-readiness]
     forbidden: [adversarial-review, execution-planning, threat-modeling]
+  - id: requested-test-design-audit
+    prompt: "Audit this test suite and tell me which cases prove behavior, which mirror implementation, and which can be consolidated or removed."
+    expected: [testing]
+    forbidden: [adversarial-review, acceptance-review, reduce-system-complexity]
   - id: local-rename
     prompt: "Rename this local variable."
     expected: []
@@ -73,7 +77,7 @@ cases:
   - id: routine-correction
     prompt: "Implement the approved local correction and run the focused check."
     expected: []
-    forbidden: [research-before-solution, execution-planning, adversarial-review, acceptance-review, reduce-system-complexity, requirements-hardening, secure-oauth-oidc]
+    forbidden: [research-before-solution, execution-planning, adversarial-review, acceptance-review, reduce-system-complexity, requirements-hardening, secure-oauth-oidc, testing]
   - id: container-build
     prompt: "Build the image from the existing Dockerfile and report whether the build succeeds."
     expected: []
@@ -89,7 +93,7 @@ cases:
   - id: test-only
     prompt: "Run the focused test command and summarize any failures."
     expected: []
-    forbidden: [execution-planning, adversarial-review, knowledge-promotion, technical-communication, operational-readiness, threat-modeling, requirements-hardening, secure-oauth-oidc]
+    forbidden: [execution-planning, adversarial-review, knowledge-promotion, technical-communication, operational-readiness, threat-modeling, requirements-hardening, secure-oauth-oidc, testing]
   - id: supervised-incident-investigation
     prompt: "The incident is stabilized but still active. Keep command and monitoring active while establishing the retry cause."
     supervisor: incident-control

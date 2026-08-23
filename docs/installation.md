@@ -5,7 +5,7 @@ New installations default to the `full` profile so every packaged skill is disco
 
 ## Profiles
 
-Install all fourteen capabilities:
+Install all fifteen capabilities:
 
 ```bash
 ./scripts/install.sh --agents keep

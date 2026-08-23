@@ -56,6 +56,7 @@ Provider adapters may exist outside the core, but no skill depends on them.
 | `technical-communication` | Request-only substantial technical communication | Reader-centered artifact and communication verdict | Research, correctness review, durable placement, implementation, or file-format work |
 | `threat-modeling` | Request-only proactive security analysis | Evidence-backed threat paths, control analysis, and residual-risk verdict | Active incident command, patch review, scanning, or remediation |
 | `operational-readiness` | Request-only launch or sustained-operation assessment | Evidence-backed readiness findings and go-no-go verdict | Patch review, deployment execution, active incident command, or remediation |
+| `testing` | Request-only test design or test-suite quality assessment | Behavior evidence map and test-design verdict | Ordinary test execution, routine implementation, general change review, or acceptance review |
 
 ## Handoffs
 
