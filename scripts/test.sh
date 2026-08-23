@@ -32,7 +32,10 @@ for relative in \
   research-before-solution/references/observability-design.md \
   operational-readiness/references/observability-evidence.md \
   requirements-hardening/references/domain-language.md \
-  testing/references/behavior-testing-examples.md; do
+  testing/references/behavior-testing-examples.md \
+  testing/references/mutation-test-design.md \
+  testing/references/special-test-evidence.md \
+  testing/references/test-quality-properties.md; do
   [[ -f "$TEST_HOME/.agents/skills/$relative" ]] || fail "Default installation omitted reference: $relative"
   cmp -s "$ROOT_DIR/skills/$relative" "$TEST_HOME/.agents/skills/$relative" || fail "Installed reference differs from source: $relative"
 done

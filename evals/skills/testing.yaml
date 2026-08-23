@@ -55,6 +55,46 @@ cases:
       - "Identify the five case variants as candidates for one clear parameterized behavior test."
       - "Retain separate negative evidence for the empty rejection."
       - "Return Test-design verdict: consolidate."
+  - id: characterization-has-no-correctness-authority
+    type: gate
+    prompt: "Delete this legacy scoring test because it protects an obviously wrong negative bonus."
+    artifacts:
+      test: "A file named scoring.characterization.test.ts records that calculateBonus(-5) returns -0.75 and labels the result suspicious."
+      history: "The behavior is deployed, but no accepted scoring rule or consumer analysis is available."
+    must:
+      - "State that the test records compatibility evidence and does not prove that the negative bonus is correct."
+      - "Do not recommend deletion until an owner decision or equal replacement evidence resolves the behavior and compatibility risk."
+      - "Return Test-design verdict: insufficient-evidence."
+  - id: retry-callback-repeats-action
+    type: positive
+    prompt: "Audit this asynchronous form test."
+    artifacts:
+      contract: "One click submits the form exactly once and then shows Saved."
+      test: "A waitFor callback clicks Submit and then asserts that Saved is visible. The callback can retry several times."
+    must:
+      - "Identify that waitFor can repeat the click and therefore change the behavior being observed."
+      - "Recommend one action outside waitFor followed by a retrying observation of the Saved outcome."
+      - "Return Test-design verdict: replace."
+  - id: mutation-identity-value-gap
+    type: positive
+    prompt: "Assess whether this test protects fee addition against a realistic arithmetic mutation."
+    artifacts:
+      contract: "addFee adds the fee to the subtotal."
+      test: "The only case asserts addFee(50, 0) equals 50."
+      mutation: "Replace addition with subtraction."
+    must:
+      - "State that the zero fee is an identity value and cannot distinguish addition from subtraction."
+      - "Recommend a non-zero fee with the complete expected result."
+      - "Return Test-design verdict: strengthen."
+  - id: static-quality-evidence-limits
+    type: restraint
+    prompt: "Rate this test suite as fast, repeatable, and test-first from the supplied files."
+    artifacts:
+      available_evidence: "Only the final test and production source files are available. No execution, timing, repeated-run, or development-history evidence is supplied."
+    must:
+      - "Mark speed and test-first history as unknown rather than strong or weak."
+      - "Do not infer repeatability from static shape or one assumed passing run."
+      - "Name the smallest execution or chronology evidence needed for those properties."
   - id: routine-test-execution
     type: negative
     prompt: "Run the focused test file after changing the parser and report the result."

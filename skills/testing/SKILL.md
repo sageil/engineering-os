@@ -32,7 +32,8 @@ Establish:
 - the public interface that owns evidence for that claim;
 - the relevant existing tests or proposed cases;
 - the implementation path only to understand reachability, boundaries, and hidden coupling;
-- applicable repository testing policy and shared test infrastructure; and
+- applicable repository testing policy and shared test infrastructure;
+- sources of nondeterminism, shared state, external I/O, cleanup, retries, and timing when they can affect repeatability; and
 - known regressions or operating evidence when they are available.
 
 Tests establish encoded expectations.
@@ -40,13 +41,35 @@ They do not establish production history or product intent by themselves.
 
 If the accepted behavior is unknown and would change the test design, return `Test-design verdict: insufficient-evidence` and identify the smallest owner decision or authoritative artifact required.
 
-## Required example guidance
+## Reference guidance
 
 Before designing tests or classifying existing tests, read [behavior-testing-examples.md](references/behavior-testing-examples.md) completely.
 
 Use its examples to distinguish public behavior from implementation structure, select the correct evidence layer, design factories, detect coverage theater, challenge boundaries, choose relevant execution scope, and avoid implementation-shaped test organization.
 
 Do not substitute evaluation fixtures or this entrypoint summary for the example guidance.
+
+Read the following references when the selected scope needs them:
+
+- Read [test-quality-properties.md](references/test-quality-properties.md) for a test-quality audit, suite health assessment, or a claim about understandability, maintainability, repeatability, atomicity, necessity, granularity, speed, or test-first history.
+- Read [mutation-test-design.md](references/mutation-test-design.md) when conditions, arithmetic, boolean combinations, collection operations, optional values, ordering, or meaningful side effects can hide weak assertions.
+- Read [special-test-evidence.md](references/special-test-evidence.md) when the scope includes characterization or golden-master tests, snapshots, asynchronous retry helpers, timers, randomness, browser components, or user journeys.
+
+Do not load a conditional reference when its subject is outside the selected scope.
+
+## Expectation authority
+
+Separate three different forms of evidence:
+
+- an authoritative contract defines accepted behavior;
+- an observed production or legacy behavior establishes compatibility evidence; and
+- a test records an expectation that may or may not have either authority.
+
+A characterization, approval, snapshot, or golden-master test can detect change without proving correctness.
+
+Do not preserve suspicious observed behavior as accepted behavior, and do not remove it without resolving compatibility risk or replacing its change-detection value.
+
+If the authority of an expectation changes the recommendation and is unknown, return `Test-design verdict: insufficient-evidence`.
 
 ## Evidence layers
 
@@ -126,6 +149,8 @@ Do not apply this check to an interaction whose order, target, or payload is its
 
 Use realistic behavior mutations to test assertion strength.
 
+Apply the operator-specific examples in [mutation-test-design.md](references/mutation-test-design.md) when the subject contains the relevant constructs.
+
 Consider mutations such as:
 
 - invert or remove a condition;
@@ -145,6 +170,34 @@ If no test would fail, record a behavior-evidence gap.
 
 Do not require an automated mutation harness when a focused counterexample establishes the gap.
 Do not claim mutation effectiveness unless the mutation was actually applied and the relevant test failed.
+
+Use just-below, exact, and just-above values for meaningful numeric boundaries.
+Use mixed boolean values to distinguish `&&` from `||`.
+Avoid identity-only examples such as adding zero or multiplying by one when they cannot distinguish the intended operation from a mutation.
+
+## Test-quality properties
+
+When the user requests a quality audit, assess the applicable properties from [test-quality-properties.md](references/test-quality-properties.md).
+
+Do not calculate an aggregate quality score.
+The properties have different importance for different subjects.
+
+Mark speed as unknown without execution or trustworthy timing evidence.
+Mark test-first history as unknown without a captured failing run, development trace, or relevant history.
+
+Do not infer repeatability from one passing run.
+Inspect or exercise time, randomness, concurrency, network access, persistent state, ordering, cleanup, and retry behavior when they are material.
+
+## Asynchronous and browser evidence
+
+Apply the examples in [special-test-evidence.md](references/special-test-evidence.md) when the selected scope is asynchronous or browser-facing.
+
+An asynchronous assertion must observe the settled outcome.
+A retry callback must not perform the action under test because the callback can run more than once.
+Arbitrary sleeps and blanket retries do not prove readiness or repair nondeterminism.
+
+For browser and user-journey claims, require an accessible browser action or browser-owned lifecycle event plus the user-visible outcome.
+Network observation can strengthen that evidence, but a test-created direct request cannot replace it.
 
 ## Fixtures and factories
 
@@ -214,8 +267,9 @@ Report:
 4. retained tests and the behavior each protects;
 5. tests to strengthen, consolidate, replace, or remove, with exact evidence;
 6. material gaps and realistic mutations that would survive;
-7. the terminal test-design verdict; and
-8. the focused verification that could disprove the verdict.
+7. applicable quality-property ratings and unknowns when the request includes a quality audit;
+8. the terminal test-design verdict; and
+9. the focused verification that could disprove the verdict.
 
 Separate observed facts from derived judgments.
 
@@ -250,6 +304,9 @@ This capability fails when it:
 - recommends deletion without proving redundancy, obsolete behavior, wrong-layer evidence, or absence of a meaningful claim;
 - preserves a test only because it adds coverage;
 - invents product behavior to justify a test;
+- treats an observed characterization baseline as proof of correct or accepted behavior;
+- infers repeatability, speed, or test-first history without the required evidence;
+- accepts a retry callback that can repeat the action under test;
 - claims mutation effectiveness without executing the mutation and observing the failure;
 - implements changes while the assessment is active; or
 - expands into general change review, acceptance review, or failure diagnosis.
