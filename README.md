@@ -66,7 +66,7 @@ The description is the agent-facing discovery and activation contract.
 | [`technical-communication`](skills/technical-communication/SKILL.md) | Request-only | Turn verified technical material into an accurate, reader-centered artifact using human language without losing necessary precision. |
 | [`threat-modeling`](skills/threat-modeling/SKILL.md) | Request-only | Model credible attack paths, control evidence, and explicitly owned residual risk for a defined security scope. |
 | [`operational-readiness`](skills/operational-readiness/SKILL.md) | Request-only | Decide whether a defined system or release can operate, degrade, and recover under named ownership. |
-| [`testing`](skills/testing/SKILL.md) | Request-only | Decide whether tests provide meaningful behavior evidence and identify justified retention, strengthening, consolidation, replacement, or removal. |
+| [`testing`](skills/testing/SKILL.md) | When writing and reviewing tests. | Decide whether tests provide meaningful behavior evidence and identify justified retention, strengthening, consolidation, replacement, or removal. |
 
 ## Evidence before solutions
 
