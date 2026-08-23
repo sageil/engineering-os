@@ -1,11 +1,9 @@
 ---
 name: testing
 description: >-
-  Design or assess meaningful behavior tests when the user explicitly requests test design,
-  a test-quality audit, behavior-versus-implementation analysis, mutation-aware test analysis,
-  or test consolidation, replacement, or removal for a defined subject.
-  Do not use for running tests, reporting coverage alone, routine test writing during implementation,
-  general change review, acceptance review, failure diagnosis, or implementation of test changes.
+  Design, write, update, or assess meaningful behavior tests for a defined subject.
+  Use when the user asks to add or change tests, when implementation work requires new or updated tests, or when the user requests test design, a test-quality audit, behavior-versus-implementation analysis, mutation-aware test analysis, or test consolidation, replacement, or removal.
+  Do not use for running existing tests only, reporting coverage alone, general change review, acceptance review, or diagnosis of a concrete failure.
 ---
 
 # Testing
@@ -16,11 +14,15 @@ Decide whether tests provide meaningful evidence for accepted behavior through t
 
 Identify which tests to retain, strengthen, consolidate, replace, or remove without treating test count or coverage as a proxy for value.
 
+Create or update tests that protect accepted behavior through the narrowest public interface that honestly proves it.
+
 ## Responsibility
 
-Own the design and assessment of test evidence for a defined subject.
+Own the design, implementation, and assessment of test evidence for a defined subject.
 
-Do not own routine test execution, implementation, general patch review, acceptance against a product contract, or causal diagnosis of a failing test.
+When a broader implementation task requires test changes, apply this skill to the test work without limiting other production changes that the user authorized.
+
+Do not own routine test execution, general patch review, acceptance against a product contract, or causal diagnosis of a failing test.
 
 ## Required inputs
 
@@ -43,7 +45,7 @@ If the accepted behavior is unknown and would change the test design, return `Te
 
 ## Reference guidance
 
-Before designing tests or classifying existing tests, read [behavior-testing-examples.md](references/behavior-testing-examples.md) completely.
+Before designing, writing, updating, or classifying tests, read [behavior-testing-examples.md](references/behavior-testing-examples.md) completely.
 
 Use its examples to distinguish public behavior from implementation structure, select the correct evidence layer, design factories, detect coverage theater, challenge boundaries, choose relevant execution scope, and avoid implementation-shaped test organization.
 
@@ -245,7 +247,9 @@ When removal would leave an accepted behavior without evidence, recommend replac
 Do not use test count, file length, runtime, mock count, coverage, or change frequency as a removal rule.
 Use these only as cost signals after test value is established.
 
-## Verdicts
+## Assessment verdicts
+
+Return a terminal verdict only for test-design or test-quality assessments.
 
 Return one terminal verdict:
 
@@ -259,7 +263,14 @@ Return one terminal verdict:
 
 ## Output protocol
 
-Report:
+For test-writing work, report:
+
+1. the accepted behavior and evidence boundary;
+2. the tests or supporting test artifacts changed;
+3. the meaningful positive, negative, boundary, or failure cases added; and
+4. the focused verification result.
+
+For test-design or test-quality assessments, report:
 
 1. scope and authoritative behavior inputs;
 2. the public evidence boundary for each material claim;
@@ -277,9 +288,9 @@ Name exact tests, files, interfaces, and behavior claims.
 
 ## Boundaries
 
-Keep this capability read-only.
+Edit tests, fixtures, factories, test helpers, and test-specific configuration when the user requests test implementation or when authorized implementation work requires those changes.
 
-Do not edit production code, tests, fixtures, configuration, or CI while this skill is active.
+Do not treat activation of this skill by itself as authorization to change production behavior, shared infrastructure, or CI.
 
 Do not turn the assessment into a general patch review.
 Use `adversarial-review` when the user requests merge readiness or an independent review of a defined change.
@@ -290,7 +301,7 @@ Use `acceptance-review` for that verdict.
 Do not diagnose why a concrete test or behavior currently fails.
 Return `Routing request: causal-debugging` when causal isolation is required.
 
-Return accepted test implementation to ordinary authorized execution.
+Running existing tests without test design, test implementation, or test-quality analysis does not activate this skill.
 
 ## Failure conditions
 
@@ -308,5 +319,5 @@ This capability fails when it:
 - infers repeatability, speed, or test-first history without the required evidence;
 - accepts a retry callback that can repeat the action under test;
 - claims mutation effectiveness without executing the mutation and observing the failure;
-- implements changes while the assessment is active; or
+- implements changes during an assessment-only request; or
 - expands into general change review, acceptance review, or failure diagnosis.
