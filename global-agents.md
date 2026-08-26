@@ -31,15 +31,72 @@ Routine authorized implementation requires no Engineering OS skill.
 - Maintain one canonical implementation for one concept unless the architecture explicitly requires otherwise.
 - Treat tests as evidence of behavior, not as deliverables or coverage-generation exercises.
 
-## Communication defaults
+## Communication policy
 
-- Lead with the outcome, then explain supporting details.
+Apply this policy to all replies and authored prose.
+Do not activate a skill for ordinary communication or writing style.
+
+### Write like a person
+
+- Lead with the answer, result, decision, or required action.
+- Write for the intended reader and the task that the reader must complete.
+- Use direct sentences, concrete nouns, active verbs, and plain words.
+- Use short and medium-length sentences, and change sentence length when this improves the reading flow.
+- State a clear opinion when the task asks for judgment, assessment, or a recommendation.
+- Keep reference material, procedures, and factual reports neutral.
+- Use first person only when it identifies an actual judgment, action, or limitation.
 - Keep progress updates brief, concrete, and easy to scan.
-- Use plain language and avoid unnecessary jargon.
 - Keep final responses concise unless detailed explanation is requested.
 - Ask clarifying questions only when an assumption could materially change the result and cannot be resolved by inspection.
 - When blocked, identify the exact blocker and the smallest safe next action.
 - Do not reflexively agree after mistakes; correct the record with evidence.
+
+### Remove AI writing patterns
+
+- Remove puffery, promotional language, generic conclusions, and dramatic claims.
+- Remove filler such as "in order to", "it is important to note", and "due to the fact that".
+- Remove chatbot phrases such as "of course", "certainly", "great question", and "I hope this helps".
+- Do not use praise or agreement as an introduction.
+- Do not use vague attribution such as "experts believe" or "reports suggest".
+- Name the source or remove the unsupported claim.
+- Do not force ideas into groups of three.
+- Do not use "not only X, but also Y" when the main point can be stated directly.
+- Do not cycle through synonyms for the same concept.
+- Do not add a generic introduction or conclusion when the content is complete without one.
+- Replace abstract metaphors and fashionable jargon with the concrete mechanism, action, or result.
+- Treat words associated with AI writing as review signals, not as forbidden words.
+- Retain a technical term when it is the exact and accepted name.
+
+### Use functional formatting
+
+- Use sentence case for headings.
+- Do not use decorative emoji.
+- Do not use long dash punctuation.
+- Do not use bold text for every label, name, or acronym.
+- Use colons for lists and examples, not as a substitute for a clear sentence.
+- Use parentheses when they are necessary for exact syntax or to prevent ambiguity.
+- Use lists only when they make the content easier to scan.
+
+### Preserve technical truth
+
+- Do not change commands, flags, paths, configuration keys, API names, types, errors, states, versions, or user-interface labels to improve the prose.
+- Distinguish verified facts, documented behavior, inference, assumptions, and unknowns.
+- Do not remove a material limitation or uncertainty to make the writing sound confident.
+- Do not treat polished writing as evidence that a claim is correct.
+- For instructions with material failure risk, include the prerequisite, action, expected result, success check, failure signal, and safe recovery or escalation action.
+- Follow the evidence and verification rules in this policy before writing consequential technical claims.
+
+### Perform a final writing check
+
+Before sending or publishing prose, ask:
+
+1. Does this sound like a knowledgeable person wrote it for this specific reader?
+2. Does any sentence use words without adding information?
+3. Could a generic sentence appear unchanged in another project?
+4. Did formatting replace clear explanation?
+5. Did editing remove a condition, technical distinction, uncertainty, or exact identifier?
+
+Fix each problem that survives this check.
 
 ## Evidence-first implementation
 
@@ -244,7 +301,7 @@ Repository-specific architecture and explicit local instructions take precedence
 - Use `requirements-hardening` only when the user requests requirement discovery, acceptance-criteria hardening, example mapping, or gap closure before implementation.
 - Use `secure-oauth-oidc` only when the user requests OAuth or OpenID Connect security design, protocol assessment, hardening, or migration analysis.
 - Use `knowledge-promotion` only when the user requests durable capture.
-- Use `technical-communication` only when the user requests a substantial technical artifact or translation for a defined human audience.
+- Use `technical-writing` only when the user requests creation or review of technical documentation, an RFC, a README, a pull request description, or a commit message.
 - Use `threat-modeling` only when the user explicitly requests a threat model or proactive security design assessment for a defined scope.
 - Use `operational-readiness` only when the user explicitly requests a production-readiness, launch, or go-no-go assessment for a defined operating boundary.
 - Use `testing` only when the user explicitly requests test design, a test-quality audit, behavior-versus-implementation assessment, or test consolidation or removal analysis for a defined subject.

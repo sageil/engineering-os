@@ -1,0 +1,89 @@
+skill: technical-writing
+cases:
+  - id: tutorial-produces-visible-progress
+    type: positive
+    prompt: "Turn these verified setup notes into a tutorial for an engineer who has not used the tool."
+    artifacts:
+      outcome: "Build and run a local index."
+      command: "indexer build ./docs"
+      success: "The command prints Indexed 42 files."
+    must:
+      - "Use tutorial mode and open with what the reader will build."
+      - "Make each step produce a visible result and preserve the exact command and output."
+      - "Use direct commands and concrete language."
+    must_not:
+      - "Turn the tutorial into a complete command reference or replace exact identifiers with synonyms."
+  - id: how-to-stays-task-focused
+    type: positive
+    prompt: "Write a how-to for rotating an application token from these verified operator notes."
+    artifacts:
+      reader: "An experienced application operator."
+      task: "Replace token APP_TOKEN and confirm that /health reports ready."
+    must:
+      - "Use how-to mode, assume reader competence, and keep the path focused on the operator goal."
+      - "Put applicable conditions before instructions and include the observable success result."
+    must_not:
+      - "Add tutorial teaching, product history, or unsupported recovery steps."
+  - id: reference-remains-neutral
+    type: positive
+    prompt: "Rewrite this verified CLI material as reference documentation."
+    artifacts:
+      commands: ["deploy --mode safe", "deploy --mode fast"]
+      errors: ["exit 23: active lock", "exit 41: invalid target"]
+    must:
+      - "Use reference mode and preserve every command, flag, value, and error exactly."
+      - "State facts, options, limits, and errors without persuasion or opinion."
+    must_not:
+      - "Add tutorial steps, recommend a mode, or rename exact CLI terms."
+  - id: explanation-can-state-a-view
+    type: positive
+    prompt: "Explain why this service uses an append-only event log from the supplied decision record."
+    artifacts:
+      decision: "The owner selected an append-only log to retain audit history and deterministic replay."
+      tradeoff: "Queries require a derived read model."
+    must:
+      - "Use explanation mode, answer the why question, and include the decision context and tradeoff."
+      - "State a supported judgment when it helps the reader understand the decision."
+    must_not:
+      - "Present the explanation as a procedure or invent reasons absent from the decision record."
+  - id: ambiguous-procedure-syntax
+    type: language
+    prompt: "Review this instruction for ambiguity: Only restart failed workers after draining queues and replicas."
+    must:
+      - "Identify what only modifies and rewrite the instruction only when the authoritative intended grouping is known."
+      - "Keep conditions before commands and give each pronoun one clear referent."
+    must_not:
+      - "Guess which workers, queues, or replicas the author intended."
+  - id: pull-request-description
+    type: positive
+    prompt: "Rewrite this verified pull request description for maintainers."
+    artifacts:
+      change: "cache.go now rejects negative TTL values at configuration parsing."
+      verification: "go test ./internal/cache completed successfully."
+    must:
+      - "Apply the sentence, STE, Global English, and global communication rules without forcing a Diátaxis mode."
+      - "Preserve the exact path, behavior, and verification command."
+    must_not:
+      - "Add a generic introduction, promotional claim, or unverified test result."
+  - id: ordinary-reply-restraint
+    type: restraint
+    prompt: "Reply that the build passed."
+    must:
+      - "Do not activate technical-writing."
+      - "Use the global communication policy for the short reply."
+    must_not:
+      - "Create a document-mode workflow or review checklist."
+  - id: product-ui-copy-boundary
+    type: boundary
+    prompt: "Rewrite the empty-state button label in the product interface."
+    must:
+      - "Return not applicable or route to the product copy guidelines."
+    must_not:
+      - "Treat a user-interface string as technical documentation."
+  - id: missing-technical-source
+    type: gate
+    prompt: "Document the exact default retry limit, but no code, configuration, or authoritative source is available."
+    must:
+      - "Identify the missing source and stop before stating a default."
+    must_not:
+      - "Invent a number or treat polished prose as correctness evidence."

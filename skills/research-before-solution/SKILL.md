@@ -59,11 +59,17 @@ Never silently carry a material unknown forward as a caveat.
 State:
 
 - the exact decision to be made;
+- the accountable decision owner and the authority delegated for technical recommendation or selection;
 - affected scope and observable outcome;
 - success conditions;
+- authoritative behavior requirements and explicit non-goals;
 - known constraints and invariants;
 - reported facts versus inferred explanations; and
 - the unknowns that could change feasibility or ranking.
+
+Do not substitute architecture work for unresolved product decisions.
+When a missing product rule can materially change the solution shape, identify the decision owner and stop at `insufficient-evidence`.
+If the user explicitly requested a requirement artifact or gap-resolution workflow, return `Routing request: requirements-hardening` for a new routing decision.
 
 A material unknown is any unknown that could:
 
@@ -320,6 +326,7 @@ Do not create a new reusable abstraction without establishing:
 - how ambiguous or duplicated ownership is avoided.
 
 When options change durable boundaries, data ownership, trust, distribution, deployment, consistency, or long-term ownership, read [architecture-model.md](references/architecture-model.md) before ranking them.
+Use its caller-first scenarios, structural comparison, risk-selected perspectives, decision gate, fitness obligations, and implementation-handoff contract.
 
 Keep structural analysis inside this skill rather than activating a separate architecture skill.
 
@@ -335,6 +342,10 @@ Use its operator-question, signal-contract, loss, actionability, privacy, and ve
 If detailed option analysis reveals a material unknown, stop solution work and return to `researching`.
 
 Recommend only when evidence distinguishes the options. Use a conditional recommendation or decline to recommend when evidence does not justify a responsible ranking.
+
+Treat a recommendation as a technical judgment, not as approval to mutate the system.
+For an architecture decision, record `Decision status: recommended | accepted | unresolved` as defined by the architecture reference.
+Do not report `accepted` without evidence that the accountable owner accepted the decision or delegated selection authority for this decision.
 
 ## Output protocol
 
@@ -377,6 +388,21 @@ A `research-needed` classification means return to research, not continue output
 - Verification capable of disproving success
 - Conditions that would change the decision
 
+### Architecture decision
+
+Include only when [architecture-model.md](references/architecture-model.md) applies:
+
+- accountable owner and delegated authority;
+- `Decision status: recommended | accepted | unresolved`;
+- caller and operator scenarios that the shape must support;
+- recommended or accepted boundary, ownership, state, trust, deployment, and consistency model when one exists;
+- principal failure, interruption, retry, and recovery behavior;
+- strongest eligible alternative and the decisive reason it lost, when another eligible shape exists;
+- verification and fitness obligations;
+- transition hazards that require later planning, without creating that plan;
+- conditions that require the decision to be revisited; and
+- material deviations that must return to research during implementation.
+
 Keep the result proportional. Expose enough evidence for another engineer to challenge it.
 
 ## Boundaries
@@ -387,11 +413,24 @@ Do not implement a selected option.
 
 Do not review a completed change.
 
-Return a selected option to ordinary authorized execution by default.
+A recommendation does not authorize implementation or external mutation.
+
+Return an accepted option to ordinary authorized execution when the user's request already authorizes implementation and no material transition plan is required.
+Return a recommended option for owner decision when acceptance or execution authority is absent.
+
+During later implementation, treat the accepted architecture as a decision baseline rather than an infallible sketch.
+Permit internal implementation detail to change when it preserves the accepted behavior, ownership, public contracts, state, trust, deployment, consistency, and recovery model.
+If implementation evidence requires changing any of those properties or introduces a material unsupported prerequisite, stop implementation and start a new research routing decision.
 
 When the user requests a transition plan and material transition hazards remain, return:
 
 `Routing request: execution-planning`
+
+for a new routing decision.
+
+When the user explicitly requests durable capture of an accepted decision, return:
+
+`Routing request: knowledge-promotion`
 
 for a new routing decision.
 
@@ -415,5 +454,8 @@ The skill fails when any of these occur:
 - a material prerequisite is left as "likely", "probably", convention, familiarity, or a footnote instead of being researched;
 - `complete` is declared while an accessible check could still eliminate, introduce, or materially reorder a candidate;
 - a `research-needed` candidate is presented as a solution option;
+- an architecture recommendation is reported as accepted without decision-owner authority;
+- implementation authorization is inferred from a technical recommendation;
+- a material architecture deviation is treated as an implementation detail instead of reopening research;
 - research continues after further evidence cannot change the decision; or
 - options appear before `Research verdict: complete`, a viability contract, and candidate screening.

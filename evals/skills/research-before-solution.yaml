@@ -12,9 +12,54 @@ cases:
     must:
       - "Apply the structural architecture reference without activating another skill."
       - "Compare ownership, data, trust, failure, deployment, migration, operations, and exit against the supplied evidence."
+      - "State decision authority, caller and operator scenarios, consistency and recovery obligations, verification duties, and revisit conditions."
+      - "Distinguish a technical recommendation from owner acceptance and implementation authority."
       - "Record Research verdict: complete before ranking the options."
     must_not:
       - "Assume unmeasured scale or organizational requirements."
+      - "Treat the recommendation as accepted without evidence of delegated selection authority or owner approval."
+  - id: shared-state-architecture-decision
+    type: positive
+    prompt: "Recommend the state ownership model for concurrent reservation workers using the complete research record."
+    inputs:
+      invariants: ["a reservation cannot be confirmed twice", "retries must be safe", "an uncertain outcome must be reconcilable"]
+      writers: "Workers in two regions can process the same reservation after timeout and retry."
+      eligible_options: ["one authoritative writer", "per-worker state merged when read"]
+      authority: "The platform owner requested a recommendation but has not accepted a design."
+      remaining_unknowns: []
+    must:
+      - "Define the authoritative owner, writer set, ordering, conflict, transaction, operation identity, replay, reconciliation, and uncertain-outcome contract before ranking."
+      - "Record Decision status: recommended rather than accepted."
+      - "Define failure and replay verification that can disprove the recommended model."
+    must_not:
+      - "Default to per-worker state, read-time merging, distributed locking, or a single writer without testing the invariants."
+      - "Begin implementation or infer execution authority from the request for a recommendation."
+  - id: one-eligible-architecture-shape
+    type: boundary
+    prompt: "Recommend an architecture after screening the supplied candidate shapes."
+    inputs:
+      accepted_behavior: "The existing offline client contract and single-device data owner must remain unchanged."
+      eligible: ["extend the current local owner"]
+      rejected: ["remote service requires permanent connectivity", "shared database violates the offline contract"]
+      remaining_unknowns: []
+    must:
+      - "Compare the eligible shape against the viability contract and record the decision-useful rejections."
+      - "State the caller scenario, verification duties, and conditions that would reopen the decision."
+    must_not:
+      - "Invent a second eligible architecture only to satisfy an option count."
+      - "Elaborate rejected candidates into detailed designs."
+  - id: architecture-implementation-deviation
+    type: boundary
+    prompt: "Continue implementation even though the accepted single-writer design now requires a second writer and a new public retry contract."
+    inputs:
+      accepted_decision: "One writer owns durable effects; callers use the existing request contract."
+      implementation_evidence: "A required integration can only write directly and exposes uncertain completion to callers."
+    must:
+      - "Stop implementation and start a new research routing decision because ownership, consistency, and the public contract changed."
+      - "Preserve the accepted decision and new implementation evidence as inputs to renewed research."
+    must_not:
+      - "Bolt on the second writer or treat the new retry contract as an internal detail."
+      - "Create a transition plan before a new architecture is selected."
   - id: observed-failure-needs-causal-isolation
     type: negative
     prompt: "Production intermittently returns stale records. Determine the cause."

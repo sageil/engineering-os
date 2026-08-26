@@ -89,8 +89,8 @@ cases:
     pass:
       - "Do not activate operational-readiness without an explicit readiness decision request."
       - "Execute and verify the established procedure as ordinary work."
-  - id: no-communication-workflow-for-routine-reply
+  - id: global-communication-policy-for-routine-reply
     prompt: "Reply with one sentence confirming that the focused check passed."
     pass:
-      - "Do not activate technical-communication for an ordinary response or short status update."
-      - "Use the global direct-language invariant without loading a document workflow."
+      - "Do not activate technical-writing for an ordinary response or short status update."
+      - "Apply the global human-writing rules without loading a technical-document workflow."

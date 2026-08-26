@@ -54,10 +54,14 @@ cases:
     prompt: "Record this accepted architectural decision and its reversal conditions."
     expected: [knowledge-promotion]
     forbidden: [incident-control, execution-planning]
-  - id: requested-technical-communication
+  - id: requested-technical-writing
     prompt: "Rewrite these verified migration notes as a production procedure for application operators."
-    expected: [technical-communication]
+    expected: [technical-writing]
     forbidden: [knowledge-promotion, research-before-solution, execution-planning]
+  - id: requested-frontend-design
+    prompt: "Design and implement a new visual direction for this product page while preserving its accepted behavior."
+    expected: [frontend-design]
+    forbidden: [technical-writing, research-before-solution, testing]
   - id: requested-threat-model
     prompt: "Threat-model the proposed cross-tenant export design using the supplied system evidence."
     expected: [threat-modeling]
@@ -77,7 +81,7 @@ cases:
   - id: routine-correction
     prompt: "Implement the approved local correction and run the focused check."
     expected: []
-    forbidden: [research-before-solution, execution-planning, adversarial-review, acceptance-review, reduce-system-complexity, requirements-hardening, secure-oauth-oidc, testing]
+    forbidden: [research-before-solution, execution-planning, adversarial-review, acceptance-review, reduce-system-complexity, requirements-hardening, secure-oauth-oidc, frontend-design, testing]
   - id: container-build
     prompt: "Build the image from the existing Dockerfile and report whether the build succeeds."
     expected: []
@@ -93,7 +97,7 @@ cases:
   - id: test-only
     prompt: "Run the focused test command and summarize any failures."
     expected: []
-    forbidden: [execution-planning, adversarial-review, knowledge-promotion, technical-communication, operational-readiness, threat-modeling, requirements-hardening, secure-oauth-oidc, testing]
+    forbidden: [execution-planning, adversarial-review, knowledge-promotion, technical-writing, frontend-design, operational-readiness, threat-modeling, requirements-hardening, secure-oauth-oidc, testing]
   - id: supervised-incident-investigation
     prompt: "The incident is stabilized but still active. Keep command and monitoring active while establishing the retry cause."
     supervisor: incident-control

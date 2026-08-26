@@ -1,6 +1,6 @@
 # Customization
 
-Keep universal policy small.
+Keep universal policy focused on behavior that must remain true across nearly every engineering task.
 Place repository-specific constraints in that repository's agent instructions, code, tests, automation, or documentation.
 
 ## Customize activation before workflow
@@ -21,14 +21,16 @@ Do not copy the same method into several skill bodies.
 ## Customize global policy carefully
 
 Add a global rule only when it must remain true across nearly every engineering task and cannot live in a stronger artifact.
-Do not add a complete workflow, style guide, architecture preference, or project convention to the global policy.
+A concise universal writing standard belongs in the global policy because it applies to every prose surface without creating a separate responsibility.
+Do not add an artifact-specific workflow, architecture preference, or project convention to the global policy.
 
 ## Preserve responsibility boundaries
 
 Do not make `execution-planning` compare solutions.
 Do not make `adversarial-review` implement corrections.
 Do not make `knowledge-promotion` automatically write memory.
-Do not make `technical-communication` research missing engineering facts, approve correctness, choose durable placement, or simplify away exact technical distinctions.
+Do not make `technical-writing` research missing engineering facts, approve correctness, choose durable placement, or change exact technical identifiers.
+Do not make `frontend-design` own behavior-only changes, visual critique, product strategy, or backend implementation.
 Do not make `threat-modeling` scan, exploit, command incidents, or implement remediation.
 Do not make `operational-readiness` execute deployments, command incidents, or turn generic checklists into blockers.
 

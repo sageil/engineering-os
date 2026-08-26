@@ -42,7 +42,8 @@ Use `reduce-system-complexity` only for a requested net-mechanism-reduction targ
 Use `requirements-hardening` only for requested requirement discovery, acceptance-criteria hardening, example mapping, or gap closure before implementation.
 Use `secure-oauth-oidc` only for requested OAuth or OpenID Connect security design, protocol assessment, hardening, or insecure-flow migration analysis.
 Use `knowledge-promotion` only for requested durable capture.
-Use `technical-communication` only for requested creation or substantial revision of a technical artifact when a defined human audience must understand, decide, act, or recover from verified source material.
+Use `technical-writing` only for requested creation or review of technical documentation, an RFC, a README, a pull request description, or a commit message.
+Use `frontend-design` only for requested visual design and implementation when a new interface or substantial redesign requires open decisions about layout, typography, color, imagery, motion, or interface copy.
 Use `threat-modeling` only for a requested proactive security analysis of a defined system, feature, data flow, trust boundary, or design.
 Use `operational-readiness` only for a requested launch or sustained-operation assessment with a defined operating boundary.
 Use `testing` only for requested test design, test-quality audit, behavior-versus-implementation assessment, or test consolidation or removal analysis for a defined subject.
@@ -69,7 +70,8 @@ Deploying a stateless container through an approved reversible procedure uses no
 Designing a zero-downtime migration with mixed versions and unsafe intermediate states may use `execution-planning` when the user requests the plan.
 Investigating why a container repeatedly crashes may use `causal-debugging`.
 Responding to a container that is corrupting customer data now uses `incident-control`.
-Rewriting a verified migration procedure for application operators uses `technical-communication` when the user explicitly requests the artifact.
+Rewriting a verified migration procedure for application operators uses `technical-writing` when the user explicitly requests the artifact.
+Designing and implementing a new visual direction for a product page uses `frontend-design` when the user explicitly requests the design work.
 Modeling how a proposed multi-tenant export path could cross tenant boundaries uses `threat-modeling` when explicitly requested.
 Deciding whether a service is ready for production traffic uses `operational-readiness` when explicitly requested.
 Proving every accepted criterion for a completed feature uses `acceptance-review` when explicitly requested.

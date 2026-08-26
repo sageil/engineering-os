@@ -48,9 +48,9 @@ cases:
     routing_result: none
     preserve: [blocking-finding, affected-invariant, evidence, owner, closure-evidence]
     reject_if: [remediation-authority-missing]
-  - id: research-to-requested-technical-communication
+  - id: research-to-requested-technical-writing
     input_verdict: "Research verdict: complete"
-    routing_request: technical-communication
+    routing_request: technical-writing
     require: [explicit-artifact-request, primary-reader, reader-outcome, verified-source-material, material-unknowns]
     preserve: [verified-facts, accepted-decisions, exact-identifiers, constraints, uncertainty]
     reject_if: [reader-undefined, load-bearing-source-conflict, artifact-not-requested]

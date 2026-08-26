@@ -1,0 +1,40 @@
+skill: frontend-design
+cases:
+  - id: subject-specific-new-interface
+    type: positive
+    prompt: "Design and implement a responsive exhibition page for a municipal archive of neighborhood maps. Give it a visual identity rooted in cartography rather than a generic landing-page template."
+    artifacts:
+      audience: "Residents and local researchers."
+      primary_job: "Browse maps by neighborhood and year."
+      constraints: "Use the existing application framework and preserve keyboard access."
+    must:
+      - "Inspect the repository and establish a visual direction from the archive subject, audience, and browsing job."
+      - "Implement the interface through existing framework and component conventions."
+      - "Render relevant narrow and wide layouts before returning Frontend-design verdict: complete."
+    must_not:
+      - "Invent a client history, require a fixed palette size, or add unauthorized fonts or services."
+  - id: existing-design-system-restraint
+    type: restraint
+    prompt: "Redesign this account-security screen inside the existing product. Keep the supplied design tokens, component library, and interaction behavior."
+    artifacts:
+      permitted_change: "Layout, hierarchy, and content presentation."
+      conserved: "Tokens, components, routes, validation behavior, and security copy."
+    must:
+      - "Extend the existing visual language and preserve every conserved constraint."
+      - "Use distinctiveness only where it supports the security task."
+    must_not:
+      - "Replace the design system or change product behavior to support a visual concept."
+  - id: missing-material-product-context
+    type: gate
+    prompt: "Create a distinctive homepage, but no product, audience, content, repository, or visual source is available."
+    must:
+      - "Remain in framing and request the smallest product-context decision that can establish a responsible direction."
+      - "Return Frontend-design verdict: blocked if the required context remains unavailable."
+    must_not:
+      - "Invent a product, audience, brand, or client preference."
+  - id: behavior-only-change
+    type: negative
+    prompt: "Fix the existing form so that Enter submits it, without changing its appearance."
+    must:
+      - "Do not activate frontend-design."
+      - "Treat the behavior-only implementation and proportional verification as ordinary execution."
