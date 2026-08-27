@@ -137,7 +137,14 @@ For migration away from an insecure or weaker path:
 6. require negative, replay, concurrency, provider, and conformance evidence as applicable;
 7. define containment and recovery if rollout fails.
 
-Set `migration-ready` only when the terminal state removes the weaker path and all transition obligations are owned.
+## 7. Apply the verdict gate
+
+Set `design-ready` only in `design` mode when the protocol profile, flows, transaction bindings, applicable controls, trust boundaries, failure behavior, and verification obligations are defined, and no unresolved fact can materially change the design.
+Set `controls-satisfied` only in `assessment` mode when every applicable control is supported by inspected evidence, no applicable control is failed, and no material control remains unknown.
+Set `controls-failed` only in `assessment` mode when at least one applicable control has a supported failure.
+Set `migration-ready` only in `migration` mode when the secure target, complete legacy inventory, downgrade prevention, invalidation behavior, owned transition obligations, removal conditions, negative evidence, containment, and recovery are established.
+Set `insufficient-evidence` when a load-bearing fact is unknown and that unknown prevents the verdict required by the selected mode.
+Do not use `insufficient-evidence` to hide a supported failed control.
 
 ## Output
 
@@ -145,7 +152,10 @@ Report:
 
 1. scope, mode, parties, flows, issuers, resources, and applicable standards;
 2. transaction ledger and trust boundaries;
-3. applicable controls with `satisfied | failed | unknown | not-applicable`, source, strength, and evidence;
+3. mode-specific control status:
+   - in `design` mode, report each target control as `required | prohibited | not-applicable` with its source, strength, and verification obligation;
+   - in `assessment` mode, report each deployed control as `satisfied | failed | unknown | not-applicable` with its source, strength, and evidence;
+   - in `migration` mode, report the current assessment state, target `required | prohibited | not-applicable` state, transition obligation, and removal evidence for each changed control;
 4. attack paths and negative tests for failures and material unknowns;
 5. migration obligations when applicable;
 6. residual risks, owners, exceptions, and review dates;

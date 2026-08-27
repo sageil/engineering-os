@@ -45,11 +45,21 @@ If the accepted behavior is unknown and would change the test design, return `Te
 
 ## Reference guidance
 
-Before designing, writing, updating, or classifying tests, read [behavior-testing-examples.md](references/behavior-testing-examples.md) completely.
+Before designing, writing, updating, or classifying tests, read [Public behavior versus implementation structure](references/behavior-testing-examples.md#public-behavior-versus-implementation-structure).
 
-Use its examples to distinguish public behavior from implementation structure, select the correct evidence layer, design factories, detect coverage theater, challenge boundaries, choose relevant execution scope, and avoid implementation-shaped test organization.
+Read only the additional sections that match the selected work:
 
-Do not substitute evaluation fixtures or this entrypoint summary for the example guidance.
+- Read [Reaching validation through behavior](references/behavior-testing-examples.md#reaching-validation-through-behavior) when validation or rejected input is material.
+- Read [HTTP evidence versus browser evidence](references/behavior-testing-examples.md#http-evidence-versus-browser-evidence) when the claim crosses an HTTP, component, browser, or user-journey boundary.
+- Read [Observable callbacks versus internal collaborator spies](references/behavior-testing-examples.md#observable-callbacks-versus-internal-collaborator-spies) when interaction assertions are material.
+- Read [Mutation-aware boundary questions](references/behavior-testing-examples.md#mutation-aware-boundary-questions) when a focused behavior mutation can expose weak assertions.
+- Read [Extraction and test organization](references/behavior-testing-examples.md#extraction-and-test-organization) when changing test ownership, file organization, or extraction boundaries.
+- Read [Test factories and isolated state](references/behavior-testing-examples.md#test-factories-and-isolated-state) when fixtures, builders, factories, or shared state are material.
+- Read [Coverage theater](references/behavior-testing-examples.md#coverage-theater) when coverage, mocks, trivial storage, or line execution is being used as evidence of value.
+- Read [Relevant execution scope](references/behavior-testing-examples.md#relevant-execution-scope) when selecting the verification command or scope.
+
+Do not load unrelated sections.
+Do not substitute evaluation fixtures or this entrypoint summary for the applicable example guidance.
 
 Read the following references when the selected scope needs them:
 
@@ -203,7 +213,7 @@ Network observation can strengthen that evidence, but a test-created direct requ
 
 ## Fixtures and factories
 
-Apply the complete factory examples and counterexamples in [behavior-testing-examples.md](references/behavior-testing-examples.md).
+Apply [Test factories and isolated state](references/behavior-testing-examples.md#test-factories-and-isolated-state).
 
 Use a fixture or factory when repeated or nested setup becomes clearer behind a named builder.
 

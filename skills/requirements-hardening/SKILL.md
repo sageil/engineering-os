@@ -6,7 +6,7 @@ description: >-
   analysis, or pre-implementation requirement review. Use for fuzzy intent or existing
   stories, specifications, acceptance criteria, and UI state requirements. Do not use
   for story splitting, implementation planning, code review, implementation acceptance,
-  architecture selection, or requirements whose accountable owner is unavailable.
+  architecture selection, or implementation work.
 ---
 
 # Requirements Hardening

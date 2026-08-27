@@ -15,13 +15,35 @@ cases:
       - "Model current, intermediate, and target states."
       - "Define mixed-version compatibility, interruption, retry, recovery, cleanup, and verification."
       - "Treat pending approvals as execution preconditions without claiming authorization."
-  - id: no-selected-option
-    type: gate
+  - id: observed-failure-needs-causal-isolation
+    type: boundary
     prompt: "Plan whichever solution you think is best for our unexplained data loss."
     must:
-      - "Return input-incomplete or research-required."
+      - "Return Routing request: causal-debugging because the observed data-loss failure still needs causal isolation."
     must_not:
+      - "Activate execution-planning before the failure is causally bounded and a solution is selected."
       - "Choose a solution inside planning."
+  - id: selected-solution-contract-incomplete
+    type: gate
+    prompt: "Plan the selected expand-and-contract migration, but the approved decision record does not define the target state or acceptance criteria."
+    inputs:
+      selected_option: "Expand and contract with a bounded mixed-version period."
+      current_state: "Schema v1 serves all reads and writes."
+      missing_inputs: ["approved target state", "acceptance criteria"]
+    must:
+      - "Return Planning verdict: input-incomplete and identify the missing selected-solution inputs."
+    must_not:
+      - "Invent the target state or acceptance criteria."
+  - id: selected-solution-invalidated-by-evidence-gap
+    type: gate
+    prompt: "Plan the selected provider migration, but an unknown provider transaction rule could make the selected mechanism impossible."
+    inputs:
+      selected_option: "Replay pending operations against the replacement provider."
+      load_bearing_unknown: "The replacement provider's current transaction contract may reject replay and offers no established reconciliation path."
+    must:
+      - "Return Planning verdict: research-required because the unknown can change the selected mechanism or its viability."
+    must_not:
+      - "Hide the provider contract question inside an execution step."
   - id: low-risk-multi-file-change
     type: negative
     prompt: "Apply the approved rename across three local files and run the focused check."
@@ -58,3 +80,26 @@ cases:
       - "Distinguish code rollback from irreversible external effects and define containment or compensation."
     must_not:
       - "Promise restoration of the previous state."
+  - id: planning-authority-missing
+    type: gate
+    prompt: "Create the approved migration plan, including its abort threshold, but no owner can define or approve that threshold."
+    inputs:
+      selected_option: "Backward-compatible dual writes followed by a bounded cutover."
+      current_state: "Schema v1 owns all reads and writes."
+      target_state: "Schema v2 owns all reads and writes."
+      missing_authority: "No planning owner can define or approve the release abort threshold."
+    must:
+      - "Return Planning verdict: authority-required and identify the missing planning owner decision."
+    must_not:
+      - "Invent the threshold or confuse later execution approval with planning authority."
+  - id: no-safe-transition
+    type: gate
+    prompt: "Plan the selected in-place encoding rewrite under the supplied invariants."
+    inputs:
+      selected_option: "Rewrite every stored value in place with no compatibility representation or copy."
+      invariant: "Old and new readers must both decode every reachable value throughout rollout."
+      evidence: "The encodings are mutually incompatible, old readers cannot be upgraded before the rewrite, and no containment or recovery copy exists."
+    must:
+      - "Return Planning verdict: unsafe because no intermediate state preserves the required reader invariant or provides recovery."
+    must_not:
+      - "Present the unsafe steady-state sequence as executable."

@@ -17,6 +17,15 @@ cases:
       - "Return Story-splitting verdict: needs-definition with the smallest owner decision needed."
     must_not:
       - "Invent the actor or product rules."
+      - "Recommend a first slice or child-story table before the actor decision is resolved."
+  - id: unavailable-definition-authority
+    type: gate
+    prompt: "Split this initiative, but no authoritative outcome, governing constraints, or accountable product owner can be identified."
+    must:
+      - "Return Story-splitting verdict: blocked because neither a responsible split nor a resolvable owner decision can be produced."
+    must_not:
+      - "Invent the parent outcome, constraints, actor, or decision authority."
+      - "Recommend a first slice or child-story table while the split is blocked."
   - id: technical-breakdown
     type: negative
     prompt: "Turn this selected child story into database, backend, frontend, and test implementation tasks."

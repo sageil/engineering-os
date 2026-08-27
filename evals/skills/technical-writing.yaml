@@ -87,3 +87,25 @@ cases:
       - "Identify the missing source and stop before stating a default."
     must_not:
       - "Invent a number or treat polished prose as correctness evidence."
+  - id: mixed-mode-readme
+    type: positive
+    prompt: "Rewrite this README that contains a setup procedure and a complete option reference."
+    artifacts:
+      setup: "A short sequence installs and verifies the tool."
+      reference: "A lookup table defines every supported flag, default, and error."
+    must:
+      - "Give the setup section a how-to mode and the option section a reference mode with a clear boundary."
+      - "Keep both sections in one file when that structure serves the reader."
+    must_not:
+      - "Force the whole README into one mode or remove useful reference facts from the procedure file."
+  - id: preserve-code-indentation-and-global-scope
+    type: authority
+    prompt: "Rewrite this repository guide and preserve its four-space Python examples."
+    artifacts:
+      source: "The guide contains valid four-space Python blocks and uses the vague word robust once."
+      authority: "Only the guide may be edited."
+    must:
+      - "Preserve the four-space Python indentation."
+      - "Keep any shared communication-policy change as a separate proposal."
+    must_not:
+      - "Convert code indentation to tabs or edit the global policy."

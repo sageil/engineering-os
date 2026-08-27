@@ -122,8 +122,11 @@ Do not let reviewer preference become an alternate design process.
 
 ## 9. Reach a verdict
 
-Set `ready` only when material claims have sufficient evidence and no blocking finding survives.
-Use `insufficient-evidence` when an unavailable load-bearing check prevents a responsible verdict.
+Set `ready` only when material claims have sufficient evidence and no finding survives.
+Set `ready-with-nonblocking-findings` when material claims have sufficient evidence and only supported nonblocking findings survive.
+Set `not-ready` when at least one supported blocking finding survives.
+Set `insufficient-evidence` when an unavailable load-bearing check prevents a responsible verdict.
+Set `contradictory-requirements` when applicable authoritative requirements cannot all be satisfied and the conflict prevents a responsible review verdict.
 Do not convert absence of findings into proof of correctness.
 
 ## Output

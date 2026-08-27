@@ -114,6 +114,12 @@ Choose `promote` or `record` only when:
 - privacy and authority are satisfied;
 - conflicting stale knowledge is resolved.
 
+Set `promote` when authorized work moves verified knowledge into a stronger enforcement, detection, or authoritative artifact and reconciles weaker duplicates.
+Set `record` when no stronger practical artifact is appropriate and authorized work captures the knowledge in the selected decision, investigation, documentation, runbook, or scoped memory artifact.
+Set `already-encoded` when an existing stronger artifact already carries the complete knowledge unit and no supported gap remains.
+Set `do-not-store` when the knowledge is speculative, temporary, sensitive, redundant, cheap to rediscover, or lacks sufficient future value.
+Set `authority-required` when placement is justified but the required write, owner decision, or artifact authority is absent.
+
 ## Output
 
 - Knowledge unit and scope

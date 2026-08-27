@@ -5,8 +5,8 @@ description: >-
   end-to-end child stories. Use only when the user requests product or backlog
   decomposition, a walking skeleton, an MVP sequence, vertical slices, or the first
   independently valuable increment. Do not use for implementation planning, technical
-  task breakdown, routine coding, or unresolved product rules that would materially
-  change the split.
+  task breakdown or routine coding. When unresolved product rules would materially
+  change the split, use this skill only to identify the smallest required definition.
 ---
 
 # Story Splitting
@@ -106,16 +106,28 @@ Reject a child story when:
 - it prescribes an unnecessary implementation mechanism;
 - acceptance wording is not observable.
 
+## 6. Apply the verdict gate
+
+Set `split-ready` only when the parent outcome and constraints are established, every child story passes the validation gate, the first slice is selected, and no unresolved product decision can materially change the split.
+Set `needs-definition` when a specific unresolved product decision can materially change the split and an accountable owner or authoritative source can resolve it.
+Set `blocked` when the authoritative parent outcome, governing constraints, or decision authority is unavailable and no responsible split or resolvable definition request can be produced.
+
 ## Output
 
-Report:
+For `split-ready`, report:
 
 1. reframed parent outcome;
 2. recommended first slice and why it wins;
 3. child-story table with value, scope, deferrals, acceptance examples, release constraint, and dependencies;
 4. technical tasks that remain inside each story;
 5. parked decisions and owners;
-6. `Story-splitting verdict: split-ready | needs-definition | blocked`.
+6. `Story-splitting verdict: split-ready`.
+
+For `needs-definition`, report only the established parent context, the smallest decision that can materially change the split, its accountable owner or authoritative source, and `Story-splitting verdict: needs-definition`.
+Do not recommend a first slice or child-story table before that decision is resolved.
+
+For `blocked`, report only the unavailable authoritative input or decision authority, the smallest condition needed to resume, and `Story-splitting verdict: blocked`.
+Do not invent a parent outcome, first slice, or child-story table.
 
 ## Boundaries
 

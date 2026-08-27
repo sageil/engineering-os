@@ -27,7 +27,8 @@ Write the real symbol, file, flag, or command name, not a synonym or a descripti
 Do not invent jargon.
 Use the words a developer would say out loud: "move", "delete", "a budget that only decreases", not "evacuate", "ratchet", or "endgame".
 A named pattern is fine when the document says what it means the first time.
-Add new repeated offenders and their replacements to the global communication policy.
+When a repeated wording problem may belong in shared agent policy, report it as a separate proposal.
+Do not edit the global policy solely because a documentation task reveals a new example.
 
 ## Vary the rhythm
 
@@ -41,7 +42,8 @@ A document can obey all of them and still read as machine-written: every sentenc
 
 ## Pick the mode first (Diátaxis)
 
-One document has one mode.
+Give each coherent document section one primary mode.
+A file can contain more than one mode when its section boundaries and links keep the reader's task clear.
 Two questions select it: does the content inform action or understanding, and does it serve learning or work?
 
 - Action and learning: **tutorial**.
@@ -49,7 +51,7 @@ Two questions select it: does the content inform action or understanding, and do
 - Understanding and work: **reference**.
 - Understanding and learning: **explanation**.
 
-Use the compass on a whole document or on one sentence.
+Use the compass on a whole document, a coherent section, or one sentence.
 Use it whenever the correct mode is not clear.
 Gut feel is often wrong here.
 
@@ -61,9 +63,8 @@ Gut feel is often wrong here.
 
 **Explanation: understanding and why.** Cover one bounded topic that can be read away from the product. Each title must tolerate an implicit "About" in front. Anchor the document on a real why question. Give context about design decisions, history, constraints, and alternatives. Opinion is allowed here and nowhere else.
 
-Do not mix modes.
-Do not put reference tables inside a tutorial, tutorial hand-holding inside reference, or arguments inside a how-to.
-Split and link instead.
+Do not mix modes inside one coherent section when the combination obscures the reader's task.
+Separate and link sections when a reference table interrupts a tutorial, tutorial teaching interrupts reference, or an argument interrupts a how-to.
 
 Source: diataxis.fr, fetched 2026-07-18.
 
@@ -119,7 +120,7 @@ Source: Kohl, The Global English Style Guide (SAS Press). Guideline text fetched
 - Apply the global communication policy to every document that this skill touches. The global policy owns AI vocabulary, filler, hedging, and formatting rules.
 - Pull request descriptions and commit messages are writing. Every layer except Diátaxis applies to them.
 - Product user-interface strings are not documentation. Use the product's copy guidelines for those.
-- Indent code snippets with tabs. Write real paths and real symbols. Make every count or tree claim true at the commit that contains it, and include the command that regenerates it.
+- Preserve the repository and language indentation in code snippets. Write real paths and real symbols. Make every count or tree claim true at the commit that contains it, and include the command that regenerates it.
 
 ## Worked example
 
@@ -137,9 +138,9 @@ The buried "should only be done when lowering" becomes a command with "only" nex
 ## Review checklist
 
 Apply this checklist to any prose that this skill covers.
-Item 1 applies only to document sets.
+Item 1 applies when a document or document set contains more than one mode.
 
-1. Is each file one Diátaxis mode, with links where modes meet?
+1. Does each coherent section have one clear Diátaxis mode, with explicit boundaries and links where modes meet?
 2. Is every instruction written as a command, with its condition in front?
 3. Does any sentence carry two instructions or two thoughts? Split it.
 4. Can any word be cut without losing meaning? Cut it.

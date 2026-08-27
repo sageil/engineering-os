@@ -1,5 +1,29 @@
 skill: secure-oauth-oidc
 cases:
+  - id: complete-protocol-design
+    type: positive
+    prompt: "Define a secure OpenID Connect login design for this server-side relying party."
+    artifacts:
+      profile: "One confidential server-side relying party uses authorization code flow with one fixed issuer and exact registered redirects."
+      bindings: "The design requires transaction-bound state, nonce, issuer, redirect URI, and PKCE S256, with one-use authorization codes."
+      validation: "The design requires full ID Token validation, identities keyed by issuer and subject, audience-restricted access tokens, and failure before session creation."
+      evidence_plan: "Negative tests cover wrong issuer, audience, nonce, verifier, redirect, reused code, and token type."
+    must:
+      - "Report target controls as required, prohibited, or not-applicable rather than as deployed control results."
+      - "Return OAuth/OIDC verdict: design-ready because the target protocol behavior and verification obligations are complete."
+    must_not:
+      - "Claim that the controls are already satisfied in the deployed system."
+  - id: controls-satisfied-with-complete-evidence
+    type: positive
+    prompt: "Assess whether this deployed OpenID Connect login satisfies its applicable protocol controls."
+    artifacts:
+      scope: "One inspected confidential relying party, one issuer, authorization code flow, and no legacy grants."
+      evidence: "Inspected configuration, code, and passing negative tests establish exact redirects, state and nonce binding, PKCE S256 enforcement, issuer and audience validation, one-use codes, issuer-subject account keys, and rejection before session creation."
+      unknowns: "No applicable flow or control remains uninspected."
+    must:
+      - "Return OAuth/OIDC verdict: controls-satisfied."
+    must_not:
+      - "Infer satisfaction from metadata, library defaults, or happy-path behavior alone."
   - id: multi-issuer-oidc-assessment
     type: positive
     prompt: "Assess this multi-issuer OpenID Connect login design and give a protocol security verdict."
@@ -11,7 +35,7 @@ cases:
     must:
       - "Build the protocol profile and transaction ledger."
       - "Identify missing issuer transaction binding, unsafe token-endpoint selection, incomplete ID Token validation, and unsafe account binding."
-      - "Return OAuth/OIDC verdict: controls-failed or insufficient-evidence, based on the available control evidence."
+      - "Return OAuth/OIDC verdict: controls-failed because the inspected flow contains supported control failures."
     must_not:
       - "Treat signature verification as complete ID Token validation."
       - "Implement a correction."
@@ -41,6 +65,25 @@ cases:
       - "Do not return migration-ready while the legacy inventory and invalidation obligations remain unknown."
     must_not:
       - "Accept permanent insecure coexistence without owner, expiry, and removal condition."
+  - id: complete-insecure-flow-migration
+    type: positive
+    prompt: "Assess whether this completed migration away from implicit access-token issuance is ready."
+    artifacts:
+      inventory: "Every browser client, callback, grant, token class, resource server, and downgrade path is inventoried."
+      terminal_state: "Only authorization code with PKCE remains, front-channel access tokens and weaker registrations are removed, and old sessions and tokens are invalidated."
+      evidence: "Negative, replay, concurrency, provider, downgrade, containment, recovery, and post-cutover observations pass."
+      ownership: "Every transition obligation is complete, and removal and recovery decisions have accountable owners."
+    must:
+      - "Return OAuth/OIDC verdict: migration-ready."
+    must_not:
+      - "Leave a weaker path, unowned transition obligation, or unknown invalidation behavior."
+  - id: load-bearing-control-evidence-missing
+    type: gate
+    prompt: "Assess this OpenID Connect login, but the enabled flows, issuer selection, token validation, and deployed configuration cannot be inspected."
+    must:
+      - "Return OAuth/OIDC verdict: insufficient-evidence and identify the smallest load-bearing evidence needed."
+    must_not:
+      - "Return controls-satisfied or controls-failed without control evidence."
   - id: general-threat-model-boundary
     type: boundary
     prompt: "Threat-model the complete payment platform, including administrators, queues, storage, vendors, and one OAuth login path."

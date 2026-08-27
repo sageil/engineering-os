@@ -155,6 +155,13 @@ Set `executable` only when:
 - cleanup has an owner and completion signal;
 - no material design unknown is disguised as an execution task.
 
+Set `input-incomplete` when a required selected-solution input is missing and the missing input is not only execution authority.
+Set `research-required` when evidence could change the selected mechanism, ownership, architecture, compatibility strategy, or viability.
+Set `authority-required` when the transition could be planned responsibly but authority to define or approve the plan itself is absent.
+Treat approval to execute a completed plan as an execution precondition, not as planning authority.
+Set `unsafe` when no credible sequence can preserve the required invariants or provide bounded containment or recovery.
+Set `no-plan-needed` only for routine, local, reversible work that has no material transition hazard.
+
 ## Output
 
 - Selected-solution contract

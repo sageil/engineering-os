@@ -29,7 +29,8 @@ Maintain one verdict:
 
 ## 1. Establish scope and authority
 
-Require system/design scope, environment, protected assets/objectives, identities/tenants/roles, trust assumptions, sensitive data/irreversible effects, available evidence, decision/risk owner, and authority for active probing.
+Require system/design scope, environment, protected assets/objectives, identities/tenants/roles, trust assumptions, sensitive data/irreversible effects, available evidence, and decision/risk owner.
+Require separate authority for active probing only when the requested assessment needs it.
 
 Return `input-incomplete` rather than inventing a system model.
 
@@ -107,6 +108,9 @@ Set `modeled` only when:
 - remaining uncertainty cannot change principal threats or priority.
 
 Set `unacceptable-risk` when a required objective remains credibly violable without adequate control or authorized acceptance.
+Set `input-incomplete` when the system scope, protected objectives, identities, trust assumptions, evidence, or risk owner is missing and cannot be established by inspection.
+Set `research-required` when an identifiable load-bearing fact could change threat reachability or priority and a separate investigation can resolve it.
+Set `no-material-threat-surface` only when the scoped system and trust boundaries are established and no hypothesis passes the credible-threat eligibility gate.
 
 ## Output
 

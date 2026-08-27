@@ -21,6 +21,19 @@ cases:
       reversal_conditions: ["independent deployment becomes required", "measured isolation failure", "ownership separates"]
     must:
       - "Create one scoped decision record with rationale, authority, and reversal conditions."
+      - "Return Knowledge verdict: record because the authorized decision record is the strongest appropriate artifact."
+  - id: promote-to-enforcement
+    type: positive
+    prompt: "Preserve this verified repository invariant in the strongest authorized artifact."
+    inputs:
+      knowledge: "Tenant export queries must include the authenticated tenant identifier."
+      evidence: "The accepted security contract and regression record establish the invariant."
+      authority: "Editing the repository lint rule and removing the superseded investigation note are authorized."
+    must:
+      - "Move the invariant into the stronger enforcement artifact and reconcile the weaker duplicate."
+      - "Return Knowledge verdict: promote."
+    must_not:
+      - "Keep two authoritative copies of the invariant."
   - id: already-encoded
     type: restraint
     prompt: "Preserve the rule that tenant identifiers are required on export queries."

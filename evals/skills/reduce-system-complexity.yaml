@@ -21,6 +21,19 @@ cases:
     must:
       - "Pass or assess the behavior gate separately from the mechanism gate."
       - "Return Complexity-reduction verdict: not-reduced because burden moved to callers."
+  - id: verification-complete-reduction
+    type: positive
+    prompt: "Verify the claim that this completed change reduced system complexity without changing accepted behavior."
+    artifacts:
+      before: "Three retry owners, two fallback paths, and one recovery cron job govern the same operation."
+      after: "One queue retry policy owns recovery; the duplicate retry owners, fallbacks, transition bridge, and cron job are absent."
+      behavior: "The same observations verify success, timeout, duplicate suppression, terminal failure, operator visibility, and replay after provider recovery."
+      operations: "Caller and operator procedures contain no replacement retry or recovery mechanism."
+    must:
+      - "Pass the behavior gate and mechanism gate over the same scope and observation method."
+      - "Return Complexity-reduction verdict: reduction-verified."
+    must_not:
+      - "Treat deletion alone as proof or ignore exported caller and operator burden."
   - id: missing-preservation-evidence
     type: gate
     prompt: "Remove this fallback path, but no accepted behavior or reachability evidence exists."

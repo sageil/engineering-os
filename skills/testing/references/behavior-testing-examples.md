@@ -1,6 +1,6 @@
 # Behavior Testing Examples
 
-Read this reference before designing tests or deciding whether an existing test proves behavior.
+Read only the sections selected by `SKILL.md` for the current work.
 
 Use the examples to reason about the evidence boundary.
 Do not copy names, values, or structures when the subject has a different public contract.

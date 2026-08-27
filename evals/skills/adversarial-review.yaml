@@ -69,3 +69,26 @@ cases:
     must_not:
       - "Report the requested CSV addition itself as scope drift."
       - "Claim independent review without an independent context."
+  - id: supported-nonblocking-finding
+    type: positive
+    prompt: "Review this local error-reporting change for merge readiness."
+    artifacts:
+      diff: "The patch removes the operation name from one operator error but keeps the request identifier, exact failure, and stack trace."
+      impact: "Operators can still identify and recover the failed request, but diagnosis needs one additional log lookup."
+      release_policy: "Bounded diagnostic regressions with complete recovery evidence do not block this release."
+    must:
+      - "Report the bounded diagnostic regression as nonblocking with its exact consequence."
+      - "Return Review verdict: ready-with-nonblocking-findings."
+    must_not:
+      - "Return ready with a surviving finding or not-ready without a blocking consequence."
+  - id: contradictory-authoritative-requirements
+    type: gate
+    prompt: "Review the retention change against the supplied authoritative requirements."
+    artifacts:
+      requirement_a: "Delete every record in this class within 30 days."
+      requirement_b: "Retain every record in the same class while the legal hold remains active."
+      scope: "Both requirements apply to the same records and no precedence or exception is defined."
+    must:
+      - "Expose the contradiction and return Review verdict: contradictory-requirements."
+    must_not:
+      - "Invent precedence or report the implementation as ready."

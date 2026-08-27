@@ -105,3 +105,12 @@ cases:
     prompt: "Review this pull request for correctness, security, maintainability, and merge readiness, including its tests."
     must:
       - "Route the request to adversarial-review rather than testing."
+  - id: load-only-applicable-example-guidance
+    type: restraint
+    prompt: "Assess whether one caller-supplied callback assertion proves its public notification contract."
+    artifacts:
+      scope: "The subject has no HTTP, browser, factory, coverage, timing, randomness, or snapshot behavior."
+    must:
+      - "Use the public-behavior and observable-callback example sections."
+    must_not:
+      - "Load unrelated browser, factory, coverage, asynchronous, mutation, or quality-audit guidance."

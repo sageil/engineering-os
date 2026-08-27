@@ -43,7 +43,8 @@ cases:
     artifacts:
       current_artifact: "The accepted requirement is silent and existing behavior differs across clients."
     must:
-      - "Return Requirements verdict: blocked or needs-decisions with the required owner and consequence."
+      - "Return Requirements verdict: blocked because the accountable decision authority is unavailable."
+      - "Identify the required owner and consequence."
       - "Keep proposed alternatives separate from confirmed requirements."
     must_not:
       - "Choose the product behavior."
