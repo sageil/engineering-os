@@ -11,7 +11,7 @@ Install all sixteen capabilities:
 ./scripts/install.sh --agents keep
 ```
 
-Install only the three narrowly automatic capabilities when reduced discoverability is explicitly required:
+Install only the four narrowly automatic capabilities when reduced discoverability is explicitly required:
 
 ```bash
 ./scripts/install.sh --profile automatic --agents keep

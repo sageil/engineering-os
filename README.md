@@ -23,6 +23,7 @@ default: no skill
 automatic working skills, maximum one:
   research-before-solution
   causal-debugging
+  testing
 
 automatic supervisory context during an active incident:
   incident-control
@@ -40,7 +41,6 @@ request-only working skills, maximum one:
   frontend-design
   threat-modeling
   operational-readiness
-  testing
 
 ordinary execution:
   inspect -> edit -> build -> test -> verify -> package -> run -> deploy
@@ -62,6 +62,7 @@ The description defines when the agent activates the skill.
 | [`research-before-solution`](skills/research-before-solution/SKILL.md) | Automatic when missing facts could change a technical decision | Collect enough evidence to make the decision, assess structural effects when needed, and then present supported options. |
 | [`causal-debugging`](skills/causal-debugging/SKILL.md) | Automatic when an observed failure needs causal analysis | Identify the smallest causal chain that the evidence supports. |
 | [`incident-control`](skills/incident-control/SKILL.md) | Automatic supervisory context during an active production incident or recovery | Limit harm, keep one owner in control, supervise limited working skills, and verify recovery. |
+| [`testing`](skills/testing/SKILL.md) | Automatic when test design, writing, updating, or assessment becomes the unresolved responsibility | Decide whether tests provide useful evidence of behavior and which tests to keep, improve, combine, replace, or remove. |
 | [`execution-planning`](skills/execution-planning/SKILL.md) | Request-only | Plan a safe transition when execution has material risks. |
 | [`adversarial-review`](skills/adversarial-review/SKILL.md) | Request-only | Independently challenge a defined change and report supported findings. |
 | [`acceptance-review`](skills/acceptance-review/SKILL.md) | Request-only | Check each criterion to decide whether an implementation satisfies one authoritative contract. |
@@ -74,7 +75,6 @@ The description defines when the agent activates the skill.
 | [`frontend-design`](skills/frontend-design/SKILL.md) | Request-only | Design and implement a subject-specific visual direction while preserving product behavior and existing design constraints. |
 | [`threat-modeling`](skills/threat-modeling/SKILL.md) | Request-only | Identify credible attack paths, verify controls, and record the owners of remaining risks in a defined security scope. |
 | [`operational-readiness`](skills/operational-readiness/SKILL.md) | Request-only | Decide whether a system or release can operate, degrade, and recover with named owners. |
-| [`testing`](skills/testing/SKILL.md) | Request-only | Decide whether tests provide useful evidence of behavior and which tests to keep, improve, combine, replace, or remove. |
 
 ## Evidence before solutions
 
@@ -86,7 +86,7 @@ It must also test competing explanations, resolve material contradictions, and s
 
 ## Why ordinary work uses no skill
 
-Agents do not need a skill to build, test, verify, package, run containers, or use an established deployment procedure.
+Agents do not need a skill to build, run existing tests, verify, package, run containers, or use an established deployment procedure.
 These tasks use the agent's baseline behavior.
 
 Universal behavior remains concise in `global-agents.md`:
@@ -112,7 +112,7 @@ This is the default profile:
 ./scripts/install.sh --agents keep
 ```
 
-Install only the three skills that can activate automatically.
+Install only the four skills that can activate automatically.
 Use this profile when the agent host must discover fewer skills:
 
 ```bash
@@ -170,12 +170,12 @@ Use `--replace-modified` to back up changed managed skills and replace them with
 
 ## Version 4.9 changes
 
-- Version 4.9.0 adds the request-only `testing` skill for test design and test-suite quality decisions.
+- Version 4.9.0 adds the `testing` skill for test design and test-suite quality decisions.
 - Version 4.9.0 adds the request-only `frontend-design` skill for substantial visual design and implementation work.
 - The `testing` skill includes examples for behavior, test-data factories, weak coverage metrics, mutation testing, test scope, and test organization.
 - The universal policy now requires tests to prove behavior through the public interface at the layer named by the claim.
 - New installations include all 16 skills.
-- The `automatic` profile remains limited to three skills.
+- The `automatic` profile contains four skills.
 
 ## Uninstall
 

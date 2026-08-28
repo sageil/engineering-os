@@ -29,6 +29,8 @@ Use the optional `automatic`, `custom`, or `none` profile only when the environm
 Use `incident-control` when production harm is active or escalating.
 Use `causal-debugging` when an observed failure needs controlled reproduction and causal discrimination.
 Use `research-before-solution` when material decision uncertainty could change the available solutions or their ranking.
+Use `testing` when designing, writing, updating, or assessing meaningful behavior tests becomes the current unresolved responsibility, including when authorized implementation requires test changes.
+Running existing tests, reporting coverage, or performing routine verification does not activate it.
 Public API contract design, observability design, and architecture opportunity discovery remain conditional methods inside `research-before-solution` rather than separate discoverable skills.
 When more than one appears applicable, choose the skill that owns the immediate unresolved responsibility rather than stacking them.
 
@@ -46,7 +48,6 @@ Use `technical-writing` only for requested creation or review of technical docum
 Use `frontend-design` only for requested visual design and implementation when a new interface or substantial redesign requires open decisions about layout, typography, color, imagery, motion, or interface copy.
 Use `threat-modeling` only for a requested proactive security analysis of a defined system, feature, data flow, trust boundary, or design.
 Use `operational-readiness` only for a requested launch or sustained-operation assessment with a defined operating boundary.
-Use `testing` only for requested test design, test-quality audit, behavior-versus-implementation assessment, or test consolidation or removal analysis for a defined subject.
 
 ## Ordinary execution route
 
@@ -79,7 +80,8 @@ Splitting an epic into independently valuable outcomes uses `story-splitting` wh
 Establishing whether a selected path can remove total mechanism uses `reduce-system-complexity` when explicitly requested.
 Turning a fuzzy feature request into explicit behavior rules and examples uses `requirements-hardening` when explicitly requested.
 Assessing redirect, PKCE, issuer, token, refresh, and identity bindings for an authorization deployment uses `secure-oauth-oidc` when explicitly requested.
-Deciding which tests prove a public behavior and which tests only mirror implementation uses `testing` when explicitly requested.
+Designing regression coverage required by an authorized implementation uses `testing` when test work becomes the current unresolved responsibility.
+Running an existing test command remains ordinary execution and does not activate `testing`.
 
 ## Handoffs
 

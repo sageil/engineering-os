@@ -290,6 +290,8 @@ Repository-specific architecture and explicit local instructions take precedence
 - Use `research-before-solution` when material decision uncertainty could change credible solutions or their ranking.
 - Use `causal-debugging` for an observed failure that requires causal isolation.
 - Use `incident-control` as the persistent supervisory context while production harm, recovery, or incident monitoring remains active.
+- Use `testing` when the current unresolved responsibility is to design, write, update, or assess meaningful behavior tests, including when authorized implementation requires new or updated tests.
+  Do not use it merely to run existing tests, report coverage, or perform routine verification.
 
 ## Request-only routing
 
@@ -304,7 +306,5 @@ Repository-specific architecture and explicit local instructions take precedence
 - Use `technical-writing` only when the user requests creation or review of technical documentation, an RFC, a README, a pull request description, or a commit message.
 - Use `threat-modeling` only when the user explicitly requests a threat model or proactive security design assessment for a defined scope.
 - Use `operational-readiness` only when the user explicitly requests a production-readiness, launch, or go-no-go assessment for a defined operating boundary.
-- Use `testing` only when the user explicitly requests test design, a test-quality audit, behavior-versus-implementation assessment, or test consolidation or removal analysis for a defined subject.
-
 A matching keyword, task phase, tool action, or lifecycle diagram is not sufficient activation evidence.
 Return to no skill when the owned responsibility is complete.

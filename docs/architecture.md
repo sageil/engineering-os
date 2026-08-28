@@ -45,6 +45,7 @@ Provider adapters may exist outside the core, but no skill depends on them.
 | `research-before-solution` | Automatic for material decision uncertainty | Research verdict and evidence-grounded options, including conditional architecture, public API contract, and observability design methods | Failure diagnosis, planning, or implementation |
 | `causal-debugging` | Automatic for observed failure needing causal isolation | Causal verdict and correction constraints | Correction selection |
 | `incident-control` | Automatic for active production harm | Supervisory incident state, controlled operations, and verified recovery | The bounded investigation or planning output of a coexisting working skill |
+| `testing` | Automatic when test design, writing, updating, or assessment is the unresolved responsibility | Behavior evidence map, test changes, and test-design verdict | Ordinary test execution, general change review, acceptance review, or causal diagnosis |
 | `execution-planning` | Request-only hazardous transition plan | Executable transition plan | Research or execution |
 | `adversarial-review` | Request-only independent review | Supported findings and review verdict | Implementation |
 | `acceptance-review` | Request-only authoritative contract assessment | Criterion-by-criterion acceptance verdict | General change review, artifact improvement, or implementation |
@@ -57,7 +58,6 @@ Provider adapters may exist outside the core, but no skill depends on them.
 | `frontend-design` | Request-only visual design and implementation | A subject-specific, implemented, and visually verified interface | Behavior-only frontend work, visual critique, faithful replication, or product strategy |
 | `threat-modeling` | Request-only proactive security analysis | Evidence-backed threat paths, control analysis, and residual-risk verdict | Active incident command, patch review, scanning, or remediation |
 | `operational-readiness` | Request-only launch or sustained-operation assessment | Evidence-backed readiness findings and go-no-go verdict | Patch review, deployment execution, active incident command, or remediation |
-| `testing` | Request-only test design or test-suite quality assessment | Behavior evidence map and test-design verdict | Ordinary test execution, routine implementation, general change review, or acceptance review |
 
 ## Handoffs
 

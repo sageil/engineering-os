@@ -6,8 +6,9 @@ expected_flow:
   - "A new routing decision selects research-before-solution for option construction."
   - "Research presents options only after Research verdict: complete."
   - "Structural analysis remains a conditional research reference rather than a separate skill."
-  - "After approval, routing returns to none for ordinary implementation and proportional verification."
-  - "Tenant isolation, retries, restart behavior, and adjacent behavior are verified without loading a verification skill."
+  - "After approval, routing returns to none for ordinary production implementation."
+  - "Testing activates automatically only if new or updated behavior tests become the unresolved responsibility."
+  - "Running focused verification alone does not activate testing."
   - "No request-only skill activates unless the user separately requests its distinctive output."
 critical_failures:
   - "More than one working skill is active at once."

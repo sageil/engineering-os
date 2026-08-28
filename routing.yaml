@@ -81,6 +81,6 @@ skills:
     requires: explicit-operational-readiness-launch-or-go-no-go-request
     output: evidence-backed-readiness-verdict
   testing:
-    activation: request-only
-    requires: explicit-test-design-quality-consolidation-or-removal-request
+    activation: automatic
+    requires: test-design-write-update-or-assessment-responsibility
     output: test-design-verdict-and-behavior-evidence-map

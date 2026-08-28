@@ -8,7 +8,7 @@ Skills are exceptional capabilities, not lifecycle stages and not wrappers aroun
 Select zero or one working skill for the unresolved responsibility.
 When an incident is active, retain `incident-control` as supervisory context and permit one bounded working skill to coexist without taking operational command.
 Do not activate a skill merely because the task involves inspecting, editing, building, testing, verifying, packaging, running, or deploying through an established procedure.
-Do not activate another working skill for a substep.
+Do not activate another working skill merely for a tool action or routine substep.
 Require a new routing decision before a handoff.
 
 ## Automatic capabilities
@@ -18,6 +18,7 @@ Require a new routing decision before a handoff.
 | `research-before-solution` | Material decision uncertainty could change credible solutions or their ranking. | Concrete failure diagnosis, routine repository inspection, or implementation with a selected mechanism. |
 | `causal-debugging` | An observed failure needs reproduction and causal discrimination. | Implementing a known correction or ordinary validation. |
 | `incident-control` | Production harm, recovery, or incident monitoring is active. | Ordinary bugs, maintenance, or post-incident analysis after command is transferred. |
+| `testing` | Test design, writing, updating, or assessment is the current unresolved responsibility, including test changes required by authorized implementation. | Running existing tests, reporting coverage, routine verification, general change review, acceptance review, or causal diagnosis. |
 
 ## Request-only capabilities
 
@@ -35,13 +36,13 @@ Require a new routing decision before a handoff.
 | `frontend-design` | Request visual design and implementation of a new interface or substantial redesign. | The product, audience, interface job, conserved behavior, and visual authority are known or can be established. |
 | `threat-modeling` | Request a threat model, abuse-case analysis, attack-surface analysis, or proactive security design assessment. | The security scope, assets, identities, trust boundaries, and decision owner are defined or can be established from evidence. |
 | `operational-readiness` | Request an operational-readiness, production-readiness, launch, or go-no-go assessment. | A real launch boundary, required outcomes, operating environment, and decision authority exist. |
-| `testing` | Request test design, a test-quality audit, behavior-versus-implementation analysis, or test consolidation or removal analysis. | The subject, claimed behavior layer, public interface, and relevant tests or proposed cases are available. |
 
 ## Ordinary execution
 
-Routine authorized implementation uses no Engineering OS skill.
+Routine authorized production implementation uses no Engineering OS skill.
+When implementation requires new or updated behavior tests, `testing` may activate for that test responsibility.
 The base agent follows repository instructions, makes the scoped change, and performs proportional verification.
-Building an image, starting a container, running checks, and executing an approved deployment procedure remain ordinary execution actions.
+Building an image, starting a container, running existing checks, and executing an approved deployment procedure remain ordinary execution actions.
 
 ## Handoff envelope
 

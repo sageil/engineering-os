@@ -74,6 +74,10 @@ cases:
     prompt: "Audit this test suite and tell me which cases prove behavior, which mirror implementation, and which can be consolidated or removed."
     expected: [testing]
     forbidden: [adversarial-review, acceptance-review, reduce-system-complexity]
+  - id: implementation-requires-regression-test
+    prompt: "Implement the approved parser correction and add a regression test that proves the accepted behavior."
+    expected: [testing]
+    forbidden: [research-before-solution, execution-planning, adversarial-review, acceptance-review]
   - id: local-rename
     prompt: "Rename this local variable."
     expected: []

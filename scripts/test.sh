@@ -48,11 +48,11 @@ TEST_HOME="$TMP_ROOT/automatic"
 mkdir -p "$TEST_HOME"
 HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --profile automatic --agents keep >/dev/null
 actual=$(installed_count "$TEST_HOME")
-[[ "$actual" -eq 3 ]] || fail "Automatic profile installed $actual skills instead of 3."
-for skill in research-before-solution causal-debugging incident-control; do
+[[ "$actual" -eq 4 ]] || fail "Automatic profile installed $actual skills instead of 4."
+for skill in research-before-solution causal-debugging incident-control testing; do
   [[ -f "$TEST_HOME/.agents/skills/$skill/SKILL.md" ]] || fail "Automatic profile omitted: $skill"
 done
-for skill in execution-planning adversarial-review acceptance-review story-splitting reduce-system-complexity requirements-hardening secure-oauth-oidc knowledge-promotion technical-writing frontend-design threat-modeling operational-readiness testing; do
+for skill in execution-planning adversarial-review acceptance-review story-splitting reduce-system-complexity requirements-hardening secure-oauth-oidc knowledge-promotion technical-writing frontend-design threat-modeling operational-readiness; do
   [[ ! -e "$TEST_HOME/.agents/skills/$skill" ]] || fail "Automatic profile exposed request-only skill: $skill"
 done
 HOME="$TEST_HOME" "$ROOT_DIR/scripts/uninstall.sh" --agents keep >/dev/null
@@ -95,8 +95,8 @@ actual=$(installed_count "$TEST_HOME")
 # Deliberately shrinking a profile reconciles request-only skills.
 HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --profile automatic --agents keep >/dev/null
 actual=$(installed_count "$TEST_HOME")
-[[ "$actual" -eq 3 ]] || fail "Profile change did not reconcile the full profile to automatic."
-for skill in execution-planning adversarial-review acceptance-review story-splitting reduce-system-complexity requirements-hardening secure-oauth-oidc knowledge-promotion technical-writing frontend-design threat-modeling operational-readiness testing; do
+[[ "$actual" -eq 4 ]] || fail "Profile change did not reconcile the full profile to automatic."
+for skill in execution-planning adversarial-review acceptance-review story-splitting reduce-system-complexity requirements-hardening secure-oauth-oidc knowledge-promotion technical-writing frontend-design threat-modeling operational-readiness; do
   [[ ! -e "$TEST_HOME/.agents/skills/$skill" ]] || fail "Profile change left request-only skill installed: $skill"
 done
 

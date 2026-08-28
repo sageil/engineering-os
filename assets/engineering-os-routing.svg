@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="920" viewBox="0 0 1600 920" role="img" aria-labelledby="title description">
   <title id="title">Engineering OS context-gated routing map</title>
-  <desc id="description">The routing default is no skill. At most one working capability is exposed. Research Before Solution and Causal Debugging may activate automatically. Incident Control may persist as supervisory context. Execution Planning, Adversarial Review, Knowledge Promotion, Threat Modeling, and Operational Readiness require an explicit user request. Ordinary actions never trigger skills.</desc>
+  <desc id="description">The routing default is no skill. At most one working capability is exposed. Research Before Solution, Causal Debugging, and Testing may activate automatically. Incident Control may persist as supervisory context. Execution Planning, Adversarial Review, Knowledge Promotion, Threat Modeling, and Operational Readiness require an explicit user request. Ordinary actions never trigger skills.</desc>
   <defs>
     <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#070b14"/>
@@ -60,7 +60,7 @@
   <line x1="72" y1="234" x2="1528" y2="234" stroke="url(#automatic)" stroke-opacity="0.5"/>
 
   <g filter="url(#shadow)">
-    <rect x="72" y="258" width="360" height="130" rx="20" fill="#0f1c2e" stroke="#22d3ee" stroke-opacity="0.72"/>
+    <rect x="72" y="258" width="310" height="130" rx="20" fill="#0f1c2e" stroke="#22d3ee" stroke-opacity="0.72"/>
     <rect x="72" y="258" width="7" height="130" rx="3" fill="url(#automatic)"/>
     <circle cx="112" cy="302" r="10" fill="#22d3ee"/>
     <text x="139" y="309" class="label">Research Before Solution</text>
@@ -69,26 +69,36 @@
   </g>
 
   <g filter="url(#shadow)">
-    <rect x="620" y="258" width="360" height="130" rx="20" fill="#101a2c" stroke="#60a5fa" stroke-opacity="0.72"/>
-    <rect x="620" y="258" width="7" height="130" rx="3" fill="url(#automatic)"/>
-    <circle cx="660" cy="302" r="10" fill="#60a5fa"/>
-    <text x="687" y="309" class="label">Causal Debugging</text>
-    <text x="652" y="344" class="sub">An observed failure needs controlled</text>
-    <text x="652" y="366" class="sub">reproduction and causal isolation.</text>
+    <rect x="454" y="258" width="310" height="130" rx="20" fill="#101a2c" stroke="#60a5fa" stroke-opacity="0.72"/>
+    <rect x="454" y="258" width="7" height="130" rx="3" fill="url(#automatic)"/>
+    <circle cx="494" cy="302" r="10" fill="#60a5fa"/>
+    <text x="521" y="309" class="label">Causal Debugging</text>
+    <text x="486" y="344" class="sub">An observed failure needs controlled</text>
+    <text x="486" y="366" class="sub">reproduction and causal isolation.</text>
   </g>
 
   <g filter="url(#shadow)">
-    <rect x="1168" y="258" width="360" height="130" rx="20" fill="#18182a" stroke="#f59e0b" stroke-opacity="0.72"/>
-    <rect x="1168" y="258" width="7" height="130" rx="3" fill="#f59e0b"/>
-    <circle cx="1208" cy="302" r="10" fill="#fbbf24"/>
-    <text x="1235" y="309" class="label">Incident Control</text>
-    <text x="1200" y="344" class="sub">Supervises production harm, recovery,</text>
-    <text x="1200" y="366" class="sub">and incident monitoring.</text>
+    <rect x="836" y="258" width="310" height="130" rx="20" fill="#101a2c" stroke="#60a5fa" stroke-opacity="0.72"/>
+    <rect x="836" y="258" width="7" height="130" rx="3" fill="url(#automatic)"/>
+    <circle cx="876" cy="302" r="10" fill="#60a5fa"/>
+    <text x="903" y="309" class="label">Testing</text>
+    <text x="868" y="344" class="sub">Test evidence design or change</text>
+    <text x="868" y="366" class="sub">becomes the active responsibility.</text>
   </g>
 
-  <path d="M 432 323 C 545 323, 565 444, 650 444" class="connector"/>
-  <path d="M 800 388 L 800 420" class="connector"/>
-  <path d="M 1168 323 C 1055 323, 1035 444, 950 444" class="connector"/>
+  <g filter="url(#shadow)">
+    <rect x="1218" y="258" width="310" height="130" rx="20" fill="#18182a" stroke="#f59e0b" stroke-opacity="0.72"/>
+    <rect x="1218" y="258" width="7" height="130" rx="3" fill="#f59e0b"/>
+    <circle cx="1258" cy="302" r="10" fill="#fbbf24"/>
+    <text x="1285" y="309" class="label">Incident Control</text>
+    <text x="1250" y="344" class="sub">Supervises production harm, recovery,</text>
+    <text x="1250" y="366" class="sub">and incident monitoring.</text>
+  </g>
+
+  <path d="M 382 323 C 500 323, 565 444, 650 444" class="connector"/>
+  <path d="M 609 388 C 660 410, 700 432, 730 444" class="connector"/>
+  <path d="M 991 388 C 940 410, 900 432, 870 444" class="connector"/>
+  <path d="M 1218 323 C 1100 323, 1035 444, 950 444" class="connector"/>
 
   <g filter="url(#shadow)">
     <rect x="648" y="420" width="304" height="170" rx="38" fill="#0b1324" stroke="url(#core)" stroke-width="3"/>
