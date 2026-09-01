@@ -6,6 +6,8 @@ Read this reference only when credible options change durable system boundaries,
 
 Start from the research record and viability contract.
 
+When capacity, latency, data growth, availability, or cost can change the eligible architecture shapes, apply [capacity-estimation.md](capacity-estimation.md) before structural comparison.
+
 State the accountable decision owner, delegated technical authority, accepted behavior, non-goals, affected callers and operators, and the conditions that can disprove success.
 
 Write two or three representative caller or operator scenarios before detailed boundaries or interfaces.
@@ -22,6 +24,10 @@ Treat ambiguous ownership as an architectural risk when failure or change requir
 
 Prefer boundaries that align authority with responsibility.
 
+For each proposed component or mechanism, name the evidence-backed constraint it removes and the permanent failure, state, compatibility, cost, and operating obligations it introduces.
+Remove a component from consideration when it serves no established constraint.
+Do not treat an absent cache, queue, service, shard, region, gateway, or integration pattern as a design gap without evidence that requires it.
+
 ## State and consistency
 
 Identify each source of truth, derived copy, cache, index, replica, event, and durable workflow state.
@@ -33,6 +39,21 @@ Do not hide consistency decisions behind the word eventual.
 Do not default to per-actor state, read-time merging, a shared database, distributed locking, or a single writer without testing that choice against the required invariants.
 
 For shared writable state, define the authoritative owner, writer set, conflict semantics, transaction boundary, operation identity, replay behavior, reconciliation authority, and evidence that detects uncertain or divergent outcomes.
+
+Map material access patterns, workload shape, consistency need, retention, growth, and lifecycle before selecting or separating data stores.
+For each derived copy, replica, cache, index, event stream, or projection, define synchronization ownership, acceptable freshness, failure behavior, repair, and removal.
+Do not prescribe a store category, replication model, partition key, or sharding scheme before evidence shows which constraint the mechanism must satisfy.
+
+## Communication and integration
+
+Select communication and integration behavior per boundary crossing rather than per system fashion.
+For each material hop, define caller and provider ownership, synchronous or asynchronous dependence, latency and availability budget, authentication and authorization context, timeout, cancellation, retry, backpressure, compatibility, and uncertain-outcome behavior.
+
+When messages, events, callbacks, streams, queues, or distributed workflows are involved, define delivery, ordering, duplicate, replay, idempotency, acknowledgement, poison-work, and reconciliation semantics as applicable.
+Treat REST, RPC, GraphQL, streams, webhooks, gateways, outboxes, sagas, event sourcing, sidecars, and anti-corruption layers as mechanisms with specific costs and failure modes, not maturity markers.
+Reject a pattern when its permanent obligations exceed the evidenced constraint it removes.
+Distinguish a permanent integration boundary from a temporary transition seam.
+For a temporary seam, identify the owner, compatibility interval, observation signal, removal condition, and final source of truth.
 
 ## Failure model
 

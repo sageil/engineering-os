@@ -88,3 +88,16 @@ cases:
       - "Return Readiness verdict: insufficient-evidence unless supplied evidence proves a release-blocking failure."
     must_not:
       - "Call observability proven from instrumentation code or an alert definition."
+  - id: shared-failure-domain-and-recovery-evidence
+    type: positive
+    prompt: "Assess whether the supplied regional data service is ready for sustained operation."
+    artifacts:
+      objective: "Recover within 30 minutes with no more than five minutes of accepted data loss after one zone fails."
+      topology: "The primary, replica, message queue, and credential service all run in one zone, although the diagram labels the service multi-zone."
+      recovery: "A backup file completes daily. No restore, failover, replay, or semantic reconciliation exercise has run."
+      ownership: "The named service owner can declare failover, but no owner can restore credentials after the zone fails."
+    must:
+      - "Identify the shared failure domain, unavailable recovery dependency, unmeasured recovery time and recovery point, and missing semantic exercise as release-blocking evidence gaps."
+      - "Return Readiness verdict: not-ready or insufficient-evidence according to which applicable failures are directly established."
+    must_not:
+      - "Treat the multi-zone label or backup completion as exercised recovery evidence."

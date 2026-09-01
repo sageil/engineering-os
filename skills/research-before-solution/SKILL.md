@@ -89,6 +89,12 @@ Use its bespoke baseline, current primary evidence, hard gates, and total-owners
 When the decision is where architecture investment is worthwhile across a repository or subsystem, read [architecture-opportunity-review.md](references/architecture-opportunity-review.md) now.
 Use its change-pressure, boundary, caller-burden, counterevidence, and confidence checks before choosing a design target.
 
+When workload, latency, data growth, availability, resource limits, or operating cost could eliminate or materially reorder solution options, read [capacity-estimation.md](references/capacity-estimation.md) now.
+Use its input classifications, transparent calculations, limiting-resource analysis, and sensitivity thresholds in the research record.
+
+When eligible options change atomicity, concurrency, isolation, ordering, idempotency, cross-boundary effects, or uncertain-outcome recovery, read [transactions-and-consistency.md](references/transactions-and-consistency.md) now.
+Use its invariant, ownership, state-transition, coordination, and reconciliation contracts before ranking options.
+
 For each material unknown, identify:
 
 - the claim that must be established;

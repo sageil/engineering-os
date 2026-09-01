@@ -26,6 +26,8 @@ Require a new routing decision before a handoff.
 | --- | --- | --- |
 | `execution-planning` | Request a transition plan. | A selected solution still has material transition hazards. |
 | `adversarial-review` | Request independent review, audit, approval, or merge-readiness assessment of a defined change. | A diff, plan, migration, configuration, or other change artifact and its baseline are available. |
+| `architecture-assessment` | Request an architecture audit, assessment, review, or fitness verdict. | A defined existing or proposed system boundary, intended outcomes, review horizon, owner, and architecture evidence are available or can be inspected. |
+| `security-testing` | Request a security test, security audit, vulnerability assessment, penetration test, scanner run, or exploit verification. | Targets, environment, scope, authority, allowed techniques, safety limits, evidence handling, and assessment owner are defined or can be established. |
 | `acceptance-review` | Request a criterion-by-criterion acceptance verdict. | One current authoritative requirement artifact and the implementation subject are available. |
 | `story-splitting` | Request product or backlog decomposition into vertical slices. | The parent outcome and decision owner are known, and unresolved rules do not materially change the split. |
 | `reduce-system-complexity` | Request a net-mechanism reduction target or verification. | One existing behavior path and its conserved outcomes are selected. |

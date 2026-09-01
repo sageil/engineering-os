@@ -76,6 +76,8 @@ Change any choice that conflicts with the brief, the existing product, or the in
 
 ## 3. Implement the interface
 
+Read [accessibility.md](references/accessibility.md) when the interface includes interactive controls, forms, navigation, dynamic state, media, data visualization, complex layout, or another accessibility-relevant surface.
+
 Follow the repository's established framework, component, styling, and asset conventions.
 Reuse or extend existing components and tokens before creating parallel ones.
 Keep product behavior outside the requested change stable.

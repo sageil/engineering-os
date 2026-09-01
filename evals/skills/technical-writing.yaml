@@ -109,3 +109,15 @@ cases:
       - "Keep any shared communication-policy change as a separate proposal."
     must_not:
       - "Convert code indentation to tabs or edit the global policy."
+  - id: architecture-diagram-in-technical-document
+    type: positive
+    prompt: "Add an architecture diagram to this verified operator guide so that responders can see the order recovery path."
+    artifacts:
+      reader: "On-call responders during delayed-order incidents."
+      evidence: "The request API records an order, publishes an outbox item, a relay sends it to the provider, and a reconciler resolves uncertain provider outcomes."
+      unknown: "The provider's internal queue topology is not observable."
+    must:
+      - "Choose the smallest sequence or data-flow view that answers the recovery question and use the exact verified component names."
+      - "Label directions and known interactions, mark the provider internals unknown, include a text alternative, and inspect the rendered diagram for legibility."
+    must_not:
+      - "Invent provider internals, add decorative vendor icons, or create unrelated architecture views."

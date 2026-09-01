@@ -52,5 +52,5 @@ Retain a skill when it owns a valuable non-overlapping responsibility and its me
 
 ## Current status
 
-Version 4.9.0 is structurally validated and includes contract fixtures for its provider-neutral routing model.
+Version 4.10.0 is structurally validated and includes contract fixtures for its provider-neutral routing model.
 Claims about effectiveness must identify the supporting artifact or observation and its limits.

@@ -28,6 +28,8 @@ Do not add an artifact-specific workflow, architecture preference, or project co
 
 Do not make `execution-planning` compare solutions.
 Do not make `adversarial-review` implement corrections.
+Do not make `architecture-assessment` review patches, select redesigns, issue launch verdicts, create plans, or implement corrections.
+Do not make `security-testing` infer authority, command incidents, replace threat modeling, issue launch verdicts, or implement remediation.
 Do not make `knowledge-promotion` automatically write memory.
 Do not make `technical-writing` research missing engineering facts, approve correctness, choose durable placement, or change exact technical identifiers.
 Do not make `frontend-design` own behavior-only changes, visual critique, product strategy, or backend implementation.

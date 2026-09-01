@@ -1,0 +1,70 @@
+skill: architecture-assessment
+cases:
+  - id: existing-system-material-gaps
+    type: positive
+    prompt: "Assess whether the supplied order-processing architecture is fit for the next two years. Do not redesign it."
+    artifacts:
+      outcomes: "Preserve tenant isolation, accept 2,000 orders per second at peak, recover accepted orders after worker failure, and permit independent checkout releases."
+      current_structure: "Checkout and fulfillment share one database schema. Checkout callers write fulfillment status directly and repeat retry and provider-mapping policy in five services."
+      workload: "Comparable production evidence shows the database saturates at 1,300 order writes per second and retry traffic doubles writes during provider slowdown."
+      recovery: "Workers acknowledge before durable order acceptance and no reconciliation record exists."
+      ownership: "Checkout and fulfillment have different release owners, but schema and recovery ownership are not assigned."
+    must:
+      - "Reconstruct the current architecture and assess boundaries, dependency direction, data ownership, change amplification, capacity, failure, recovery, and ownership against the stated outcomes."
+      - "Report only evidence-backed structural gaps and prioritize decision areas without choosing replacement components."
+      - "Return Architecture-assessment verdict: not-fit."
+    must_not:
+      - "Produce a target architecture or implementation roadmap."
+      - "Penalize the system for lacking a cache, queue, shard, or service unless an evidenced constraint requires it."
+  - id: proposed-architecture-fit
+    type: positive
+    prompt: "Review this proposed architecture for fitness against the supplied outcomes."
+    artifacts:
+      outcomes: "Serve a bounded internal workflow at 50 requests per second, preserve one authoritative writer, and recover interrupted work within one hour."
+      model: "One deployable owns the workflow and database. Callers use one stable operation contract. A durable operation record supports restart and reconciliation."
+      capacity: "A comparable load exercise sustained 300 requests per second with bounded latency and no saturation."
+      recovery: "An interrupted-worker exercise restored the accepted operation without duplicate effects in twelve minutes."
+      ownership: "One team owns deployment, data, alerts, recovery, and compatibility."
+    must:
+      - "Use the stated bounded outcomes rather than a generic scale or maturity model."
+      - "Return Architecture-assessment verdict: fit with the evidence limits and review horizon."
+    must_not:
+      - "Invent a need for multi-region, microservices, caching, sharding, or asynchronous messaging."
+  - id: missing-load-bearing-evidence
+    type: gate
+    prompt: "Give this architecture a fitness verdict, but no intended outcomes, environment, owner, workload, topology, data model, or failure evidence is available."
+    must:
+      - "Return Architecture-assessment verdict: insufficient-evidence and identify the smallest load-bearing inputs needed."
+    must_not:
+      - "Create a score from document presence or assumed best practices."
+  - id: local-change-not-applicable
+    type: restraint
+    prompt: "Perform an architecture assessment of a one-word label correction that changes no dependency, state, boundary, deployment, or operating obligation."
+    must:
+      - "Return Architecture-assessment verdict: not-applicable."
+    must_not:
+      - "Generate structural findings."
+  - id: patch-review-boundary
+    type: boundary
+    prompt: "Review this pull request diff for merge readiness and report only risks introduced by the patch."
+    must:
+      - "Route the defined change review to adversarial-review."
+    must_not:
+      - "Replace change-specific review with a whole-system architecture assessment."
+  - id: launch-readiness-boundary
+    type: boundary
+    prompt: "Decide whether this release can receive production traffic tomorrow and give a go-no-go verdict."
+    must:
+      - "Route the launch decision to operational-readiness."
+    must_not:
+      - "Issue a readiness verdict from architecture fitness alone."
+  - id: correction-selection-handoff
+    type: handoff
+    prompt: "Assess the current architecture, then choose the replacement architecture for every supported gap."
+    artifacts:
+      assessment: "The supplied evidence is sufficient to establish material ownership and recovery gaps, but several correction shapes remain credible."
+    must:
+      - "Complete the architecture fitness verdict and correction properties without selecting a redesign."
+      - "Return Routing request: research-before-solution for consequential correction selection."
+    must_not:
+      - "Treat the assessment request as authority to design or implement the replacement."

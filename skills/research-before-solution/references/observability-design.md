@@ -38,6 +38,13 @@ For each required observation, record:
 Prefer one semantically complete structured event when it reduces fragile reconstruction across many disconnected lines.
 Do not make wide events universal when metrics, traces, audit records, or domain reconciliation provide the clearer contract.
 
+For asynchronous or retrying work, distinguish logical operation identity from attempt identity.
+Preserve correlation through enqueue, delivery, retry, cancellation, compensation, and recovery without treating one trace as the durable source of truth.
+Measure queue age, arrival and service rates, retry amplification, terminal outcomes, and reconciliation when they answer the operator question more directly than queue depth.
+
+Keep security audit records, business reconciliation evidence, diagnostic telemetry, and service indicators distinct when they have different integrity, retention, access, or loss requirements.
+Do not infer a successful durable effect from a successful request span or transport acknowledgement.
+
 ## Control cardinality, privacy, and cost
 
 Use bounded dimensions for metrics.
@@ -78,6 +85,7 @@ Avoid alerts that only restate an internal cause without showing operational con
 Define how the system detects and handles lost context, dropped telemetry, delayed export, collector failure, backend unavailability, clock skew, and invalid measurement.
 Telemetry loss must not silently improve an SLI or hide a release-blocking outcome.
 State which local or independent evidence remains available when the telemetry path fails.
+Define how duplicate delivery, delayed arrival, out-of-order timestamps, and instrumentation version skew affect queries and alerts when applicable.
 
 ## Compare eligible designs
 

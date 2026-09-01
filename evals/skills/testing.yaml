@@ -114,3 +114,14 @@ cases:
       - "Use the public-behavior and observable-callback example sections."
     must_not:
       - "Load unrelated browser, factory, coverage, asynchronous, mutation, or quality-audit guidance."
+  - id: accessibility-evidence-layer
+    type: positive
+    prompt: "Design tests for the accepted keyboard and screen-reader behavior of this dialog."
+    artifacts:
+      contract: "Tab stays within the open dialog, Escape closes it, focus returns to the opener, the dialog has an accessible name, and validation errors are announced."
+      available_tools: "Component interaction tests, a browser runner, an automated accessibility checker, and manual screen-reader verification are available."
+    must:
+      - "Map each accepted behavior to semantic, keyboard, focus, browser, automated-rule, and manual assistive-technology evidence as applicable."
+      - "Keep automated scan evidence separate from manual announcement and focus evidence."
+    must_not:
+      - "Use snapshots or one automated scan as proof of the complete interaction contract."

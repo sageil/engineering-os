@@ -10,6 +10,7 @@ Read this reference when ordinary input-action-outcome examples are not enough b
 - Retry helpers
 - Time, randomness, and shared state
 - Component and browser evidence
+- Accessibility evidence
 - Direct transport in browser suites
 
 ## Characterization and golden-master tests
@@ -281,6 +282,28 @@ Use a test identifier only when no stable user-facing query exists.
 
 Do not require a real browser for pure logic that a smaller public interface proves honestly.
 Do require a real browser when the claim depends on rendering, focus, browser security policy, cookies, redirects, or browser APIs.
+
+## Accessibility evidence
+
+Match the accessibility claim to the interface that exposes it.
+
+| Claim | Evidence boundary |
+| --- | --- |
+| Accessible name, role, state, or relationship | Rendered accessibility semantics through the component or browser harness |
+| Keyboard operation and focus order | Real focus movement and keyboard interaction in the rendered interface |
+| Focus visibility, contrast, zoom, reflow, or reduced motion | Browser rendering and applicable computed or visual state |
+| Status announcement or screen-reader journey | Accessibility tree or representative assistive-technology observation |
+| End-to-end accessible task | Accessible user actions and user-visible outcomes across the served journey |
+
+An automated accessibility scan can prove that its executed rules found no violation in the tested state.
+It cannot prove complete keyboard behavior, useful announcements, correct reading order, understandable labels, accessible error recovery, or assistive-technology compatibility.
+
+Exercise relevant default, loading, empty, error, disabled, expanded, modal, validation, and completion states.
+Test focus placement and restoration across state changes.
+Use role and accessible-name queries when they express the user-facing contract, but do not treat query success alone as proof that keyboard behavior or visual access works.
+
+Do not use source-string assertions for semantic, focus, contrast, reflow, motion, or screen-reader claims.
+Record unavailable manual or assistive-technology checks as limitations rather than passing evidence.
 
 ## Direct transport in browser suites
 

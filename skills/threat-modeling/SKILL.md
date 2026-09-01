@@ -45,6 +45,8 @@ Do not assume unlimited capability when a narrower realistic actor changes the d
 
 Read [threat-analysis.md](references/threat-analysis.md).
 
+When the scope includes models, prompts, retrieval, memory, agents, tools, delegated identities, or autonomous multi-step work, read [agentic-systems.md](references/agentic-systems.md).
+
 Generate only enough detail to test threat eligibility.
 
 Classify each threat hypothesis:

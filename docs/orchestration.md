@@ -38,6 +38,8 @@ When more than one appears applicable, choose the skill that owns the immediate 
 
 Use `execution-planning` only for a requested plan when a selected solution still has material transition hazards.
 Use `adversarial-review` only for requested independent review of a defined change artifact.
+Use `architecture-assessment` only for a requested audit, assessment, review, or fitness verdict of a defined existing or proposed architecture.
+Use `security-testing` only for a requested security test, security audit, vulnerability assessment, penetration test, scanner run, or exploit verification with defined scope and authority.
 Use `acceptance-review` only for a requested criterion-by-criterion verdict against one authoritative acceptance contract.
 Use `story-splitting` only for requested product or backlog decomposition into independently valuable child stories.
 Use `reduce-system-complexity` only for a requested net-mechanism-reduction target or verification.
@@ -76,6 +78,8 @@ Designing and implementing a new visual direction for a product page uses `front
 Modeling how a proposed multi-tenant export path could cross tenant boundaries uses `threat-modeling` when explicitly requested.
 Deciding whether a service is ready for production traffic uses `operational-readiness` when explicitly requested.
 Proving every accepted criterion for a completed feature uses `acceptance-review` when explicitly requested.
+Assessing whether an existing or proposed system architecture is fit for stated outcomes uses `architecture-assessment` when explicitly requested.
+Performing an authorized security audit or active security assessment uses `security-testing` when explicitly requested.
 Splitting an epic into independently valuable outcomes uses `story-splitting` when explicitly requested.
 Establishing whether a selected path can remove total mechanism uses `reduce-system-complexity` when explicitly requested.
 Turning a fuzzy feature request into explicit behavior rules and examples uses `requirements-hardening` when explicitly requested.

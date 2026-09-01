@@ -38,3 +38,14 @@ cases:
     must:
       - "Do not activate frontend-design."
       - "Treat the behavior-only implementation and proportional verification as ordinary execution."
+  - id: accessible-new-workflow
+    type: positive
+    prompt: "Design and implement a new multi-step benefits application while meeting the accepted accessibility requirements."
+    artifacts:
+      requirements: "Keyboard completion, visible focus, programmatic names, clear errors, status announcements, 200 percent zoom, and reduced motion are required."
+      verification: "The repository has component tests, browser keyboard tests, an automated accessibility check, and a manual screen-reader checklist."
+    must:
+      - "Design with native semantics, logical keyboard and focus behavior, associated names and errors, announced status changes, responsive reflow, sufficient contrast, and reduced-motion behavior."
+      - "Use automated checks and the stated manual interaction evidence because one tool cannot prove all accepted requirements."
+    must_not:
+      - "Treat an automated accessibility scan as complete conformance evidence."

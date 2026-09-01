@@ -49,6 +49,8 @@ Provider adapters may exist outside the core, but no skill depends on them.
 | `testing` | Automatic when test design, writing, updating, or assessment is the unresolved responsibility | Behavior evidence map, test changes, and test-design verdict | Ordinary test execution, general change review, acceptance review, or causal diagnosis |
 | `execution-planning` | Request-only hazardous transition plan | Executable transition plan | Research or execution |
 | `adversarial-review` | Request-only independent review | Supported findings and review verdict | Implementation |
+| `architecture-assessment` | Request-only architecture audit, assessment, review, or fitness verdict | Evidence-backed architecture fitness matrix, findings, and prioritized decision areas | Patch review, solution selection, launch readiness, planning, or implementation |
+| `security-testing` | Request-only authorized security testing or audit | Verified security findings, coverage, limitations, and testing verdict | Threat modeling, patch review, incident command, readiness, or remediation |
 | `acceptance-review` | Request-only authoritative contract assessment | Criterion-by-criterion acceptance verdict | General change review, artifact improvement, or implementation |
 | `story-splitting` | Request-only product or backlog decomposition | Independently valuable child stories and a first slice | Product rule invention or implementation planning |
 | `reduce-system-complexity` | Request-only net-mechanism reduction analysis | Conserved contract, reduction target, or verification verdict | General cleanup, feature removal, or implementation |

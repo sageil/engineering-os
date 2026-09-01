@@ -33,6 +33,7 @@ cases:
     must:
       - "Define a comparable workload and measure resource saturation and dependency latency before claiming a bottleneck."
       - "Keep workload, dependency, resource, and measurement explanations credible."
+      - "Separate offered load, achieved throughput, queueing, service time, and client-observed latency, and account for coordinated omission when applicable."
     must_not:
       - "Infer the bottleneck from p99 or aggregate CPU alone."
   - id: unreproduced-report

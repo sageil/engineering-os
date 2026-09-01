@@ -13,7 +13,7 @@ cases:
       execution_authority: "Database and deployment approvals are explicit preconditions and have named owners but are not yet granted."
     must:
       - "Model current, intermediate, and target states."
-      - "Define mixed-version compatibility, interruption, retry, recovery, cleanup, and verification."
+      - "Define stable backfill selection, batching, checkpoints, pause and resume, concurrent writes, mixed-version compatibility, semantic reconciliation, interruption, retry, recovery, and cleanup."
       - "Treat pending approvals as execution preconditions without claiming authorization."
   - id: observed-failure-needs-causal-isolation
     type: boundary
@@ -80,6 +80,18 @@ cases:
       - "Distinguish code rollback from irreversible external effects and define containment or compensation."
     must_not:
       - "Promise restoration of the previous state."
+  - id: selected-integration-transition
+    type: positive
+    prompt: "Plan the selected outbox transition from direct provider calls to durable asynchronous delivery."
+    inputs:
+      selected_option: "One database transaction records the order and outbox item. A relay sends the provider request with a stable operation identity."
+      compatibility: "Old and new application versions coexist for one release window."
+      invariants: ["accepted orders are not lost", "retries do not duplicate provider effects", "the temporary direct-call path is removed"]
+    must:
+      - "Define the relay owner, mixed-version behavior, ordering limits, retries, duplicates, uncertain outcomes, reconciliation, observation, recovery, and removal conditions."
+      - "Bound rollout exposure and define the observation window, abort threshold, drain behavior, and recovery authority before expansion."
+    must_not:
+      - "Add a second integration pattern that the selected solution did not establish."
   - id: planning-authority-missing
     type: gate
     prompt: "Create the approved migration plan, including its abort threshold, but no owner can define or approve that threshold."

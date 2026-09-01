@@ -183,3 +183,29 @@ cases:
     must_not:
       - "Select an implementation stack before the research gate."
       - "Treat dashboard or instrumentation presence as proof that signals are accurate and actionable."
+  - id: capacity-estimation-decision
+    type: positive
+    prompt: "Estimate the capacity needed for the proposed reservation service and compare two eligible deployment shapes."
+    inputs:
+      workload: "Peak arrival is 900 requests per second for fifteen minutes, with 30 percent writes, 6 kilobytes per request, and two synchronous dependency calls."
+      growth: "The accepted two-year high case is 1.8 times current peak."
+      evidence: "A comparable test gives service-demand ranges and database saturation at 2,400 writes per second."
+      objectives: "p99 must remain below 400 milliseconds and one instance can be unavailable without overload."
+    must:
+      - "Show inputs, units, formulas, ranges, concurrency, storage and network effects, dependency budgets, headroom, redundancy, and the limiting resource."
+      - "Test sensitivity to the load and service-demand assumptions before ranking the eligible shapes."
+    must_not:
+      - "Use a generic utilization target or one average request rate as sufficient capacity evidence."
+  - id: transaction-consistency-decision
+    type: positive
+    prompt: "Recommend the consistency mechanism for a payment request that can time out after the provider commits."
+    inputs:
+      invariant: "One client operation creates at most one provider charge and every uncertain outcome is reconcilable."
+      boundary: "The local database and provider do not share a transaction."
+      provider_contract: "The provider accepts a durable idempotency key and supports status lookup by that key."
+      options: ["retry with a stable operation identity and reconciliation", "retry each timeout with a new request identity"]
+    must:
+      - "Define the transaction boundary, operation identity, uncertainty window, retry, replay, reconciliation authority, and evidence that closes an unknown result."
+      - "Reject the option that creates a new charge identity after an uncertain result."
+    must_not:
+      - "Claim exactly-once delivery or hide an unknown provider outcome behind a success response."

@@ -52,6 +52,12 @@ Ask:
 Require evidence for each seam, such as real substitution, independent verification, volatility isolation, ownership, trust, runtime failure, or deployment.
 Do not create a seam only because a private function exists or a hypothetical adapter could exist.
 
+Align each material boundary with the system facts that justify it.
+Check data ownership, trust, deployment, runtime failure, lifecycle, and team ownership instead of assuming that they coincide.
+State the intended dependency direction and verify that callers do not need knowledge from the hidden side of the boundary.
+Estimate change amplification across callers, tests, schemas, deployments, and operators for the named likely changes.
+Do not mandate an interface, layer, service, or repository pattern when a thin concrete boundary preserves the same obligations more clearly.
+
 For each material dependency, record:
 
 - in-process or out-of-process;

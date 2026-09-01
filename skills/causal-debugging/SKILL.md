@@ -72,6 +72,8 @@ Do not generate cosmetic alternatives.
 
 Read [experimental-method.md](references/experimental-method.md).
 
+When the observed failure is a latency, throughput, resource, queue, memory, startup, or rendering anomaly, read [performance-investigation.md](references/performance-investigation.md).
+
 State the prediction before the experiment.
 Change one explanatory variable at a time when possible.
 Use controls and a known-good baseline.

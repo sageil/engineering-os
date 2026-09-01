@@ -7,7 +7,7 @@ It works with any agent provider.
 Agents use no skill by default and activate one only when a task requires its method.
 Each skill requires agents to support their claims with available evidence.
 
-Version 4.9.0 includes 16 skills.
+Version 4.10.0 includes 18 skills.
 Agents handle routine implementation and verify changes according to risk without an installable skill.
 The `research-before-solution` skill prevents an agent from proposing solutions until it has enough evidence to make the decision.
 
@@ -31,6 +31,8 @@ automatic supervisory context during an active incident:
 request-only working skills, maximum one:
   execution-planning
   adversarial-review
+  architecture-assessment
+  security-testing
   acceptance-review
   story-splitting
   reduce-system-complexity
@@ -65,6 +67,8 @@ The description defines when the agent activates the skill.
 | [`testing`](skills/testing/SKILL.md) | Automatic when test design, writing, updating, or assessment becomes the unresolved responsibility | Decide whether tests provide useful evidence of behavior and which tests to keep, improve, combine, replace, or remove. |
 | [`execution-planning`](skills/execution-planning/SKILL.md) | Request-only | Plan a safe transition when execution has material risks. |
 | [`adversarial-review`](skills/adversarial-review/SKILL.md) | Request-only | Independently challenge a defined change and report supported findings. |
+| [`architecture-assessment`](skills/architecture-assessment/SKILL.md) | Request-only | Assess whether an existing or proposed architecture is fit for stated outcomes and identify evidence-backed decision areas without selecting a redesign. |
+| [`security-testing`](skills/security-testing/SKILL.md) | Request-only | Perform an authorized security assessment with bounded source review, configuration analysis, scanning, or active probes and report verified findings. |
 | [`acceptance-review`](skills/acceptance-review/SKILL.md) | Request-only | Check each criterion to decide whether an implementation satisfies one authoritative contract. |
 | [`story-splitting`](skills/story-splitting/SKILL.md) | Request-only | Split a broad outcome into small stories that each deliver independent value. |
 | [`reduce-system-complexity`](skills/reduce-system-complexity/SKILL.md) | Request-only | Define or verify a net reduction in system mechanisms while preserving accepted behavior. |
@@ -105,7 +109,7 @@ Requirements:
 - `sha256sum` or `shasum`
 - An agent host that discovers `SKILL.md` packages
 
-Install all 16 skills.
+Install all 18 skills.
 This is the default profile:
 
 ```bash
@@ -169,13 +173,15 @@ During an update, the installer removes managed skills that are no longer in the
 If managed content has changed, the installer stops before it makes changes.
 Use `--replace-modified` to back up changed managed skills and replace them with the packaged versions.
 
-## Version 4.9 changes
+## Version 4.10 changes
 
-- Version 4.9.0 adds the `testing` skill for test design and test-suite quality decisions.
-- Version 4.9.0 adds the request-only `frontend-design` skill for substantial visual design and implementation work.
-- The `testing` skill includes examples for behavior, test-data factories, weak coverage metrics, mutation testing, test scope, and test organization.
-- The universal policy now requires tests to prove behavior through the public interface at the layer named by the claim.
-- New installations include all 16 skills.
+- Version 4.10.0 adds the request-only `architecture-assessment` skill for evidence-backed fitness review of an existing or proposed architecture.
+- Version 4.10.0 adds the request-only `security-testing` skill for authorized security assessment and verified findings.
+- Architecture assessments reconstruct current or proposed structure, analyze ownership, dependencies, data, coupling, capacity, failure, and evolution, and return prioritized decision areas without selecting a redesign.
+- Research now includes focused architecture-artifact intake, capacity-estimation, and transaction-consistency methods.
+- Existing skills gain focused performance investigation, accessibility, API interaction, asynchronous observability, migration, and agentic-system security guidance.
+- Go, Python, and TypeScript defaults now cover language-specific error flow, concurrency, cancellation, security boundaries, and proportional verification.
+- New installations include all 18 skills.
 - The `automatic` profile contains four skills.
 
 ## Uninstall
@@ -207,7 +213,7 @@ See [Evaluation](docs/evaluation.md) for contract-fixture and field-evidence gui
 ## Repository map
 
 ```text
-skills/             Sixteen provider-neutral capability packages
+skills/             Eighteen provider-neutral capability packages
 routing.yaml        Maintainer-only routing inventory and validation fixture
 scripts/            Profile-aware install, update, uninstall, and validation
 lang/               Language defaults loaded only when the policy routes to them

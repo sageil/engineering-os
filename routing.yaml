@@ -40,6 +40,14 @@ skills:
     activation: request-only
     requires: explicit-independent-review-request
     output: supported-findings-and-review-verdict
+  architecture-assessment:
+    activation: request-only
+    requires: explicit-architecture-audit-review-assessment-or-fitness-verdict-request
+    output: evidence-backed-architecture-fitness-verdict
+  security-testing:
+    activation: request-only
+    requires: explicit-security-test-audit-vulnerability-assessment-pentest-scan-or-exploit-verification-request
+    output: authorized-security-testing-verdict-and-verified-findings
   acceptance-review:
     activation: request-only
     requires: explicit-authoritative-contract-satisfaction-request

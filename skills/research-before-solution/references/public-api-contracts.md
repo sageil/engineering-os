@@ -18,6 +18,23 @@ Identify:
 Do not assume the documented contract is the complete consumed contract.
 Inspect representative clients, tests, traffic evidence, and support history when they could reveal relied-on behavior.
 
+## Select interaction semantics
+
+Choose the contract form from the consumer outcome, ownership boundary, timing, delivery, and failure obligations.
+Do not default every boundary to request-response, REST, events, streaming, or webhooks.
+
+For each interaction, establish:
+
+- whether the caller needs an immediate result, accepted work identity, progress, or eventual notification;
+- who owns retry, cancellation, timeout, replay, and uncertain completion;
+- whether consumers require broad interoperability, generated schemas, streaming, server push, or bidirectional exchange;
+- whether intermediaries, browser constraints, connection lifetime, or cross-organization delivery affect feasibility; and
+- which party owns compatibility, authentication, authorization, backpressure, and recovery.
+
+For asynchronous acceptance, return a durable operation identity and define inquiry, cancellation, completion, expiry, and reconciliation.
+For webhooks or callbacks, define endpoint ownership, authenticity, tenant binding, replay protection, retry, duplicate behavior, disablement, and receiver recovery.
+For streams, define connection lifecycle, resumability, ordering, flow control, partial delivery, and schema evolution.
+
 ## Build a contract ledger
 
 For each operation or message, record the applicable obligations:
@@ -32,6 +49,7 @@ For each operation or message, record the applicable obligations:
 - caching, conditional requests, and invalidation;
 - quotas, rate behavior, and overload response;
 - event delivery, ordering, acknowledgement, and redelivery when applicable;
+- connection lifecycle, cancellation, progress, resumability, and flow control when applicable;
 - latency, availability, durability, and consistency commitments;
 - compatibility, versioning, deprecation, and removal; and
 - verification and production observation.

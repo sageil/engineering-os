@@ -1,10 +1,12 @@
 name: engineering-os
-version: 4.9.0
+version: 4.10.0
 skills:
   - research-before-solution
   - causal-debugging
   - execution-planning
   - adversarial-review
+  - architecture-assessment
+  - security-testing
   - acceptance-review
   - story-splitting
   - reduce-system-complexity

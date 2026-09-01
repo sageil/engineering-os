@@ -29,6 +29,7 @@ Do not infer capacity from average utilization or one nominal test.
 
 Identify critical sync/async dependencies, objectives, timeout budgets, retry behavior, shedding controls, failure isolation, fallback semantics, and ownership.
 Check partial failure, stale success, duplication, delayed work, and recovery order.
+Verify that replicas, queues, control planes, credentials, and failover paths do not share an undocumented failure domain that defeats the intended redundancy.
 
 ## Deployment and configuration
 
@@ -43,6 +44,9 @@ Treat unresolved high-impact threat paths as blockers unless an authorized decis
 
 Define sources of truth, validation, consistency, backups, restore scope/testing, point-in-time limits, reconciliation, duplicate/loss detection, corruption containment, and recovery authority.
 Require semantic recovery evidence, not only backup completion.
+When recovery objectives apply, record the accepted recovery time and recovery point as numeric bounds.
+Distinguish intended recovery capability from the last measured restore, failover, replay, or reconciliation exercise.
+Treat an untested recovery path as unverified unless equivalent evidence proves it.
 
 ## Operations and ownership
 

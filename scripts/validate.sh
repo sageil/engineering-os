@@ -52,6 +52,8 @@ line_in_file technical-writing "$PACKAGED_SKILLS" || fail "technical-writing mus
 line_in_file frontend-design "$PACKAGED_SKILLS" || fail "frontend-design must be packaged."
 line_in_file requirements-hardening "$PACKAGED_SKILLS" || fail "requirements-hardening must be packaged."
 line_in_file secure-oauth-oidc "$PACKAGED_SKILLS" || fail "secure-oauth-oidc must be packaged."
+line_in_file architecture-assessment "$PACKAGED_SKILLS" || fail "architecture-assessment must be packaged."
+line_in_file security-testing "$PACKAGED_SKILLS" || fail "security-testing must be packaged."
 
 duplicate=$(LC_ALL=C sort "$PACKAGED_SKILLS" | uniq -d)
 [[ -z "$duplicate" ]] || fail "Manifest contains duplicate skill: $duplicate"
@@ -60,7 +62,7 @@ manifest_count=$(wc -l < "$PACKAGED_SKILLS" | tr -d ' ')
 automatic_count=$(wc -l < "$AUTOMATIC_SKILLS" | tr -d ' ')
 directory_count=$(find "$ROOT_DIR/skills" -mindepth 1 -maxdepth 1 -type d | wc -l | tr -d ' ')
 skill_description_chars=0
-[[ "$manifest_count" -eq 16 ]] || fail "Version $VERSION must package exactly 16 skills."
+[[ "$manifest_count" -eq 18 ]] || fail "Version $VERSION must package exactly 18 skills."
 [[ "$automatic_count" -eq 4 ]] || fail "Version $VERSION must expose exactly 4 automatic skills."
 [[ "$manifest_count" -eq "$directory_count" ]] || fail "Manifest lists $manifest_count skills, but skills/ contains $directory_count directories."
 
@@ -132,6 +134,7 @@ fi
 [[ ! -e "$ROOT_DIR/skills/implement-and-prove" ]] || fail "Routine implementation must not be packaged as an automatic skill."
 [[ ! -e "$ROOT_DIR/skills/architecture-evolution" ]] || fail "Structural analysis must remain a conditional research reference."
 [[ -f "$ROOT_DIR/skills/research-before-solution/references/architecture-model.md" ]] || fail "Research is missing the structural analysis reference."
+[[ -f "$ROOT_DIR/skills/research-before-solution/references/capacity-estimation.md" ]] || fail "Research is missing the capacity estimation reference."
 
 while IFS= read -r directory; do
   skill=${directory##*/}

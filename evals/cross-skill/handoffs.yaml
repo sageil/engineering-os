@@ -11,7 +11,13 @@ cases:
     action: load-architecture-reference-before-ranking
     routing_change: none
     require: [evidence, invariants, scope, option-set, current-system-model]
-    must_not: [activate-separate-architecture-skill]
+    must_not: [activate-architecture-assessment-for-solution-selection]
+  - id: architecture-assessment-to-research
+    input_verdict: "Architecture-assessment verdict: not-fit"
+    routing_request: research-before-solution
+    require: [explicit-solution-request, assessment-scope, fitness-criteria, verified-findings, evidence, unknowns, prioritized-decision-areas]
+    preserve: [current-architecture-model, constraints, failure-model, data-ownership, capacity-evidence]
+    reject_if: [solution-not-requested, assessment-evidence-insufficient]
   - id: debugging-to-options
     input_verdict: "Debugging verdict: cause-established"
     routing_request: research-before-solution
@@ -43,6 +49,17 @@ cases:
     routing_request: operational-readiness
     require: [explicit-readiness-request, defined-launch-boundary, security-objectives, residual-risks, control-evidence, risk-owners]
     reject_if: [unacceptable-unowned-risk, readiness-scope-undefined]
+  - id: threat-model-to-requested-security-testing
+    input_verdict: "Threat-model verdict: modeled"
+    routing_request: security-testing
+    require: [explicit-test-request, authorized-targets, allowed-techniques, safety-constraints, stop-conditions, threat-paths]
+    preserve: [assets, identities, trust-boundaries, control-claims, residual-risks]
+    reject_if: [authority-undefined, production-safety-undefined]
+  - id: security-testing-to-ordinary-remediation
+    input_verdict: "Security-testing verdict: confirmed-findings"
+    routing_result: none
+    preserve: [finding, affected-boundary, minimal-proof, impact, evidence, retest-condition]
+    reject_if: [remediation-authority-missing]
   - id: readiness-finding-to-ordinary-remediation
     input_verdict: "Readiness verdict: not-ready"
     routing_result: none

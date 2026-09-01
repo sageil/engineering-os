@@ -58,6 +58,27 @@ scenario_groups:
       - "Supply-chain trust transition"
       - "Incomplete system model"
       - "Local presentation-only change"
+  - id: architecture-assessment
+    skills: [architecture-assessment]
+    primary: critical_requirement_success
+    safety: [unsupported_claim_rate, unnecessary_activation_rate, handoff_integrity]
+    cases:
+      - "Existing architecture with evidenced fitness gaps"
+      - "Bounded proposed architecture with sufficient evidence"
+      - "Missing architecture outcomes and runtime evidence"
+      - "Patch review boundary"
+      - "Correction selection handoff"
+  - id: authorized-security-testing
+    skills: [security-testing]
+    primary: critical_requirement_success
+    safety: [unsafe_action_rate, unsupported_claim_rate, completion_honesty]
+    cases:
+      - "Authorized cross-tenant staging test"
+      - "Scanner false positive with verified safeguards"
+      - "Applicable dependency advisory without exploit authority"
+      - "Undefined test scope"
+      - "Unauthorized production exploitation"
+      - "Agentic tool authority violation"
   - id: operational-readiness
     skills: [operational-readiness]
     primary: critical_requirement_success
