@@ -18,11 +18,23 @@ trap 'rm -f "$PACKAGED_SKILLS" "$AUTOMATIC_SKILLS" "$ROUTING_SKILLS" "$ROUTING_A
 [[ -f "$MANIFEST" ]] || fail "manifest.yaml is missing."
 grep -q "^version: $VERSION$" "$MANIFEST" || fail "Manifest version does not match VERSION."
 grep -q '^global_policy: global-agents.md$' "$MANIFEST" || fail "Manifest global policy is invalid."
+grep -q '^language_defaults: lang$' "$MANIFEST" || fail "Manifest language defaults are invalid."
 grep -q '^routing_policy: routing.yaml$' "$MANIFEST" || fail "Manifest routing policy is invalid."
 
 for required in README.md LICENSE VERSION manifest.yaml routing.yaml global-agents.md skills.md; do
   [[ -f "$ROOT_DIR/$required" ]] || fail "Required root file is missing: $required"
 done
+
+[[ -d "$ROOT_DIR/lang" ]] || fail "Required language defaults directory is missing: lang"
+for required in typescript.md go.md python.md csharp.md rust.md; do
+  [[ -f "$ROOT_DIR/lang/$required" ]] || fail "Required language defaults file is missing: lang/$required"
+done
+if find "$ROOT_DIR/lang" -type f ! -name '*.md' | grep -q .; then
+  fail "Language defaults contain a non-Markdown file."
+fi
+if find "$ROOT_DIR/lang" -type l | grep -q .; then
+  fail "Language defaults contain a symbolic link."
+fi
 
 for required in architecture.md orchestration.md installation.md customization.md evaluation.md contributing.md; do
   [[ -f "$ROOT_DIR/docs/$required" ]] || fail "Required documentation is missing: docs/$required"
@@ -102,7 +114,7 @@ while IFS= read -r skill || [[ -n "$skill" ]]; do
   [[ -f "$ROOT_DIR/evals/skills/$skill.yaml" ]] || fail "Missing skill contract cases: $skill"
 done < "$PACKAGED_SKILLS"
 
-if grep -RInE 'openai|codex|claude|gemini' "$ROOT_DIR/skills" "$ROOT_DIR/global-agents.md" "$ROOT_DIR/routing.yaml" >/dev/null 2>&1; then
+if grep -RInE 'openai|codex|claude|gemini' "$ROOT_DIR/skills" "$ROOT_DIR/lang" "$ROOT_DIR/global-agents.md" "$ROOT_DIR/routing.yaml" >/dev/null 2>&1; then
   fail "Portable skill core contains provider-specific metadata or instructions."
 fi
 

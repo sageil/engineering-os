@@ -24,3 +24,4 @@ automatic_skills:
   - testing
 routing_policy: routing.yaml
 global_policy: global-agents.md
+language_defaults: lang

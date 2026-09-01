@@ -46,15 +46,17 @@ Keep an existing `AGENTS.md` unchanged:
 ./scripts/install.sh --agents keep
 ```
 
-Back up and replace or create the configured `AGENTS.md`:
+Back up and replace or create the configured `AGENTS.md` and install the packaged `lang/**` files:
 
 ```bash
 ./scripts/install.sh --agents replace
 ```
 
-`--agents replace` always replaces the target file, including when it changed after an earlier installation.
+`--agents replace` always replaces the target policy and managed language files, including when they changed after an earlier installation.
+Changed managed language files are preserved under the installation backup directory before replacement.
+Unrelated files in the target `lang/` directory remain unchanged.
 
-Interactive and non-interactive installation both default to keeping the existing policy.
+Interactive and non-interactive installation both default to keeping the existing policy and language files.
 
 ## Custom targets
 
@@ -69,6 +71,7 @@ Use custom targets for the agent host's discovery and policy locations:
 ```
 
 Installation state is stored beside the configured policy target under `.engineering-os/`.
+Packaged language files install under `lang/` beside the configured policy target.
 Use the same `--agents-target` for update and uninstall so the correct state is loaded.
 
 ## Dry run

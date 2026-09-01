@@ -5,6 +5,7 @@ Engineering OS separates universal baseline behavior, provider-neutral routing, 
 ## Baseline behavior
 
 `global-agents.md` contains only invariants that should survive across ordinary engineering tasks.
+Language-specific defaults live under `lang/` and load only when the global policy routes the current task to the matching file.
 It covers evidence honesty, authority, preservation of user work, proportional verification, completion honesty, and skill scarcity.
 
 Routine implementation belongs to the base agent under repository instructions.

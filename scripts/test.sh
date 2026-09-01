@@ -22,6 +22,7 @@ mkdir -p "$TEST_HOME"
 HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --agents keep >/dev/null
 actual=$(installed_count "$TEST_HOME")
 [[ "$actual" -eq 16 ]] || fail "Default installation installed $actual skills instead of 16."
+[[ ! -e "$TEST_HOME/.agents/lang" ]] || fail "Keeping AGENTS.md installed language defaults."
 while IFS= read -r skill || [[ -n "$skill" ]]; do
   [[ -n "$skill" ]] || continue
   [[ -f "$TEST_HOME/.agents/skills/$skill/SKILL.md" ]] || fail "Default installation omitted manifest skill: $skill"
@@ -129,6 +130,35 @@ HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --profile none --agents replace
 actual=$(installed_count "$TEST_HOME")
 [[ "$actual" -eq 0 ]] || fail "None profile exposed $actual skills."
 [[ -f "$TEST_HOME/.agents/AGENTS.md" ]] || fail "None profile did not install the requested global policy."
+[[ -d "$ROOT_DIR/lang" ]] || fail "Packaged language defaults are missing."
+while IFS= read -r source; do
+  relative=${source#"$ROOT_DIR/lang/"}
+  target="$TEST_HOME/.agents/lang/$relative"
+  [[ -f "$target" ]] || fail "Policy replacement omitted language default: $relative"
+  cmp -s "$source" "$target" || fail "Installed language default differs from source: $relative"
+done < <(find "$ROOT_DIR/lang" -type f | LC_ALL=C sort)
+grep -q 'TypeScript: `lang/typescript.md`' "$TEST_HOME/.agents/AGENTS.md" || fail "Installed policy does not route TypeScript defaults through lang/."
+
+# A custom policy target receives language defaults beside AGENTS.md.
+TEST_HOME="$TMP_ROOT/custom-policy-target"
+mkdir -p "$TEST_HOME"
+CUSTOM_AGENTS_TARGET="$TEST_HOME/policy/AGENTS.md"
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --profile none --agents replace --agents-target "$CUSTOM_AGENTS_TARGET" >/dev/null
+cmp -s "$ROOT_DIR/global-agents.md" "$CUSTOM_AGENTS_TARGET" || fail "Custom policy target did not receive AGENTS.md."
+cmp -s "$ROOT_DIR/lang/typescript.md" "$TEST_HOME/policy/lang/typescript.md" || fail "Custom policy target did not receive sibling language defaults."
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/uninstall.sh" --agents restore --agents-target "$CUSTOM_AGENTS_TARGET" >/dev/null
+[[ ! -e "$CUSTOM_AGENTS_TARGET" ]] || fail "Custom policy uninstall left Engineering OS-created AGENTS.md."
+[[ ! -e "$TEST_HOME/policy/lang" ]] || fail "Custom policy uninstall left Engineering OS-created language defaults."
+
+# A retry completes an interrupted language-directory commit.
+TEST_HOME="$TMP_ROOT/language-install-retry"
+mkdir -p "$TEST_HOME"
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --profile none --agents replace >/dev/null
+mv "$TEST_HOME/.agents/.engineering-os/lang.sha256" "$TEST_HOME/.agents/.engineering-os/lang.pending.sha256"
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --agents replace >/dev/null
+[[ ! -e "$TEST_HOME/.agents/.engineering-os/lang.pending.sha256" ]] || fail "Language retry left pending installation state."
+cmp -s "$ROOT_DIR/lang/typescript.md" "$TEST_HOME/.agents/lang/typescript.md" || fail "Language retry did not restore packaged content."
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/uninstall.sh" --agents restore >/dev/null
 
 # Dry run creates no target state.
 TEST_HOME="$TMP_ROOT/dry-run"
@@ -168,6 +198,18 @@ fi
 for skill in research-before-solution causal-debugging incident-control; do
   [[ -f "$TEST_HOME/.agents/skills/$skill/SKILL.md" ]] || fail "Failed uninstall partially removed managed skill: $skill"
 done
+
+# Corrupt language state fails before uninstall changes managed targets.
+TEST_HOME="$TMP_ROOT/language-uninstall-preflight"
+mkdir -p "$TEST_HOME"
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --profile none --agents replace >/dev/null
+awk '$1 != "typescript.md"' "$TEST_HOME/.agents/.engineering-os/lang.sha256" > "$TEST_HOME/.agents/.engineering-os/lang.sha256.invalid"
+mv "$TEST_HOME/.agents/.engineering-os/lang.sha256.invalid" "$TEST_HOME/.agents/.engineering-os/lang.sha256"
+if HOME="$TEST_HOME" "$ROOT_DIR/scripts/uninstall.sh" --agents restore >/dev/null 2>&1; then
+  fail "Uninstall accepted incomplete language hash state."
+fi
+[[ -f "$TEST_HOME/.agents/AGENTS.md" ]] || fail "Failed language preflight removed AGENTS.md."
+[[ -f "$TEST_HOME/.agents/lang/typescript.md" ]] || fail "Failed language preflight removed a managed language file."
 
 # A modified managed skill blocks update before replacement.
 TEST_HOME="$TMP_ROOT/modified-skill"
@@ -213,26 +255,46 @@ grep -R -q '^removed-skill-local-change$' "$modified_backup_root" || fail "Unins
 
 # Original AGENTS.md is restored.
 TEST_HOME="$TMP_ROOT/restore-agents"
-mkdir -p "$TEST_HOME/.agents"
+mkdir -p "$TEST_HOME/.agents/lang"
 printf 'original policy\n' > "$TEST_HOME/.agents/AGENTS.md"
+printf 'original TypeScript defaults\n' > "$TEST_HOME/.agents/lang/typescript.md"
+printf 'unrelated language defaults\n' > "$TEST_HOME/.agents/lang/user-owned.md"
 HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --agents replace >/dev/null
+cmp -s "$ROOT_DIR/lang/typescript.md" "$TEST_HOME/.agents/lang/typescript.md" || fail "Policy replacement did not install TypeScript defaults."
+grep -q '^unrelated language defaults$' "$TEST_HOME/.agents/lang/user-owned.md" || fail "Policy replacement changed an unrelated language file."
+printf '\nuser language edit before restore\n' >> "$TEST_HOME/.agents/lang/typescript.md"
 HOME="$TEST_HOME" "$ROOT_DIR/scripts/uninstall.sh" --agents restore >/dev/null
 grep -q '^original policy$' "$TEST_HOME/.agents/AGENTS.md" || fail "Original AGENTS.md was not restored."
+grep -q '^original TypeScript defaults$' "$TEST_HOME/.agents/lang/typescript.md" || fail "Original TypeScript defaults were not restored."
+grep -q '^unrelated language defaults$' "$TEST_HOME/.agents/lang/user-owned.md" || fail "Uninstall removed an unrelated language file."
+grep -R -q '^user language edit before restore$' "$TEST_HOME/.agents/.engineering-os/backups/modified-lang" || fail "Restore did not preserve modified language defaults in a backup."
+for relative in go.md python.md csharp.md rust.md; do
+  [[ ! -e "$TEST_HOME/.agents/lang/$relative" ]] || fail "Uninstall left Engineering OS-created language defaults: $relative"
+done
 
 # Modified installed AGENTS.md is preserved by default.
 TEST_HOME="$TMP_ROOT/modified-agents"
 mkdir -p "$TEST_HOME"
 HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --agents replace >/dev/null
 printf '\nuser policy edit\n' >> "$TEST_HOME/.agents/AGENTS.md"
+printf '\nuser language edit\n' >> "$TEST_HOME/.agents/lang/typescript.md"
+HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --agents keep >/dev/null
+grep -q 'user policy edit' "$TEST_HOME/.agents/AGENTS.md" || fail "Keeping AGENTS.md replaced a modified policy."
+grep -q 'user language edit' "$TEST_HOME/.agents/lang/typescript.md" || fail "Keeping AGENTS.md replaced modified language defaults."
 HOME="$TEST_HOME" "$ROOT_DIR/scripts/uninstall.sh" --agents keep >/dev/null
 grep -q 'user policy edit' "$TEST_HOME/.agents/AGENTS.md" || fail "Modified AGENTS.md was not preserved."
+grep -q 'user language edit' "$TEST_HOME/.agents/lang/typescript.md" || fail "Modified language defaults were not preserved."
+[[ ! -e "$TEST_HOME/.agents/lang/go.md" ]] || fail "Uninstall left an unchanged managed language file."
 
 # Explicit replacement overwrites a modified managed AGENTS.md.
 TEST_HOME="$TMP_ROOT/replace-modified-agents"
 mkdir -p "$TEST_HOME"
 HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --agents replace >/dev/null
 printf '\nuser policy edit\n' >> "$TEST_HOME/.agents/AGENTS.md"
+printf '\nuser language edit\n' >> "$TEST_HOME/.agents/lang/typescript.md"
 HOME="$TEST_HOME" "$ROOT_DIR/scripts/install.sh" --agents replace >/dev/null
 cmp -s "$ROOT_DIR/global-agents.md" "$TEST_HOME/.agents/AGENTS.md" || fail "Explicit replacement did not overwrite AGENTS.md."
+cmp -s "$ROOT_DIR/lang/typescript.md" "$TEST_HOME/.agents/lang/typescript.md" || fail "Explicit replacement did not overwrite modified language defaults."
+grep -R -q '^user language edit$' "$TEST_HOME/.agents/.engineering-os/backups/modified-lang" || fail "Explicit replacement did not preserve modified language defaults in a backup."
 
 info "Installer profile and lifecycle smoke checks passed."

@@ -56,10 +56,25 @@ STATE_FILE="$STATE_DIR/install-state.env"
 SKILLS_STATE="$STATE_DIR/skills.list"
 SKILLS_HASHES="$STATE_DIR/skills.sha256"
 ORIGINAL_SKILLS="$STATE_DIR/original-skills.env"
+LANG_HASHES="$STATE_DIR/lang.sha256"
+LANG_PENDING_HASHES="$STATE_DIR/lang.pending.sha256"
+ORIGINAL_LANG="$STATE_DIR/original-lang.env"
 SKILLS_BACKUPS="$STATE_DIR/backups/skills"
 AGENTS_BACKUPS="$STATE_DIR/backups/agents"
+LANG_BACKUPS="$STATE_DIR/backups/lang"
+MODIFIED_LANG_BACKUPS="$STATE_DIR/backups/modified-lang"
 HASH_SKILLS=$(mktemp)
-trap 'rm -f "$HASH_SKILLS"' EXIT
+HASH_LANG=$(mktemp)
+MANAGED_LANG=$(mktemp)
+MODIFIED_LANG=$(mktemp)
+STAGED_LANG=""
+cleanup() {
+  rm -f "$HASH_SKILLS" "$HASH_LANG" "$MANAGED_LANG" "$MODIFIED_LANG"
+  if [[ -n "$STAGED_LANG" ]]; then
+    rm -rf "$STAGED_LANG"
+  fi
+}
+trap cleanup EXIT
 
 [[ -f "$STATE_FILE" ]] || {
   info "No Engineering OS installation state found."
@@ -67,11 +82,17 @@ trap 'rm -f "$HASH_SKILLS"' EXIT
 }
 [[ -f "$SKILLS_STATE" ]] || fail "Installation state is missing skills.list."
 [[ -f "$SKILLS_HASHES" ]] || fail "Installation state is missing skills.sha256."
+[[ ! -e "$LANG_PENDING_HASHES" ]] || fail "Language installation is incomplete. Rerun the installer before uninstalling."
 
 SKILLS_TARGET=$(state_get "$STATE_FILE" SKILLS_TARGET 2>/dev/null || true)
 STATE_AGENTS_TARGET=$(state_get "$STATE_FILE" AGENTS_TARGET 2>/dev/null || true)
 [[ "$STATE_AGENTS_TARGET" == "$AGENTS_TARGET" ]] || fail "State target mismatch: $STATE_AGENTS_TARGET"
 [[ -n "$SKILLS_TARGET" && "$SKILLS_TARGET" != / ]] || fail "Invalid skills target in state: $SKILLS_TARGET"
+LANG_TARGET="$(dirname "$AGENTS_TARGET")/lang"
+STATE_LANG_TARGET=$(state_get "$STATE_FILE" LANG_TARGET 2>/dev/null || true)
+if [[ -f "$LANG_HASHES" ]]; then
+  [[ "$STATE_LANG_TARGET" == "$LANG_TARGET" ]] || fail "Language state target mismatch: ${STATE_LANG_TARGET:-missing}"
+fi
 
 duplicate=$(LC_ALL=C sort "$SKILLS_STATE" | uniq -d)
 [[ -z "$duplicate" ]] || fail "Installation state contains a duplicate skill: $duplicate"
@@ -88,6 +109,33 @@ if [[ -f "$ORIGINAL_SKILLS" ]]; then
     esac
     [[ -d "$backup" ]] || fail "Pre-installation skill backup is missing: $backup"
   done < "$ORIGINAL_SKILLS"
+fi
+
+if [[ -f "$LANG_HASHES" ]]; then
+  recorded_lang_inventory_hash=$(state_get "$STATE_FILE" LANG_INVENTORY_SHA256 2>/dev/null || true)
+  [[ -s "$LANG_HASHES" ]] || fail "Installation state contains an empty language inventory."
+  [[ -n "$recorded_lang_inventory_hash" ]] || fail "Installation state is missing the language inventory hash."
+  [[ "$(sha256_file "$LANG_HASHES")" == "$recorded_lang_inventory_hash" ]] || fail "Installed language inventory does not match its recorded hash."
+  awk 'NF { if (NF != 2 || $1 !~ /^[a-zA-Z0-9._\/-]+$/ || $2 !~ /^[0-9a-f]+$/ || length($2) != 64) exit 1; print $1 }' "$LANG_HASHES" > "$HASH_LANG" || fail "Installation state contains an invalid language hash record."
+  cp "$HASH_LANG" "$MANAGED_LANG"
+  duplicate=$(LC_ALL=C sort "$MANAGED_LANG" | uniq -d)
+  [[ -z "$duplicate" ]] || fail "Installation state contains a duplicate language path: $duplicate"
+elif [[ -e "$ORIGINAL_LANG" ]]; then
+  fail "Partial language installation state exists without lang.sha256."
+fi
+
+if [[ -f "$ORIGINAL_LANG" ]]; then
+  while IFS='=' read -r relative backup || [[ -n "$relative" ]]; do
+    [[ -n "$relative" ]] || continue
+    case "$relative" in
+      ""|/*|../*|*/../*|*//*|*[!a-zA-Z0-9._/-]*) fail "Invalid language backup path: $relative" ;;
+    esac
+    case "$backup" in
+      "$LANG_BACKUPS"/*) ;;
+      *) fail "Language backup is outside the managed backup root: $backup" ;;
+    esac
+    [[ -f "$backup" ]] || fail "Pre-installation language backup is missing: $backup"
+  done < "$ORIGINAL_LANG"
 fi
 
 # Preflight every managed skill before removing any file.
@@ -112,6 +160,21 @@ while IFS= read -r skill || [[ -n "$skill" ]]; do
   fi
 done < "$SKILLS_STATE"
 
+if [[ -s "$MANAGED_LANG" ]]; then
+  if [[ -L "$LANG_TARGET" || ( -e "$LANG_TARGET" && ! -d "$LANG_TARGET" ) ]]; then
+    fail "Managed language target is not a regular directory: $LANG_TARGET"
+  fi
+  while IFS= read -r relative || [[ -n "$relative" ]]; do
+    [[ -n "$relative" ]] || continue
+    target="$LANG_TARGET/$relative"
+    installed_hash=$(awk -v p="$relative" '$1 == p { print $2; exit }' "$LANG_HASHES")
+    [[ -n "$installed_hash" ]] || fail "Installation state is missing a language hash for: $relative"
+    if [[ -L "$target" || ( -e "$target" && ! -f "$target" ) ]]; then
+      fail "Managed language target is not a regular file: $target"
+    fi
+  done < "$MANAGED_LANG"
+fi
+
 ACTION=$(state_get "$STATE_FILE" AGENTS_ACTION 2>/dev/null || true)
 [[ "$ACTION" == keep || "$ACTION" == replace ]] || fail "Installation state contains an unsupported AGENTS.md action: ${ACTION:-missing}"
 
@@ -119,6 +182,18 @@ installed_agents_hash=""
 original_existed=0
 original_backup=""
 current_changed=0
+language_changed=0
+: > "$MODIFIED_LANG"
+
+while IFS= read -r relative || [[ -n "$relative" ]]; do
+  [[ -n "$relative" ]] || continue
+  target="$LANG_TARGET/$relative"
+  installed_hash=$(awk -v p="$relative" '$1 == p { print $2; exit }' "$LANG_HASHES")
+  if [[ -f "$target" && "$(sha256_file "$target")" != "$installed_hash" ]]; then
+    printf '%s\n' "$relative" >> "$MODIFIED_LANG"
+    language_changed=1
+  fi
+done < "$MANAGED_LANG"
 
 if [[ "$ACTION" == replace ]]; then
   installed_agents_hash=$(state_get "$STATE_FILE" AGENTS_INSTALLED_SHA256 2>/dev/null || true)
@@ -140,13 +215,14 @@ if [[ "$ACTION" == replace ]]; then
   if [[ -f "$AGENTS_TARGET" && "$(sha256_file "$AGENTS_TARGET")" != "$installed_agents_hash" ]]; then
     current_changed=1
   fi
+fi
 
-  if [[ $current_changed -eq 1 && -z "$AGENTS_MODE" && -t 0 ]]; then
+if [[ ( $current_changed -eq 1 || $language_changed -eq 1 ) && -z "$AGENTS_MODE" && -t 0 ]]; then
     cat <<MENU
-$AGENTS_TARGET changed after Engineering OS installed it.
+The installed global policy or language defaults changed after Engineering OS installed them.
 
-  1. Keep the current file (default)
-  2. Preserve the current file as a backup, then restore the pre-installation state
+  1. Keep the changed files (default)
+  2. Preserve the changed files as backups, then restore the pre-installation state
   3. Cancel
 MENU
     read -r -p '> ' choice || choice=1
@@ -156,9 +232,8 @@ MENU
       3) info "Uninstall cancelled."; exit 0 ;;
       *) AGENTS_MODE=keep ;;
     esac
-  elif [[ $current_changed -eq 1 && -z "$AGENTS_MODE" ]]; then
-    AGENTS_MODE=keep
-  fi
+elif [[ ( $current_changed -eq 1 || $language_changed -eq 1 ) && -z "$AGENTS_MODE" ]]; then
+  AGENTS_MODE=keep
 fi
 
 # Remove unchanged managed skills and restore pre-installation collisions.
@@ -191,6 +266,61 @@ while IFS= read -r skill || [[ -n "$skill" ]]; do
     fi
   fi
 done < "$SKILLS_STATE"
+
+if [[ -s "$MANAGED_LANG" ]]; then
+  if ((DRY_RUN)); then
+    while IFS= read -r relative || [[ -n "$relative" ]]; do
+      [[ -n "$relative" ]] || continue
+      if line_in_file "$relative" "$MODIFIED_LANG" && [[ "$AGENTS_MODE" == keep ]]; then
+        info "Would keep modified language file: $LANG_TARGET/$relative"
+        continue
+      fi
+      original=$(state_get "$ORIGINAL_LANG" "$relative" 2>/dev/null || true)
+      if [[ -n "$original" ]]; then
+        info "Would restore original language file: $original -> $LANG_TARGET/$relative"
+      else
+        info "Would remove managed language file: $LANG_TARGET/$relative"
+      fi
+    done < "$MANAGED_LANG"
+  else
+    if [[ -s "$MODIFIED_LANG" && "$AGENTS_MODE" == restore ]]; then
+      mkdir -p "$MODIFIED_LANG_BACKUPS"
+      modified_backup_root=$(mktemp -d "$MODIFIED_LANG_BACKUPS/pre-uninstall.$(utc_stamp).XXXXXX")
+      while IFS= read -r relative || [[ -n "$relative" ]]; do
+        [[ -n "$relative" ]] || continue
+        backup="$modified_backup_root/$relative"
+        mkdir -p "$(dirname "$backup")"
+        cp -p "$LANG_TARGET/$relative" "$backup"
+        info "Preserved modified language file: $backup"
+      done < "$MODIFIED_LANG"
+    fi
+
+    STAGED_LANG=$(mktemp -d "$(dirname "$LANG_TARGET")/.engineering-os-lang.XXXXXX")
+    if [[ -d "$LANG_TARGET" ]]; then
+      cp -R "$LANG_TARGET"/. "$STAGED_LANG"/
+    fi
+    while IFS= read -r relative || [[ -n "$relative" ]]; do
+      [[ -n "$relative" ]] || continue
+      if line_in_file "$relative" "$MODIFIED_LANG" && [[ "$AGENTS_MODE" == keep ]]; then
+        info "Kept modified language file: $LANG_TARGET/$relative"
+        continue
+      fi
+      staged_target="$STAGED_LANG/$relative"
+      original=$(state_get "$ORIGINAL_LANG" "$relative" 2>/dev/null || true)
+      if [[ -n "$original" ]]; then
+        atomic_copy_file "$original" "$staged_target"
+        info "Restored original language file: $relative"
+      else
+        rm -f "$staged_target"
+        info "Removed managed language file: $relative"
+      fi
+    done < "$MANAGED_LANG"
+    atomic_replace_dir "$STAGED_LANG" "$LANG_TARGET"
+    rm -rf "$STAGED_LANG"
+    STAGED_LANG=""
+    rmdir "$LANG_TARGET" 2>/dev/null || true
+  fi
+fi
 
 if [[ "$ACTION" == replace ]]; then
   if [[ $current_changed -eq 1 && "$AGENTS_MODE" == keep ]]; then
@@ -231,7 +361,7 @@ if ((DRY_RUN)); then
   exit 0
 fi
 
-rm -f "$STATE_FILE" "$SKILLS_STATE" "$SKILLS_HASHES"
+rm -f "$STATE_FILE" "$SKILLS_STATE" "$SKILLS_HASHES" "$LANG_HASHES" "$ORIGINAL_LANG"
 if [[ -f "$ORIGINAL_SKILLS" && ! -s "$ORIGINAL_SKILLS" ]]; then
   rm -f "$ORIGINAL_SKILLS"
 fi

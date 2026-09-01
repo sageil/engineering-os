@@ -142,6 +142,7 @@ Preview operations without changing files:
 Skills install to `~/.agents/skills` by default.
 Use `--skills-target` for another host's discovery directory.
 The optional policy installs to `~/.agents/AGENTS.md` only when explicitly selected.
+The same selection installs every packaged `lang/**` file under `~/.agents/lang/` so the policy can load only the language defaults needed for the current task.
 
 ## Provider neutrality
 
@@ -209,10 +210,11 @@ See [Evaluation](docs/evaluation.md) for contract-fixture and field-evidence gui
 skills/             Sixteen provider-neutral capability packages
 routing.yaml        Maintainer-only routing inventory and validation fixture
 scripts/            Profile-aware install, update, uninstall, and validation
+lang/               Language defaults loaded only when the policy routes to them
 docs/               Architecture, orchestration, installation, and evaluation
 evals/              Trigger, no-skill, handoff, restraint, and end-to-end contract fixtures
 benchmark/          Optional field-observation dimensions and scenarios
-global-agents.md    Optional minimal universal policy
+global-agents.md    Optional minimal universal policy and language router
 manifest.yaml       Version, capability inventory, and default exposure set
 skills.md           Human-readable capability routing map
 assets/             README graphics
