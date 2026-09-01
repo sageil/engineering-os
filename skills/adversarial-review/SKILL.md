@@ -68,6 +68,7 @@ Do not enumerate irrelevant edge cases.
 
 ## 5. Test and refute concerns
 
+Run the smallest relevant tests and checks needed to verify or falsify material review claims.
 Inspect safeguards, constraints, types, callers, configuration, framework guarantees, tests, runtime evidence, and official version-specific documentation as applicable.
 
 Seek disconfirming evidence after a concern appears plausible.
