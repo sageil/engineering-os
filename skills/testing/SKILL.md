@@ -1,9 +1,6 @@
 ---
 name: testing
-description: >-
-  Design, write, update, or assess meaningful behavior tests for a defined subject.
-  Use when the user asks to add or change tests, when implementation work requires new or updated tests, or when the user requests test design, a test-quality audit, behavior-versus-implementation analysis, mutation-aware test analysis, or test consolidation, replacement, or removal.
-  Do not use for running existing tests only, reporting coverage alone, general change review, acceptance review, or diagnosis of a concrete failure.
+description: Design, write, update, or assess behavior tests when test evidence, boundary choice, mutation resistance, fixtures, consolidation, replacement, or removal is the task.
 ---
 
 # Testing

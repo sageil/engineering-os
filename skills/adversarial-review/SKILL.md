@@ -1,14 +1,6 @@
 ---
 name: adversarial-review
-description: >-
-  Independently challenge a proposed or completed engineering change for correctness,
-  safety, compatibility, maintainability, operability, and suitability. Use for pull
-  requests, branches, commits, patches, diffs, migrations, configuration, infrastructure,
-  or implementation plans when the user requests review, audit, approval, or merge-readiness.
-  Report only findings introduced, exposed, or materially worsened by the reviewed change
-  and supported by evidence. Do not use for criterion-by-criterion satisfaction of one
-  authoritative acceptance contract, implementation, general repository audit, manufactured
-  criticism, or artifacts that have not been inspected.
+description: Independently review a defined change for introduced correctness, safety, compatibility, maintainability, or operability risks. Use for audits and merge-readiness.
 ---
 
 # Adversarial Review

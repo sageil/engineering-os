@@ -1,14 +1,6 @@
 ---
 name: frontend-design
-description: >-
-  Design and implement a new frontend visual direction or substantially reshape an
-  existing interface. Use only when the user explicitly requests visual design for
-  a page, component, application, or product surface and the work requires choices
-  about layout, typography, color, imagery, motion, or interface copy. Preserve
-  authoritative mockups, existing design systems, brand rules, and product behavior.
-  Do not use for behavior-only changes, routine styling corrections, design review
-  without implementation, faithful source replication with no open design decision,
-  or backend work.
+description: Design and implement a new or substantially changed visual direction for a product interface when layout, typography, color, imagery, motion, or copy need judgment.
 ---
 
 # Frontend design

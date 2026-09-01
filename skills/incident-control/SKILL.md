@@ -1,13 +1,6 @@
 ---
 name: incident-control
-description: >-
-  Control active production incidents that threaten users, data, money, security,
-  compliance, or service availability. Use when harm is ongoing or likely to escalate
-  and the immediate responsibility is command, containment, stabilization, evidence
-  preservation, recovery, and clear status communication. Permit only the narrow
-  emergency exception needed for controlled reversible mitigation before full research
-  is complete. Do not use for ordinary bugs, post-incident analysis, planned maintenance,
-  speculative risks, or implementation after the system is stable.
+description: Control an active production incident or recovery that threatens users, data, money, security, compliance, or availability. Own containment and verified recovery.
 ---
 
 # Incident Control

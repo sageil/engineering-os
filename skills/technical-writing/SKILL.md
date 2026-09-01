@@ -1,12 +1,6 @@
 ---
 name: technical-writing
-description: >-
-  Apply a layered technical-writing standard based on Diátaxis, Google developer
-  style, Simplified Technical English, and Global English. Use only when the user
-  explicitly requests creation or review of technical documentation, an RFC, a
-  README, a pull request description, or a commit message. Do not use for ordinary
-  replies, product UI strings, technical research, correctness review, implementation,
-  or document layout and file-format work.
+description: Create or review technical documentation, RFCs, READMEs, pull request descriptions, or commit messages using a layered, globally clear writing standard.
 ---
 
 # Technical writing

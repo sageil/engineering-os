@@ -1,12 +1,6 @@
 ---
 name: story-splitting
-description: >-
-  Split a broad requirement, epic, feature, initiative, or backlog item into small
-  end-to-end child stories. Use only when the user requests product or backlog
-  decomposition, a walking skeleton, an MVP sequence, vertical slices, or the first
-  independently valuable increment. Do not use for implementation planning, technical
-  task breakdown or routine coding. When unresolved product rules would materially
-  change the split, use this skill only to identify the smallest required definition.
+description: Split a broad product requirement, epic, or initiative into small end-to-end stories that each deliver independent value, including a walking skeleton or MVP sequence.
 ---
 
 # Story Splitting

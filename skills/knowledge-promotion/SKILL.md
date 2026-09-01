@@ -1,13 +1,6 @@
 ---
 name: knowledge-promotion
-description: >-
-  Preserve verified, reusable engineering knowledge in the strongest appropriate durable
-  artifact while preventing stale or unnecessary memory growth. Use only when the user
-  explicitly requests durable knowledge capture for an accepted decision, completed
-  incident learning, repeated verified failure pattern, or durable constraint. Prefer
-  enforcement, tests, automation, documentation, ADRs, or runbooks before generic agent
-  memory. Do not trigger automatically after another skill, for routine session summaries,
-  temporary state, speculative lessons, or facts that are cheap to rediscover.
+description: Preserve verified, reusable engineering knowledge in the strongest durable artifact. Use only to record an accepted decision, proven lesson, or durable constraint.
 ---
 
 # Knowledge Promotion

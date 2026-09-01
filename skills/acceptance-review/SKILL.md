@@ -1,11 +1,6 @@
 ---
 name: acceptance-review
-description: >-
-  Decide whether a defined implementation satisfies an authoritative issue,
-  specification, acceptance contract, or accepted decision. Use only when the user
-  requests a criterion-by-criterion acceptance verdict for a PR, branch, diff, or
-  current implementation. Do not use for general change review, artifact improvement,
-  implementation, or requirements reconstructed from informal discussion.
+description: Decide whether an implementation satisfies one authoritative issue, specification, acceptance contract, or accepted decision. Use for criterion-by-criterion verdicts.
 ---
 
 # Acceptance Review

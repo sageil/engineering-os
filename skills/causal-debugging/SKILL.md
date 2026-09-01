@@ -1,12 +1,6 @@
 ---
 name: causal-debugging
-description: >-
-  Reproduce and causally isolate observed failures, regressions, intermittent behavior,
-  incorrect outputs, performance anomalies, race conditions, and environment-dependent
-  defects before choosing a correction. Use when a concrete symptom exists and competing
-  causal explanations must be discriminated through experiments. Do not use for general
-  system orientation, solution comparison without a failure, implementation of an already
-  proven correction, or active incidents that still require stabilization.
+description: Reproduce and isolate the causal chain behind an observed failure, regression, incorrect output, race, or performance anomaly before selecting a correction.
 ---
 
 # Causal Debugging

@@ -1,13 +1,6 @@
 ---
 name: secure-oauth-oidc
-description: >-
-  Establish or assess the security invariants of a defined OAuth 2.0 or OpenID
-  Connect deployment when the user explicitly requests protocol security design,
-  audit, hardening, or migration. Use for authorization servers, OpenID Providers,
-  clients, relying parties, resource servers, redirects, PKCE, issuer binding, token
-  validation, refresh, DPoP, mTLS, or insecure-grant migration. Do not use for general
-  threat modeling, unrelated authentication, active incidents, implementation, or a
-  concrete observed failure that still needs causal isolation.
+description: Design or assess security invariants for an OAuth 2.0 or OpenID Connect deployment, including clients, redirects, PKCE, tokens, issuer binding, DPoP, or mTLS.
 ---
 
 # Secure OAuth and OpenID Connect

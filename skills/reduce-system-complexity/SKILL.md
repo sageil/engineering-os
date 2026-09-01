@@ -1,12 +1,6 @@
 ---
 name: reduce-system-complexity
-description: >-
-  Establish or verify an evidence-backed net reduction of mechanism in a selected
-  existing system or behavior path while conserving agreed behavior and operational
-  guarantees. Use only when the user explicitly requests fewer branches, states,
-  dependencies, layers, flags, retries, jobs, adapters, or moving parts. Do not use for
-  routine cleanup, general architecture review, feature removal, implementation, or a
-  smaller local diff that may export complexity elsewhere.
+description: Establish or verify a net reduction in branches, states, dependencies, layers, flags, jobs, adapters, or other mechanisms while preserving accepted behavior.
 ---
 
 # Reduce System Complexity

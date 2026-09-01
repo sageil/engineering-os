@@ -59,6 +59,7 @@ duplicate=$(LC_ALL=C sort "$PACKAGED_SKILLS" | uniq -d)
 manifest_count=$(wc -l < "$PACKAGED_SKILLS" | tr -d ' ')
 automatic_count=$(wc -l < "$AUTOMATIC_SKILLS" | tr -d ' ')
 directory_count=$(find "$ROOT_DIR/skills" -mindepth 1 -maxdepth 1 -type d | wc -l | tr -d ' ')
+skill_description_chars=0
 [[ "$manifest_count" -eq 16 ]] || fail "Version $VERSION must package exactly 16 skills."
 [[ "$automatic_count" -eq 4 ]] || fail "Version $VERSION must expose exactly 4 automatic skills."
 [[ "$manifest_count" -eq "$directory_count" ]] || fail "Manifest lists $manifest_count skills, but skills/ contains $directory_count directories."
@@ -88,7 +89,15 @@ while IFS= read -r skill || [[ -n "$skill" ]]; do
   [[ -f "$skill_file" ]] || fail "Missing SKILL.md: $skill"
   grep -q '^---$' "$skill_file" || fail "Missing YAML delimiters: $skill"
   grep -q "^name: $skill$" "$skill_file" || fail "Frontmatter name mismatch: $skill"
-  grep -q '^description:' "$skill_file" || fail "Missing description: $skill"
+  description=$(awk '
+    NR == 1 && $0 == "---" { in_frontmatter = 1; next }
+    in_frontmatter && $0 == "---" { exit }
+    in_frontmatter && /^description: / { sub(/^description: /, ""); print }
+  ' "$skill_file")
+  [[ -n "$description" && "$description" != ">-" ]] || fail "Description must be one non-empty line: $skill"
+  description_chars=${#description}
+  [[ "$description_chars" -le 180 ]] || fail "Description exceeds 180 characters: $skill"
+  skill_description_chars=$((skill_description_chars + description_chars))
   [[ ! -e "$directory/agents" ]] || fail "Provider-specific agents metadata is not allowed in the portable core: $skill"
 
   line_count=$(wc -l < "$skill_file" | tr -d ' ')
@@ -113,6 +122,8 @@ while IFS= read -r skill || [[ -n "$skill" ]]; do
 
   [[ -f "$ROOT_DIR/evals/skills/$skill.yaml" ]] || fail "Missing skill contract cases: $skill"
 done < "$PACKAGED_SKILLS"
+
+[[ "$skill_description_chars" -le 4000 ]] || fail "Skill descriptions exceed 4000 characters in total."
 
 if grep -RInE 'openai|codex|claude|gemini' "$ROOT_DIR/skills" "$ROOT_DIR/lang" "$ROOT_DIR/global-agents.md" "$ROOT_DIR/routing.yaml" >/dev/null 2>&1; then
   fail "Portable skill core contains provider-specific metadata or instructions."

@@ -1,13 +1,6 @@
 ---
 name: execution-planning
-description: >-
-  Create a safe transition strategy for a selected, evidence-backed solution only when
-  the user requests a plan and execution still contains material transition hazards such
-  as unsafe intermediate states, persistent data mutation, incompatible versions,
-  coordinated systems or owners, irreversible effects, bounded rollout, interruption,
-  rollback, or recovery. Do not use for ordinary implementation, multi-file work,
-  building, testing, established deployment procedures, executing an approved plan,
-  unresolved solution selection, or substituting planning for missing authority.
+description: Create a safe transition plan for a selected solution when execution has material intermediate-state, migration, rollback, recovery, or coordination risks.
 ---
 
 # Execution Planning

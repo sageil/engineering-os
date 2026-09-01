@@ -1,14 +1,6 @@
 ---
 name: operational-readiness
-description: >-
-  Assess whether a defined service, system, infrastructure component, major release, or
-  critical workflow is ready to launch or enter sustained operation when the user explicitly
-  requests an operational-readiness review, production-readiness review, launch assessment,
-  or go-no-go decision. Evaluate user outcomes, service objectives, ownership, observability,
-  capacity, dependencies, deployment, configuration, security, data integrity, failure
-  handling, recovery, runbooks, and accepted risk using actual evidence. Do not use for patch
-  review, routine deployment execution, active incidents, generic architecture discussion,
-  implementation planning, or remediation implementation.
+description: Assess whether a defined system, service, release, or critical workflow is ready for sustained operation, degradation, and recovery with named ownership.
 ---
 
 # Operational Readiness

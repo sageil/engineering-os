@@ -1,12 +1,6 @@
 ---
 name: requirements-hardening
-description: >-
-  Create or tighten an authoritative product or behavior requirement artifact when the
-  user explicitly requests specification, acceptance criteria, example mapping, gap
-  analysis, or pre-implementation requirement review. Use for fuzzy intent or existing
-  stories, specifications, acceptance criteria, and UI state requirements. Do not use
-  for story splitting, implementation planning, code review, implementation acceptance,
-  architecture selection, or implementation work.
+description: Create or tighten authoritative behavior requirements, acceptance criteria, examples, or gap analysis before implementation when product intent is incomplete.
 ---
 
 # Requirements Hardening

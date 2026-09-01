@@ -1,16 +1,6 @@
 ---
 name: research-before-solution
-description: >-
-  Establish decision-sufficient evidence before proposing engineering solutions.
-  Use when unknown facts about the existing system, environment, dependencies,
-  external capabilities, constraints, ownership, or failure model could invalidate
-  a candidate solution, remove or add a credible option, or materially change the
-  ranking among options. Applies to architecture, design, integration, reliability,
-  security, performance, migration, platform, data, and technology decisions after
-  any concrete observed failure requiring causal isolation has been bounded.
-  Do not use for reproducing or diagnosing an observed failure, active incidents,
-  routine repository inspection, ordinary implementation with an already selected
-  mechanism, completed-change review, execution planning, or low-risk mechanical work.
+description: Establish decision-sufficient evidence before proposing a solution when unknown system, dependency, constraint, or failure facts could change the engineering options.
 ---
 
 # Research Before Solution
