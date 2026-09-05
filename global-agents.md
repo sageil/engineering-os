@@ -123,6 +123,9 @@ Before creating a new implementation, helper, utility, service, abstraction, fix
 3. Consolidate behavior into an existing appropriate owner.
 4. Create something new only when existing mechanisms are genuinely unsuitable.
 
+When existing repository mechanisms are unsuitable, prefer a suitable standard-library or native platform capability over custom code.
+Use a suitable dependency that the repository already uses before adding another dependency.
+
 Do not introduce a parallel implementation merely because it is locally easier than understanding or modifying the existing one.
 Treat implementations that must remain behaviorally synchronized as a maintainability defect unless duplication is an explicit architectural requirement.
 Do not confuse superficial textual similarity with semantic duplication.
@@ -131,9 +134,15 @@ When logic branches, validates, or derives multiple values, prefer explicit cont
 
 ## Change discipline
 
-Implement the smallest coherent repository-native change.
+Implement the smallest coherent repository-native change that satisfies all accepted requirements.
 Smallest does not mean fewest characters, fewest files inspected, or least investigation.
 Avoid unrelated refactoring, speculative abstractions, premature generalization, unnecessary files, dependencies, interfaces, wrappers, formatting churn, and unrelated renames.
+Do not omit accepted behavior, validation, error handling, security, accessibility, compatibility, or recovery to reduce the change.
+When a deliberate simplification creates a known limit, record the limit next to the affected code or in the repository's established decision record.
+Record the condition that requires a stronger implementation.
+
+For a defect, correct the established cause at its existing owner.
+Do not patch only the reported symptom when the same cause affects other callers or paths.
 Before presenting implementation work as complete, review the full diff for correctness, maintainability, duplicated ownership, unnecessary test infrastructure, and divergence from established repository patterns.
 Resolve every critical, high, and medium correctness finding before commit or deployment.
 Preserve unrelated user work.
@@ -203,7 +212,7 @@ Also confirm proportionally to the change that:
 - mocks do not invalidate claimed evidence;
 - no unnecessary files, dependencies, or interfaces were introduced;
 - unrelated code was preserved;
-- the diff is the smallest coherent repository-native change.
+- the diff is the smallest coherent repository-native change that satisfies all accepted requirements.
 
 If a new reusable abstraction was introduced, be able to identify its responsibility, previous owner, alternatives inspected, why reuse or extension was unsuitable, and why the new mechanism does not create parallel ownership.
 
